@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "596030163339",
+    "project_id": "gmmapp-76672",
+    "storage_bucket": "gmmapp-76672.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:596030163339:android:ac8cc2543f02074ecd878e",
+        "android_client_info": {
+          "package_name": "com.example.gmm_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "596030163339-cagljkhp1jk8c40cn8alkl9t386l1snk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmJpkWZddQNvreOFG48KhktgaY5o8jdb8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "596030163339-cagljkhp1jk8c40cn8alkl9t386l1snk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

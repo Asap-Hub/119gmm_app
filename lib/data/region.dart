@@ -1,0 +1,18 @@
+Map <int, String> region = {
+  0 : "Northern Region",
+  1 : "Ashanti Region",
+  2 : "Western Region",
+  3 : "Volta Region",
+  4 : "Eastern Region",
+  5 : "Upper West Region",
+  6 : "Upper East Region",
+  7 : "Central Region",
+  8 : "Bono East Region",
+  9 : "Greater Accra Region",
+  10 : "Savannah Region",
+  11 : "North-East Region",
+  12 : "Oti Region",
+  13 : "Western North Region",
+  14: "Ahafo Region",
+  15 : "Bono Region Region",
+};
