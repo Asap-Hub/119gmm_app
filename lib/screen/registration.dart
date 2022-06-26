@@ -1,4 +1,11 @@
+import 'dart:async';
+import 'dart:io';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_picker.dart';
+import 'package:gmm_app/data/region.dart';
+import 'package:intl/intl.dart';
 
 import 'landingPage.dart';
 
@@ -23,8 +30,8 @@ class _registrationState extends State<registration> {
   TextEditingController firstName = TextEditingController();
   TextEditingController otherName = TextEditingController();
   TextEditingController dateOfBirth = TextEditingController();
-  TextEditingController age = TextEditingController();
-  TextEditingController region = TextEditingController();
+  TextEditingController myAge = TextEditingController();
+  TextEditingController Region = TextEditingController();
   TextEditingController district = TextEditingController();
   TextEditingController branch = TextEditingController();
   TextEditingController homeTown = TextEditingController();
@@ -35,8 +42,24 @@ class _registrationState extends State<registration> {
   final personalFormKey = GlobalKey<FormState>();
   final maritalFormKey = GlobalKey<FormState>();
 
+//calculating age
+  DateTime datePicker = DateTime.now();
+
+  // list
+ String value_1 = "";
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Regions;
+    value_1 = Regions["region"]![0];
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(value_1);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -130,7 +153,7 @@ class _registrationState extends State<registration> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                   child: TextFormField(
-                    obscureText: true,
+                      obscureText: true,
                       textInputAction: TextInputAction.next,
                       controller: password,
                       decoration: InputDecoration(
@@ -187,7 +210,7 @@ class _registrationState extends State<registration> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                   child: TextFormField(
-                    textInputAction: TextInputAction.next,
+                      textInputAction: TextInputAction.next,
                       controller: firstName,
                       decoration: InputDecoration(
                         label: Text("First Name"),
@@ -215,23 +238,43 @@ class _registrationState extends State<registration> {
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
-                  child: TextFormField(
-                      textInputAction: TextInputAction.next,
-                      controller: dateOfBirth,
-                      decoration: InputDecoration(
-                        label: Text("Date Of Birth"),
-                        prefixIcon: Icon(Icons.date_range_outlined),
-                        prefixIconColor: Colors.black,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      )),
+                  child: GestureDetector(
+                    onTap: () {
+                      selectDate(context);
+                    },
+                    child: AbsorbPointer(
+                      child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          controller: dateOfBirth,
+                          onChanged: (value) {
+                            value = dateOfBirth.text;
+                          },
+                          onSaved: (value) {
+                            value = dateOfBirth.text;
+                          },
+                          decoration: InputDecoration(
+                            label: Text("Date Of Birth"),
+                            prefixIcon: Icon(Icons.date_range_outlined),
+                            prefixIconColor: Colors.black,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          )),
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                   child: TextFormField(
                       textInputAction: TextInputAction.next,
-                      controller: age,
+                      controller: myAge,
+                      onChanged: (value) {
+                        value = calculateAge();
+                        print(value);
+                      },
+                      onSaved: (value) {
+                        value = calculateAge();
+                      },
                       decoration: InputDecoration(
                         label: Text("Age"),
                         prefixIcon: Icon(Icons.confirmation_num_outlined),
@@ -241,20 +284,51 @@ class _registrationState extends State<registration> {
                         ),
                       )),
                 ),
+
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
-                  child: TextFormField(
-                      textInputAction: TextInputAction.next,
-                      controller: region,
-                      decoration: InputDecoration(
-                        label: Text("Region"),
-                        prefixIcon: Icon(Icons.vpn_lock_sharp),
-                        prefixIconColor: Colors.black,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                  child: Column(
+                    children: [
+                      Text("Select Your Region", style: TextStyle(fontSize: 16),),
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: Colors.black38, width: 3),
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                  color: Color.fromRGBO(124, 252, 0, 0.57),
+                                  blurRadius: 0.1)
+                            ]),
+                        child: DropdownButton<String>(
+                          hint: Text("select region"),
+                          borderRadius: BorderRadius.circular(20),
+                          isExpanded: true,
+                          elevation: 20,
+                          value: value_1,
+                          onChanged: (value) {
+                            setState(() {
+                              value_1 = value!;
+                            });
+                          },
+                          items: Regions["region"]?.map((e) => DropdownMenuItem<String>(
+                              child: Text(e), value: e)).toList(),
                         ),
-                      )),
+                      ),
+                    ],
+                  ),
                 ),
+                // TextFormField(
+                //     textInputAction: TextInputAction.next,
+                //     controller: region,
+                //     decoration: InputDecoration(
+                //       label: Text("Region"),
+                //       prefixIcon: Icon(Icons.vpn_lock_sharp),
+                //       prefixIconColor: Colors.black,
+                //       border: OutlineInputBorder(
+                //         borderRadius: BorderRadius.circular(10),
+                //       ),
+                //     )),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                   child: TextFormField(
@@ -340,4 +414,39 @@ class _registrationState extends State<registration> {
           ),
         )
       ];
+
+  //for selection date
+  selectDate(BuildContext context) async {
+    if (Platform.isAndroid) {
+      final DateTime? picked = await showDatePicker(
+          context: context,
+          initialDate: datePicker,
+          firstDate: DateTime(2019, 8),
+          lastDate: DateTime(2100));
+      if (picked != null && picked != datePicker)
+        setState(() {
+          dateOfBirth.text = DateFormat('yyyy-MM-dd').format(picked);
+        });
+    } else {
+      final DateTime? picked = await showDatePicker(
+          context: context,
+          initialDate: datePicker,
+          firstDate: DateTime(2019, 8),
+          lastDate: DateTime(2100));
+      if (picked != null && picked != datePicker)
+        setState(() {
+          dateOfBirth.text = DateFormat('yyyy-MM-dd').format(picked);
+        });
+    }
+  }
+
+  //calculating age
+  calculateAge() {
+    DateTime currentDate = DateTime.now();
+    var myage = selectDate(context) - currentDate;
+    setState(() {
+      myage = dateOfBirth.text;
+      print(myage);
+    });
+  }
 }

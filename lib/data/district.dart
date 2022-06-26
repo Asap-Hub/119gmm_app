@@ -151,8 +151,8 @@ Map<int, String> upperEast_Region = {
   14: "Tempane District",
 };
 Map<int, String> central_Region = {
-  0: "Abura/Asebu/Kwamankese	District",
-  1: "Agona East	District",
+  0: "Abura/Asebu/Kwamankese District",
+  1: "Agona East District",
   2: "Agona West Municipal",
   3: "Ajumako/Enyan/Essiam",
   4: "Asikuma Odoben Brakwa",
