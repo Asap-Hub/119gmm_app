@@ -32,7 +32,8 @@ class _registrationState extends State<registration> {
   TextEditingController dateOfBirth = TextEditingController();
   TextEditingController myAge = TextEditingController();
   TextEditingController Region = TextEditingController();
-  TextEditingController district = TextEditingController();
+
+  //TextEditingController district = TextEditingController();
   TextEditingController branch = TextEditingController();
   TextEditingController homeTown = TextEditingController();
   TextEditingController residentialAddress = TextEditingController();
@@ -44,24 +45,29 @@ class _registrationState extends State<registration> {
 
 //calculating age
   DateTime datePicker = DateTime.now();
+  int age = 0;
 
-  // list
- String value_1 = "";
-
+  // Data
+  String reg = "";
+  bool isChosen = true;
+  String Districts = "";
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     Regions;
-    value_1 = Regions["region"]![0];
+    reg = Regions["region"]![0];
+    Districts = Regions[reg]![0];
   }
 
   @override
   Widget build(BuildContext context) {
-    print(value_1);
+    print(reg);
+    print(Regions[reg]![0]);
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0.3,
           centerTitle: true,
@@ -269,14 +275,14 @@ class _registrationState extends State<registration> {
                       textInputAction: TextInputAction.next,
                       controller: myAge,
                       onChanged: (value) {
-                        value = calculateAge();
+                        value = age.toString();
                         print(value);
                       },
                       onSaved: (value) {
-                        value = calculateAge();
+                        value = age.toString();
                       },
                       decoration: InputDecoration(
-                        label: Text("Age"),
+                        label: Text("${age.toString()}"),
                         prefixIcon: Icon(Icons.confirmation_num_outlined),
                         prefixIconColor: Colors.black,
                         border: OutlineInputBorder(
@@ -284,65 +290,93 @@ class _registrationState extends State<registration> {
                         ),
                       )),
                 ),
-
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                   child: Column(
                     children: [
-                      Text("Select Your Region", style: TextStyle(fontSize: 16),),
+                      Text(
+                        "Select Your Region",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      SizedBox(height: 5),
                       DecoratedBox(
                         decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.black38, width: 3),
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                  color: Color.fromRGBO(124, 252, 0, 0.57),
-                                  blurRadius: 0.1)
-                            ]),
-                        child: DropdownButton<String>(
-                          hint: Text("select region"),
-                          borderRadius: BorderRadius.circular(20),
-                          isExpanded: true,
-                          elevation: 20,
-                          value: value_1,
-                          onChanged: (value) {
-                            setState(() {
-                              value_1 = value!;
-                            });
-                          },
-                          items: Regions["region"]?.map((e) => DropdownMenuItem<String>(
-                              child: Text(e), value: e)).toList(),
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black38, width: 1),
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                                color: Color.fromRGBO(124, 252, 0, 0.57),
+                                blurRadius: 0.1)
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: DropdownButton<String>(
+                            hint: Text("select region"),
+                            borderRadius: BorderRadius.circular(20),
+                            isExpanded: true,
+                            elevation: 20,
+                            value: reg,
+                            onChanged: (value) {
+                              setState(() {
+                                reg = value!;
+                                isChosen = true;
+                                Districts = Regions[reg]!.first;
+                              });
+                            },
+                            items: Regions["region"]
+                                ?.map(
+                                  (e) => DropdownMenuItem<String>(
+                                      child: Text(e), value: e),
+                                )
+                                .toList(),
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                // TextFormField(
-                //     textInputAction: TextInputAction.next,
-                //     controller: region,
-                //     decoration: InputDecoration(
-                //       label: Text("Region"),
-                //       prefixIcon: Icon(Icons.vpn_lock_sharp),
-                //       prefixIconColor: Colors.black,
-                //       border: OutlineInputBorder(
-                //         borderRadius: BorderRadius.circular(10),
-                //       ),
-                //     )),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
-                  child: TextFormField(
-                      textInputAction: TextInputAction.next,
-                      controller: district,
-                      decoration: InputDecoration(
-                        label: Text("District"),
-                        prefixIcon: Icon(Icons.map),
-                        prefixIconColor: Colors.black,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                if (isChosen)
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
+                    child: Column(
+                      children: [
+                        Text("Select Your District", style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 5),
+                        DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: Colors.black38, width: 1),
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                  color: Color.fromRGBO(124, 252, 0, 0.57),
+                                  blurRadius: 0.1)
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: DropdownButton<String>(
+                              isExpanded: true,
+                              value: Districts,
+                              onChanged: (value) {
+                                setState(() {
+                                  Districts = value!;
+                                });
+                              },
+                              items: Regions[reg]
+                                  ?.map((e) => DropdownMenuItem<String>(
+                                        child: Text(e),
+                                        value: e,
+                                      ))
+                                  .toList(),
+                            ),
+                          ),
                         ),
-                      )),
-                ),
+                      ],
+                    ),
+                  ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                   child: TextFormField(
@@ -441,11 +475,11 @@ class _registrationState extends State<registration> {
   }
 
   //calculating age
-  calculateAge() {
+  calculateAge(DateTime date) {
     DateTime currentDate = DateTime.now();
-    var myage = selectDate(context) - currentDate;
+    var myage = selectDate(context).difference(currentDate);
     setState(() {
-      myage = dateOfBirth.text;
+      myage = age as Duration;
       print(myage);
     });
   }
