@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_picker.dart';
+import 'package:gmm_app/data/fellowship.dart';
 import 'package:gmm_app/data/region.dart';
 import 'package:intl/intl.dart';
 
@@ -30,15 +31,12 @@ class _registrationState extends State<registration> {
   TextEditingController firstName = TextEditingController();
   TextEditingController otherName = TextEditingController();
   TextEditingController dateOfBirth = TextEditingController();
-  TextEditingController myAge = TextEditingController();
-  TextEditingController Region = TextEditingController();
-
-  //TextEditingController district = TextEditingController();
-  TextEditingController branch = TextEditingController();
   TextEditingController homeTown = TextEditingController();
   TextEditingController residentialAddress = TextEditingController();
 
   //marital text editing controller
+
+  //global keys
   final credentialFormKey = GlobalKey<FormState>();
   final personalFormKey = GlobalKey<FormState>();
   final maritalFormKey = GlobalKey<FormState>();
@@ -51,20 +49,27 @@ class _registrationState extends State<registration> {
   String reg = "";
   bool isChosen = true;
   String Districts = "";
+  String branches = "";
+  String group = "";
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     Regions;
+    fellowship;
     reg = Regions["region"]![0];
     Districts = Regions[reg]![0];
+    branches = Regions[Districts]![0];
+    //fellowship data
+    group = fellowship["groups"]![0];
   }
 
   @override
   Widget build(BuildContext context) {
-    print(reg);
-    print(Regions[reg]![0]);
+    print(dateOfBirth);
+    // print(branches);
+    // print(group);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -101,7 +106,7 @@ class _registrationState extends State<registration> {
           controlsBuilder: (BuildContext context, ControlsDetails details) {
             final isLastStep = currentStep == getSteps().length - 1;
             return Container(
-              margin: EdgeInsets.only(top: 50),
+              margin: EdgeInsets.only(top: 10),
               child: Row(
                 children: [
                   Expanded(
@@ -200,7 +205,8 @@ class _registrationState extends State<registration> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       )),
-                )
+                ),
+                Divider(color: Colors.black,thickness: 1.0),
               ],
             ),
           ),
@@ -253,10 +259,12 @@ class _registrationState extends State<registration> {
                           textInputAction: TextInputAction.next,
                           controller: dateOfBirth,
                           onChanged: (value) {
-                            value = dateOfBirth.text;
+                            setState(() {
+                              value = dateOfBirth.text.toString();
+                            });
                           },
                           onSaved: (value) {
-                            value = dateOfBirth.text;
+                            value = dateOfBirth.text.toString();
                           },
                           decoration: InputDecoration(
                             label: Text("Date Of Birth"),
@@ -268,27 +276,6 @@ class _registrationState extends State<registration> {
                           )),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
-                  child: TextFormField(
-                      textInputAction: TextInputAction.next,
-                      controller: myAge,
-                      onChanged: (value) {
-                        value = age.toString();
-                        print(value);
-                      },
-                      onSaved: (value) {
-                        value = age.toString();
-                      },
-                      decoration: InputDecoration(
-                        label: Text("${age.toString()}"),
-                        prefixIcon: Icon(Icons.confirmation_num_outlined),
-                        prefixIconColor: Colors.black,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      )),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
@@ -342,8 +329,9 @@ class _registrationState extends State<registration> {
                     padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                     child: Column(
                       children: [
-                        Text("Select Your District", style: TextStyle(fontSize: 16)),
-                      SizedBox(height: 5),
+                        Text("Select Your District",
+                            style: TextStyle(fontSize: 16)),
+                        SizedBox(height: 5),
                         DecoratedBox(
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -363,6 +351,8 @@ class _registrationState extends State<registration> {
                               onChanged: (value) {
                                 setState(() {
                                   Districts = value!;
+                                  isChosen = true;
+                                  branches = Regions[Districts]!.first;
                                 });
                               },
                               items: Regions[reg]
@@ -377,20 +367,47 @@ class _registrationState extends State<registration> {
                       ],
                     ),
                   ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
-                  child: TextFormField(
-                      textInputAction: TextInputAction.next,
-                      controller: branch,
-                      decoration: InputDecoration(
-                        label: Text("Branch"),
-                        prefixIcon: Icon(Icons.turned_in_not_outlined),
-                        prefixIconColor: Colors.black,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                if (isChosen)
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
+                    child: Column(
+                      children: [
+                        Text("Select Your Branch",
+                            style: TextStyle(fontSize: 16)),
+                        SizedBox(height: 5),
+                        DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: Colors.black38, width: 1),
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                  color: Color.fromRGBO(124, 252, 0, 0.57),
+                                  blurRadius: 0.1)
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: DropdownButton<String>(
+                              value: branches,
+                              isExpanded: true,
+                              items: Regions[Districts]
+                                  ?.map((e) => DropdownMenuItem<String>(
+                                        child: Text(e),
+                                        value: e,
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  branches = value!;
+                                });
+                              },
+                            ),
+                          ),
                         ),
-                      )),
-                ),
+                      ],
+                    ),
+                  ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                   child: TextFormField(
@@ -419,6 +436,46 @@ class _registrationState extends State<registration> {
                         ),
                       )),
                 ),
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
+                    child: Column(
+                      children: [
+                        Text("Select Your Fellowship",
+                            style: TextStyle(fontSize: 16)),
+                        SizedBox(height: 5),
+                        DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: Colors.black38, width: 1),
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                  color: Color.fromRGBO(124, 252, 0, 0.57),
+                                  blurRadius: 0.1)
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: DropdownButton<String>(
+                              value: group,
+                              isExpanded: true,
+                              onChanged: (value) {
+                                setState(() {
+                                  group = value!;
+                                });
+                              },
+                              items: fellowship["groups"]
+                                  ?.map((e) => DropdownMenuItem<String>(
+                                        child: Text(e),
+                                        value: e,
+                                      ))
+                                  .toList(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
+                Divider(color: Colors.black,thickness: 1.0,),
               ],
             ),
           ),
@@ -443,7 +500,9 @@ class _registrationState extends State<registration> {
                         ),
                       )),
                 ),
+                Divider(color: Colors.black,thickness: 1.0),
               ],
+
             ),
           ),
         )
@@ -472,15 +531,5 @@ class _registrationState extends State<registration> {
           dateOfBirth.text = DateFormat('yyyy-MM-dd').format(picked);
         });
     }
-  }
-
-  //calculating age
-  calculateAge(DateTime date) {
-    DateTime currentDate = DateTime.now();
-    var myage = selectDate(context).difference(currentDate);
-    setState(() {
-      myage = age as Duration;
-      print(myage);
-    });
   }
 }
