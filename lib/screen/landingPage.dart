@@ -125,7 +125,7 @@ class _landingPageState extends State<landingPage> {
                         children: [
                           ElevatedButton(
                               onPressed: () {
-                                signIn(email.text, password.text);
+                                signIn(email.text.trim(), password.text.trim());
                               },
                               child: Text("LOGIN",
                                   style: TextStyle(fontSize: 20))),

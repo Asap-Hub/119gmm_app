@@ -335,7 +335,7 @@ var Regions = {
   //Asanti Region
   "Adansi North District":[ "none"],
   "Adansi South District" :[ "none"],
-  "Afigya-Kwabre District" :[ "Wiamoase", "Tano Dumasi"],
+  "Afigya-Kwabre District" :[ "none"],
   "Ahafo-Ano North District":[ "none"],
   "Ahafo-Ano South District":[ "none"],
   "Amansie Central District":[ "none"],
@@ -362,7 +362,7 @@ var Regions = {
   "Sekyere-Afram Plains District":[ "none"],
   "Sekyere Central District":[ "Nsuta", "Beposo", "kwaman", "Kyeibi", "banko", "Gariba Kom", "Ankamada"],
   "Sekyere East District":[ "none"],
-  "Sekyere South District":[ "none"],
+  "Sekyere South District":[ "Wiamoase","Tano Dumasi"],
   //Western Region
   "Ahanta West	Municipal":[ "none"],
   "Amenfi Central	District":[ "none"],

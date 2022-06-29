@@ -5,3 +5,7 @@ var fellowship = {
     "Youth Wings"
   ],
 };
+
+var status = {
+  "marital":["Single", "Marriage"],
+};
