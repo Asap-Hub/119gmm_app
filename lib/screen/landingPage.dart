@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gmm_app/screen/registration.dart';
+import 'package:gmm_app/widget/progressBar.dart';
 
 import 'MyHomePage.dart';
 
@@ -19,6 +20,7 @@ class _landingPageState extends State<landingPage> {
   final formKey = GlobalKey<FormState>();
 
   final _auth = FirebaseAuth.instance;
+  bool isLoading = true;
 
   @override
   Widget build(BuildContext context) {
@@ -162,13 +164,20 @@ class _landingPageState extends State<landingPage> {
       await _auth
           .signInWithEmailAndPassword(email: email, password: password)
           .then((uid) => {
+      showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context){
+      return progressBar(message: "Please Wait...");
+      }
+      ),
                 Fluttertoast.showToast(msg: "Login Successful", fontSize: 16),
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => MyHomePage())),
               })
           .catchError((e) {
         Fluttertoast.showToast(msg: e!.message, fontSize: 16);
-      });
+      }).timeout(Duration(seconds: 5));
     }
   }
 }

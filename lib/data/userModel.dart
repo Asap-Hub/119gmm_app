@@ -80,7 +80,7 @@ class UserModel {
   }
 
 //sending data to the server
-  Map<String, dynamic>? toMap() {
+  Map<String, dynamic> toMap() {
     return {
       'uid': uid,
       'email': email,

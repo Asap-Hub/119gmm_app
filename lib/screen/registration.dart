@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gmm_app/data/otherData.dart';
 import 'package:gmm_app/data/region.dart';
 import 'package:gmm_app/data/userModel.dart';
+import 'package:gmm_app/widget/progressBar.dart';
 import 'package:intl/intl.dart';
 
 import 'landingPage.dart';
@@ -38,7 +38,7 @@ class _registrationState extends State<registration> {
   TextEditingController residentialAddress = TextEditingController();
   String region = "";
   bool isChosen = true;
-  String Districts = "";
+  String district = "";
   String branches = "";
   String group = "";
 
@@ -71,8 +71,8 @@ class _registrationState extends State<registration> {
     Regions;
     fellowship;
     region = Regions["region"]![0];
-    Districts = Regions[region]![0];
-    branches = Regions[Districts]![0];
+    district = Regions[region]![0];
+    branches = Regions[district]![0];
     //fellowship data
     group = fellowship["groups"]![0];
     //marital status
@@ -82,7 +82,7 @@ class _registrationState extends State<registration> {
 
   @override
   Widget build(BuildContext context) {
-    //print(dateOfBirth);
+    //print(dateOfBirth.text.trim());
     // print(branches);
     // print(group);
     return SafeArea(
@@ -113,10 +113,8 @@ class _registrationState extends State<registration> {
                 }
                 else{
                   signUp(email.text.trim().toString(), password.text.trim().toString());
-                  Fluttertoast.showToast(msg: "Email Added Successfully");
+                  //Fluttertoast.showToast(msg: "Email Added Successfully");
                   print("am here");
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => landingPage()));
                 }
 
               } else {
@@ -376,7 +374,7 @@ Fluttertoast.showToast(msg: "Required");
                               setState(() {
                                 region = value!;
                                 isChosen = true;
-                                Districts = Regions[region]!.first;
+                                district = Regions[region]!.first;
                               });
                             },
                             items: Regions["region"]
@@ -414,12 +412,12 @@ Fluttertoast.showToast(msg: "Required");
                             padding: const EdgeInsets.only(left: 10),
                             child: DropdownButton<String>(
                               isExpanded: true,
-                              value: Districts,
+                              value: district,
                               onChanged: (value) {
                                 setState(() {
-                                  Districts = value!;
+                                  district = value!;
                                   isChosen = true;
-                                  branches = Regions[Districts]!.first;
+                                  branches = Regions[district]!.first;
                                 });
                               },
                               items: Regions[region]
@@ -458,7 +456,7 @@ Fluttertoast.showToast(msg: "Required");
                             child: DropdownButton<String>(
                               value: branches,
                               isExpanded: true,
-                              items: Regions[Districts]
+                              items: Regions[district]
                                   ?.map((e) => DropdownMenuItem<String>(
                                         child: Text(e),
                                         value: e,
@@ -776,7 +774,7 @@ Fluttertoast.showToast(msg: "Required");
       final DateTime? picked = await showDatePicker(
           context: context,
           initialDate: datePicker,
-          firstDate: DateTime(2019, 8),
+          firstDate: DateTime(1900, 8),
           lastDate: DateTime(2100));
       if (picked != null && picked != datePicker)
         setState(() {
@@ -796,6 +794,13 @@ Fluttertoast.showToast(msg: "Required");
   }
 
   void signUp(String email, String password)async{
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context){
+          return progressBar(message: "Please Wait...");
+        }
+    );
     if(credentialFormKey.currentState!.validate()){
       await _auth.createUserWithEmailAndPassword(email: email, password: password).then((value) => {
         postDetailsToFireStore(),
@@ -812,5 +817,31 @@ Fluttertoast.showToast(msg: "Required");
     User? user = _auth.currentUser;
     UserModel userModel = UserModel();
     //writing values to the FirebaseStore
+    userModel.email = user!.email;
+    userModel.uid = user.uid;
+    userModel.number = number.text.trim();
+    userModel.firstName = firstName.text.trim();
+    userModel.secondName = otherName.text.trim();
+    userModel.dateOfBirth = dateOfBirth.text.trim();
+    userModel.region =region.trim();
+    userModel.district = district.trim();
+    userModel.branches = branches.trim();
+    userModel.homeTown = homeTown.text.trim();
+    userModel.residentialAddress = residentialAddress.text.trim();
+    userModel.group = group.trim();
+    userModel.profession = profession.text.trim();
+    userModel.numberOfDependent = numberOfDependent.text.trim();
+    userModel.maritalStatus =maritalStatus.trim().toLowerCase();
+    userModel.numberOfWive = numberOfWive.text.trim();
+    userModel.numberOfMaleChildren = numberOfMaleChildren.text.trim();
+    userModel.numberOfFemaleChildren = numberOfFemalChildren.text.trim();
+    userModel.nameOfMuslimChildren = nameOfMuslimChildren.text.trim();
+    userModel.nameOfNonMuslimChildren = nameOfNonMuslimChildren.text.trim();
+
+await firebaseStore.collection("Users").doc(user.uid).set(userModel.toMap()).timeout(Duration(seconds: 5));
+Fluttertoast.showToast(msg: "Account Created Successfully");
+    Navigator.pushAndRemoveUntil(context,
+        MaterialPageRoute(builder: (context) => landingPage()), (route) =>false);
+
   }
 }

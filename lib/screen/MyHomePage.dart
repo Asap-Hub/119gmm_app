@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gmm_app/data/userModel.dart';
 import 'package:gmm_app/screen/dues.dart';
 import 'package:gmm_app/screen/infag.dart';
 import 'package:gmm_app/screen/landingPage.dart';
@@ -15,15 +18,27 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int selectedItem = 0;
+  User? user = FirebaseAuth.instance.currentUser;
+  UserModel logInUser = UserModel();
 
-  void _onItemTapped(int index) {
-    setState(() {
-      selectedItem = index;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FirebaseFirestore.instance
+        .collection("Users")
+        .doc(user!.uid)
+        .get()
+        .then((value) {
+      setState(() {
+        this.logInUser = UserModel.fromMap(value.data());
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    print(user);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -32,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
           elevation: 0.3,
         ),
         bottomNavigationBar: BottomNavigationBar(
-          showUnselectedLabels: true,
+            showUnselectedLabels: true,
             currentIndex: selectedItem,
             selectedItemColor: Colors.white,
             unselectedFontSize: 13,
@@ -51,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.monetization_on_outlined),
-                label: "DUES",
+                label: "PAYMENT",
                 backgroundColor: Colors.green,
               ),
               BottomNavigationBarItem(
@@ -62,60 +77,225 @@ class _MyHomePageState extends State<MyHomePage> {
             ]),
         drawer: Drawer(
           child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              // PhysicalModel(
-              //   color: Colors.green,
-              //   elevation: 1.2,
-              //   child: Container(
-              //     height: 100,
-              //     child: DrawerHeader(
-              //         decoration: BoxDecoration(color: Colors.green),
-              //         child: Center(child: Text("Drawer Header",style: TextStyle(fontSize: 18),))),
-              //   ),
-              // ),
-              Container(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: ListTile(
-                        trailing: (Icon(
-                          Icons.close,
-                          size: 40,
-                          color: Colors.red,
-                        )),
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    )
-                  ],
-                ),
+            children: <Widget>[
+              SizedBox(height: 10,),
+              // IconButton(
+              //   color: Colors.red,
+              //     onPressed: () {
+              //       Navigator.pop(context);
+              //     },
+              //     icon: Icon(Icons.close),),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    backgroundImage: user?.photoURL == null
+                        ? AssetImage('assets/gmm_logo.png')
+                        : AssetImage("${user!.photoURL}"),
+                    radius: 50,
+                  ),
+                  Padding(
+                      padding: EdgeInsets.only(top: 50),
+                      child: IconButton(
+                          onPressed: () {
+                            print("am here");
+                          },
+                          icon: Icon(Icons.edit)))
+                ],
               ),
+              SizedBox(height: 5),
               Divider(
                 color: Colors.black,
                 height: 2.0,
                 thickness: 1.0,
               ),
-              ListTile(
-                title: Text("Profile"),
-                onTap: () {
-                  print("AM pressed");
-                },
-              ),
+              Card(
+                  margin: EdgeInsets.only(left: 10, top: 10, right: 10),
+                  shadowColor: Colors.green,
+                  elevation: 2.0,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          title: Text("Full Name: ${logInUser.firstName} "
+                              "${logInUser.secondName}"),
+                        ),
+                        ListTile(
+                          title: Text("Email: ${logInUser.email} "),
+                        ),
+                        ListTile(
+                          title: Text("Contact: ${logInUser.number} "),
+                        ),
+                        ListTile(
+                          title:
+                              Text("Date Of Birth: ${logInUser.dateOfBirth} "),
+                        ),
+                        ListTile(
+                          title: Text(
+                              "Registration Date: ${user!.metadata.creationTime} "),
+                        ),
+                        ListTile(
+                          title: Text(
+                              "Last Visit: ${user!.metadata.lastSignInTime}"),
+                        ),
+                      ],
+                    ),
+                  )),
+              Divider(color: Colors.green),
+              Card(
+                  margin: EdgeInsets.only(left: 10, top: 10, right: 10),
+                  shadowColor: Colors.green,
+                  elevation: 2.0,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          title: Text("Fellowship: ${logInUser.group} "),
+                        ),
+                        ListTile(
+                          title: Text("Region: ${logInUser.region} "),
+                        ),
+                        ListTile(
+                          title: Text("District: ${logInUser.district} "),
+                        ),
+                        ListTile(
+                          title: Text("Branch: ${logInUser.branches} "),
+                        ),
+                        ListTile(
+                          title: Text("Home Town: ${logInUser.homeTown} "),
+                        ),
+                        ListTile(
+                          title: Text(
+                              "Residential. Address: ${logInUser.residentialAddress} "),
+                        ),
+                      ],
+                    ),
+                  )),
+              Divider(color: Colors.green),
+              logInUser.maritalStatus == "Single".toLowerCase().trim()
+                  ? Card(
+                      margin: EdgeInsets.only(left: 10, top: 10, right: 10),
+                      shadowColor: Colors.green,
+                      elevation: 2.0,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              title:
+                                  Text("Profession: ${logInUser.profession} "),
+                            ),
+                            ListTile(
+                              title: Text(
+                                  "No. Of Dependent: ${logInUser.numberOfDependent} "),
+                            ),
+                            ListTile(
+                              title: Text(
+                                  "Marital Status: ${logInUser.maritalStatus} "),
+                            ),
+                            ListTile(
+                              title: logInUser.numberOfWive!.isNotEmpty
+                                  ? Text(
+                                      "No. Of Wive: ${logInUser.numberOfWive} ")
+                                  : Text("No. Of Wive: Not Set"),
+                            ),
+                            ListTile(
+                              title: logInUser.numberOfMaleChildren!.isNotEmpty
+                                  ? Text(
+                                      "No. Of Males: ${logInUser.numberOfMaleChildren} ")
+                                  : Text("No. Of Males: Not Set"),
+                            ),
+                            ListTile(
+                              title: logInUser
+                                      .numberOfFemaleChildren!.isNotEmpty
+                                  ? Text(
+                                      "No. Of Females: ${logInUser.numberOfFemaleChildren} ")
+                                  : Text("No. Of Females: Not Set"),
+                            ),
+                            ListTile(
+                              title: logInUser.nameOfMuslimChildren!.isNotEmpty
+                                  ? Text(
+                                      "Name Of Muslims: ${logInUser.nameOfMuslimChildren} ")
+                                  : Text("Name Of Muslims: Not Set"),
+                            ),
+                            ListTile(
+                              title: logInUser
+                                      .nameOfNonMuslimChildren!.isNotEmpty
+                                  ? Text(
+                                      "Name Of Non-Muslims: ${logInUser.nameOfNonMuslimChildren} ")
+                                  : Text("Name Of Non-Muslims: Not Set"),
+                            ),
+                          ],
+                        ),
+                      ))
+                  : Card(
+                      margin: EdgeInsets.only(left: 10, top: 10, right: 10),
+                      shadowColor: Colors.green,
+                      elevation: 2.0,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              title:
+                                  Text("Profession: ${logInUser.profession} "),
+                            ),
+                            ListTile(
+                              title: Text(
+                                  "No. Of Dependent: ${logInUser.numberOfDependent} "),
+                            ),
+                            ListTile(
+                              title: Text(
+                                  "Marital Status: ${logInUser.maritalStatus} "),
+                            ),
+                            ListTile(
+                              title: logInUser.numberOfWive!.isNotEmpty
+                                  ? Text(
+                                      "No. Of Wive: ${logInUser.numberOfWive} ")
+                                  : Text("No. Of Wive: Not Set"),
+                            ),
+                            ListTile(
+                              title: logInUser.numberOfMaleChildren!.isNotEmpty
+                                  ? Text(
+                                      "No. Of Males: ${logInUser.numberOfMaleChildren} ")
+                                  : Text("No. Of Males: Not Set"),
+                            ),
+                            ListTile(
+                              title: logInUser
+                                      .numberOfFemaleChildren!.isNotEmpty
+                                  ? Text(
+                                      "No. Of Females: ${logInUser.numberOfFemaleChildren} ")
+                                  : Text("No. Of Females: Not Set"),
+                            ),
+                            ListTile(
+                              title: logInUser.nameOfMuslimChildren!.isNotEmpty
+                                  ? Text(
+                                      "Name Of Muslims: ${logInUser.nameOfMuslimChildren} ")
+                                  : Text("Name Of Muslims: Not Set"),
+                            ),
+                            ListTile(
+                              title: logInUser
+                                      .nameOfNonMuslimChildren!.isNotEmpty
+                                  ? Text(
+                                      "Name Of Non-Muslims: ${logInUser.nameOfNonMuslimChildren} ")
+                                  : Text("Name Of Non-Muslims: Not Set"),
+                            )
+                          ],
+                        ),
+                      )),
               Padding(
-                padding: const EdgeInsets.only(top: 500.0, left: 90.0),
-                child: ListTile(
-                  title: Text(
-                    "SIGN OUT",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  textColor: Colors.green,
-                  onTap: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => landingPage()));
+                padding:
+                    const EdgeInsets.only(top: 10.0, left: 20.0, right: 20),
+                child: ElevatedButton(
+                  onPressed: () {
+                    logOut(context);
                   },
+                  child: Text(
+                    "SIGN OUT",
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
                 ),
               ),
               SizedBox(height: 12),
@@ -139,5 +319,17 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  List<Widget> Screen = <Widget>[home(),infag(), dues(), report()];
+  List<Widget> Screen = <Widget>[home(), infag(), dues(), report()];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      selectedItem = index;
+    });
+  }
+
+  Future<void> logOut(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => landingPage()));
+  }
 }
