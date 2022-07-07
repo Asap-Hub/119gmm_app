@@ -27,13 +27,25 @@ class UserModel {
   String? numberOfFemaleChildren;
   String? numberOfMaleChildren;
   String? maritalStatus;
+  String? nameOfTertiary;
+  String? startingYear;
+  String? completingYear;
+  String? nameOfPrimarySchool;
+  String? nameOfJuniorHighSchool;
+  String? nameOfSeniorHighSchool;
 
   UserModel(
       {this.uid,
       this.email,
       this.password,
       this.confirmPassword,
+      this.nameOfPrimarySchool,
+      this.nameOfJuniorHighSchool,
+      this.nameOfSeniorHighSchool,
       this.number,
+      this.nameOfTertiary,
+      this.startingYear,
+      this.completingYear,
       this.firstName,
       this.secondName,
       this.dateOfBirth,
@@ -76,7 +88,13 @@ class UserModel {
         numberOfWive: map['numberOfWive'],
         numberOfMaleChildren: map['numberOfMaleChildren'],
         numberOfFemaleChildren: map['numberOfFemaleChildren'],
-        maritalStatus: map['maritalStatus']);
+        maritalStatus: map['maritalStatus'],
+        nameOfPrimarySchool: map['nameOfPrimarySchool'],
+        nameOfJuniorHighSchool: map['nameOfJuniorHighSchool'],
+        nameOfSeniorHighSchool: map['nameOfSeniorHighSchool'],
+        nameOfTertiary: map["nameOfTertiary"],
+        startingYear: map["startingYear"],
+        completingYear: map["completingYear"]);
   }
 
 //sending data to the server
@@ -103,7 +121,13 @@ class UserModel {
       'numberOfWive': numberOfWive,
       'numberOfMaleChildren': numberOfMaleChildren,
       'numberOfFemaleChildren': numberOfFemaleChildren,
-      'maritalStatus': maritalStatus
+      'maritalStatus': maritalStatus,
+      'nameOfTertiary': nameOfTertiary,
+      'nameOfPrimarySchool': nameOfPrimarySchool,
+      'nameOfJuniorHighSchool': nameOfJuniorHighSchool,
+      'nameOfSeniorHighSchool': nameOfSeniorHighSchool,
+      'startingYear': startingYear,
+      'completingYear': completingYear,
     };
   }
 }

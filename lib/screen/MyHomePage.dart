@@ -6,6 +6,8 @@ import 'package:gmm_app/screen/dues.dart';
 import 'package:gmm_app/screen/infag.dart';
 import 'package:gmm_app/screen/landingPage.dart';
 import 'package:gmm_app/screen/report.dart';
+import 'package:url_launcher/link.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'home.dart';
 
@@ -17,6 +19,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final drawerKey = GlobalKey<ScaffoldState>();
   int selectedItem = 0;
   User? user = FirebaseAuth.instance.currentUser;
   UserModel logInUser = UserModel();
@@ -38,13 +41,48 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print(user);
+    //print(user);
     return SafeArea(
       child: Scaffold(
+        key: drawerKey,
         appBar: AppBar(
           centerTitle: true,
           title: Text("GMM APP"),
           elevation: 0.3,
+          leading: Builder(builder: (BuildContext Context) {
+            return IconButton(
+              icon: Icon(Icons.person, size: 30),
+              onPressed: () {
+                drawerKey.currentState?.openDrawer();
+              },
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            );
+          }),
+          actions: [
+            PopupMenuButton<Widget>(
+                itemBuilder: (BuildContext Context) => [
+                      PopupMenuItem(
+                          onTap: () async{
+                            final  url = 'http:/ghanamuslimmission.com/';
+                            openBrowserURL(url: url, inApp: true);
+                          },
+                          child: Text("ABOUT US",style: TextStyle(fontSize: 18, color: Colors.green)),
+                      ),
+                      PopupMenuItem(
+                        onTap: (){
+                          logOut(context);
+                        },
+                          child: Text(
+                            "SIGN OUT",
+                            style: TextStyle(fontSize: 18, color: Colors.green),
+                          ),
+
+                      ),
+                      PopupMenuItem(
+                        child: Text("Version: 0.0.1",style: TextStyle(fontSize: 18, color: Colors.green)),
+                      ),
+                    ])
+          ],
         ),
         bottomNavigationBar: BottomNavigationBar(
             showUnselectedLabels: true,
@@ -78,18 +116,14 @@ class _MyHomePageState extends State<MyHomePage> {
         drawer: Drawer(
           child: ListView(
             children: <Widget>[
-              SizedBox(height: 10,),
-              // IconButton(
-              //   color: Colors.red,
-              //     onPressed: () {
-              //       Navigator.pop(context);
-              //     },
-              //     icon: Icon(Icons.close),),
+              SizedBox(
+                height: 10,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircleAvatar(
-                    backgroundImage: user?.photoURL == null
+                    backgroundImage: user!.photoURL == null
                         ? AssetImage('assets/gmm_logo.png')
                         : AssetImage("${user!.photoURL}"),
                     radius: 50,
@@ -196,33 +230,31 @@ class _MyHomePageState extends State<MyHomePage> {
                                   "Marital Status: ${logInUser.maritalStatus} "),
                             ),
                             ListTile(
-                              title: logInUser.numberOfWive!.isNotEmpty
+                              title: logInUser.numberOfWive == null
                                   ? Text(
                                       "No. Of Wive: ${logInUser.numberOfWive} ")
                                   : Text("No. Of Wive: Not Set"),
                             ),
                             ListTile(
-                              title: logInUser.numberOfMaleChildren!.isNotEmpty
+                              title: logInUser.numberOfMaleChildren == null
                                   ? Text(
                                       "No. Of Males: ${logInUser.numberOfMaleChildren} ")
                                   : Text("No. Of Males: Not Set"),
                             ),
                             ListTile(
-                              title: logInUser
-                                      .numberOfFemaleChildren!.isNotEmpty
+                              title: logInUser.numberOfFemaleChildren == null
                                   ? Text(
                                       "No. Of Females: ${logInUser.numberOfFemaleChildren} ")
                                   : Text("No. Of Females: Not Set"),
                             ),
                             ListTile(
-                              title: logInUser.nameOfMuslimChildren!.isNotEmpty
+                              title: logInUser.nameOfMuslimChildren == null
                                   ? Text(
                                       "Name Of Muslims: ${logInUser.nameOfMuslimChildren} ")
                                   : Text("Name Of Muslims: Not Set"),
                             ),
                             ListTile(
-                              title: logInUser
-                                      .nameOfNonMuslimChildren!.isNotEmpty
+                              title: logInUser.nameOfNonMuslimChildren == null
                                   ? Text(
                                       "Name Of Non-Muslims: ${logInUser.nameOfNonMuslimChildren} ")
                                   : Text("Name Of Non-Muslims: Not Set"),
@@ -251,33 +283,31 @@ class _MyHomePageState extends State<MyHomePage> {
                                   "Marital Status: ${logInUser.maritalStatus} "),
                             ),
                             ListTile(
-                              title: logInUser.numberOfWive!.isNotEmpty
+                              title: logInUser.numberOfWive == null
                                   ? Text(
                                       "No. Of Wive: ${logInUser.numberOfWive} ")
                                   : Text("No. Of Wive: Not Set"),
                             ),
                             ListTile(
-                              title: logInUser.numberOfMaleChildren!.isNotEmpty
+                              title: logInUser.numberOfMaleChildren == null
                                   ? Text(
                                       "No. Of Males: ${logInUser.numberOfMaleChildren} ")
                                   : Text("No. Of Males: Not Set"),
                             ),
                             ListTile(
-                              title: logInUser
-                                      .numberOfFemaleChildren!.isNotEmpty
+                              title: logInUser.numberOfFemaleChildren == null
                                   ? Text(
                                       "No. Of Females: ${logInUser.numberOfFemaleChildren} ")
                                   : Text("No. Of Females: Not Set"),
                             ),
                             ListTile(
-                              title: logInUser.nameOfMuslimChildren!.isNotEmpty
+                              title: logInUser.nameOfMuslimChildren == null
                                   ? Text(
                                       "Name Of Muslims: ${logInUser.nameOfMuslimChildren} ")
                                   : Text("Name Of Muslims: Not Set"),
                             ),
                             ListTile(
-                              title: logInUser
-                                      .nameOfNonMuslimChildren!.isNotEmpty
+                              title: logInUser.nameOfNonMuslimChildren == null
                                   ? Text(
                                       "Name Of Non-Muslims: ${logInUser.nameOfNonMuslimChildren} ")
                                   : Text("Name Of Non-Muslims: Not Set"),
@@ -298,19 +328,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),
-              SizedBox(height: 12),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 100.0),
-                child: ListTile(
-                  title: Text(
-                    "v.1.0.0",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              )
             ],
           ),
         ),
@@ -332,4 +349,15 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => landingPage()));
   }
+  Future openBrowserURL({required String url, bool inApp = false}) async{
+    if(await canLaunch(url)){
+      await launch(url,
+      forceSafariVC: inApp,
+        forceWebView: inApp,
+        enableJavaScript: true,
+
+      );
+    }
+  }
 }
+

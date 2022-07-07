@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gmm_app/screen/passwordRest.dart';
 import 'package:gmm_app/screen/registration.dart';
 import 'package:gmm_app/widget/progressBar.dart';
 
@@ -20,10 +23,13 @@ class _landingPageState extends State<landingPage> {
   final formKey = GlobalKey<FormState>();
 
   final _auth = FirebaseAuth.instance;
-  bool isLoading = true;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      isLoading = true;
+    });
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.grey,
@@ -144,7 +150,12 @@ class _landingPageState extends State<landingPage> {
                         ],
                       ),
                       ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => passwordReset()));
+                          },
                           child: Text("Forgot Password",
                               style: TextStyle(fontSize: 18)))
                     ],
@@ -160,24 +171,40 @@ class _landingPageState extends State<landingPage> {
 
   //Login Function
   void signIn(String email, String password) async {
-    if (formKey.currentState!.validate()) {
-      await _auth
-          .signInWithEmailAndPassword(email: email, password: password)
-          .then((uid) => {
-      showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context){
-      return progressBar(message: "Please Wait...");
+    // showDialog(
+    //     context: context,
+    //     barrierDismissible: false,
+    //     builder: (BuildContext context){
+    //       return progressBar(message: "Please Wait...");
+    //     }
+    // );
+    try {
+      if (formKey.currentState!.validate()) {
+        await _auth
+            .signInWithEmailAndPassword(email: email, password: password)
+            .then((uid) => {
+                  showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return progressBar(message: "Please Wait...");
+                      }),
+                  Fluttertoast.showToast(msg: "Login Successful", fontSize: 16),
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MyHomePage())),
+                })
+            .catchError((e) {
+          Fluttertoast.showToast(msg: e!.message, fontSize: 16);
+        }).timeout(await Duration(seconds: 5));
       }
-      ),
-                Fluttertoast.showToast(msg: "Login Successful", fontSize: 16),
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MyHomePage())),
-              })
-          .catchError((e) {
-        Fluttertoast.showToast(msg: e!.message, fontSize: 16);
-      }).timeout(Duration(seconds: 5));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        Fluttertoast.showToast(msg: "User Not Found");
+      } else if (e.code == 'wrong-password') {
+        Fluttertoast.showToast(msg: "Enter Correct Password");
+      }
+    } on SocketException catch (e) {
+      Fluttertoast.showToast(msg: e.message);
     }
   }
 }

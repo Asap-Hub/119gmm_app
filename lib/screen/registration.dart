@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gmm_app/data/otherData.dart';
 import 'package:gmm_app/data/region.dart';
 import 'package:gmm_app/data/userModel.dart';
+import 'package:gmm_app/screen/emailVerification.dart';
 import 'package:gmm_app/widget/progressBar.dart';
 import 'package:intl/intl.dart';
 
@@ -44,13 +45,20 @@ class _registrationState extends State<registration> {
 
   //marital text editing controller
   TextEditingController profession = TextEditingController();
+  TextEditingController startingYear = TextEditingController();
+  TextEditingController completingYear = TextEditingController();
+  TextEditingController nameOfTertiary = TextEditingController();
+  TextEditingController nameOfPrimarySchool = TextEditingController();
+  TextEditingController nameOfJunior = TextEditingController();
+  TextEditingController nameOfSeniorSchool = TextEditingController();
   TextEditingController numberOfDependent = TextEditingController();
   TextEditingController nameOfMuslimChildren = TextEditingController();
   TextEditingController nameOfNonMuslimChildren = TextEditingController();
   TextEditingController numberOfWive = TextEditingController();
   TextEditingController numberOfMaleChildren = TextEditingController();
-  TextEditingController numberOfFemalChildren = TextEditingController();
+  TextEditingController numberOfFemaleChildren = TextEditingController();
   String maritalStatus = "";
+  String level = "";
 
   //global keys
   final credentialFormKey = GlobalKey<FormState>();
@@ -62,7 +70,8 @@ class _registrationState extends State<registration> {
   int age = 0;
 
   // firebase authentication
-  final FirebaseAuth _auth  = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  User? user = FirebaseAuth.instance.currentUser;
 
   @override
   void initState() {
@@ -78,6 +87,8 @@ class _registrationState extends State<registration> {
     //marital status
     status;
     maritalStatus = status["marital"]![0];
+    levels;
+    level = levels["level"]![0];
   }
 
   @override
@@ -105,18 +116,19 @@ class _registrationState extends State<registration> {
             onStepContinue: () {
               final isLastStep = currentStep == getSteps().length - 1;
               if (isLastStep) {
-                if(!email.text.trim().contains("@")){
+                if (!email.text.trim().contains("@")) {
                   Fluttertoast.showToast(msg: "Invalid Email");
-                }
-                else if(password.text.trim() != confirmPassword.text.trim()){
+                } else if (password.text.trim() !=
+                    confirmPassword.text.trim()) {
                   Fluttertoast.showToast(msg: "Password Mismatched");
-                }
-                else{
-                  signUp(email.text.trim().toString(), password.text.trim().toString());
-                  //Fluttertoast.showToast(msg: "Email Added Successfully");
+                } else {
+                  signUp(email.text.trim().toString(),
+                      password.text.trim().toString());
+                  Fluttertoast.showToast(
+                      msg: "Account Created Successfully",
+                      toastLength: Toast.LENGTH_LONG);
                   print("am here");
                 }
-
               } else {
                 setState(() {
                   currentStep += 1;
@@ -126,8 +138,8 @@ class _registrationState extends State<registration> {
             onStepCancel: currentStep == 0
                 ? null
                 : () => setState(() {
-              currentStep -= 1;
-            }),
+                      currentStep -= 1;
+                    }),
             controlsBuilder: (BuildContext context, ControlsDetails details) {
               final isLastStep = currentStep == getSteps().length - 1;
               return Container(
@@ -167,7 +179,7 @@ class _registrationState extends State<registration> {
   List<Step> getSteps() => [
         Step(
           state: currentStep > 0 ? StepState.complete : StepState.indexed,
-          title: Text("LOGS",style: TextStyle(fontSize: 14)),
+          title: Text("LOGS", style: TextStyle(fontSize: 14)),
           isActive: currentStep >= 0,
           content: Form(
             key: credentialFormKey,
@@ -176,61 +188,19 @@ class _registrationState extends State<registration> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 1),
                   child: TextFormField(
-                      textInputAction: TextInputAction.next,
-                      controller: email,
-                      decoration: InputDecoration(
-                        label: Text("Email"),
-                        prefixIcon: Icon(Icons.email_outlined),
-                        prefixIconColor: Colors.black,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                    textInputAction: TextInputAction.next,
+                    controller: email,
+                    decoration: InputDecoration(
+                      label: Text("Email"),
+                      prefixIcon: Icon(Icons.email_outlined),
+                      prefixIconColor: Colors.black,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                  validator: (value){
-                        if(email.text.isEmpty){
-Fluttertoast.showToast(msg: "Required");
-                        }
-                  },
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
-                  child: TextFormField(
-                      obscureText: true,
-                      textInputAction: TextInputAction.next,
-                      controller: password,
-                      decoration: InputDecoration(
-                        label: Text("Password"),
-                        prefixIcon: Icon(Icons.vpn_key_outlined),
-                        prefixIconColor: Colors.black,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                  validator: (value){
-                        if(password.text.isEmpty){
-                          Fluttertoast.showToast(msg: "Required");
-                        }
-                  },
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
-                  child: TextFormField(
-                      textInputAction: TextInputAction.next,
-                      obscureText: true,
-                      controller: confirmPassword,
-                      decoration: InputDecoration(
-                        label: Text("Confirm Password"),
-                        prefixIcon: Icon(Icons.vpn_key_outlined),
-                        prefixIconColor: Colors.black,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    validator: (value){
-                      if(confirmPassword.text.isEmpty){
-                        Fluttertoast.showToast(msg: "Required");
+                    ),
+                    validator: (value) {
+                      if (email.text.isEmpty) {
+                        return ("Required");
                       }
                     },
                   ),
@@ -238,22 +208,66 @@ Fluttertoast.showToast(msg: "Required");
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                   child: TextFormField(
-                      textInputAction: TextInputAction.done,
-                      keyboardType: TextInputType.numberWithOptions(),
-                      controller: number,
-                      decoration: InputDecoration(
-                        label: Text("Contact"),
-                        prefixIcon: Icon(Icons.phone_sharp),
-                        prefixIconColor: Colors.black,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                    obscureText: true,
+                    textInputAction: TextInputAction.next,
+                    controller: password,
+                    decoration: InputDecoration(
+                      label: Text("Password"),
+                      prefixIcon: Icon(Icons.vpn_key_outlined),
+                      prefixIconColor: Colors.black,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                    validator: (value){
-                      if(number.text.trim().length > 10){
-                        Fluttertoast.showToast(msg: "Phone number can not be more than 10");
+                    ),
+                    validator: (value) {
+                      if (password.text.isEmpty) {
+                        return ("Required");
                       }
-                    },),
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
+                  child: TextFormField(
+                    textInputAction: TextInputAction.next,
+                    obscureText: true,
+                    controller: confirmPassword,
+                    decoration: InputDecoration(
+                      label: Text("Confirm Password"),
+                      prefixIcon: Icon(Icons.vpn_key_outlined),
+                      prefixIconColor: Colors.black,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (confirmPassword.text.isEmpty) {
+                        return ("Required");
+                      }
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
+                  child: TextFormField(
+                    textInputAction: TextInputAction.done,
+                    keyboardType: TextInputType.numberWithOptions(),
+                    controller: number,
+                    decoration: InputDecoration(
+                      label: Text("Contact"),
+                      prefixIcon: Icon(Icons.phone_sharp),
+                      prefixIconColor: Colors.black,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (number.text.trim().length < 10) {
+                        return(
+                            "Phone number can not be less than 10");
+                      }
+                    },
+                  ),
                 ),
                 Divider(color: Colors.black, thickness: 1.0),
               ],
@@ -262,7 +276,7 @@ Fluttertoast.showToast(msg: "Required");
         ),
         Step(
           state: currentStep > 1 ? StepState.complete : StepState.indexed,
-          title: Text("PERSONAL",style: TextStyle(fontSize: 14)),
+          title: Text("PERSONAL", style: TextStyle(fontSize: 14)),
           isActive: currentStep >= 1,
           content: Form(
             key: personalFormKey,
@@ -271,19 +285,19 @@ Fluttertoast.showToast(msg: "Required");
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 1),
                   child: TextFormField(
-                      textInputAction: TextInputAction.next,
-                      controller: firstName,
-                      decoration: InputDecoration(
-                        label: Text("First Name"),
-                        prefixIcon: Icon(Icons.drive_file_rename_outline),
-                        prefixIconColor: Colors.black,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                    textInputAction: TextInputAction.next,
+                    controller: firstName,
+                    decoration: InputDecoration(
+                      label: Text("First Name"),
+                      prefixIcon: Icon(Icons.drive_file_rename_outline),
+                      prefixIconColor: Colors.black,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                    validator: (value){
-                      if(firstName.text.isEmpty){
-                        Fluttertoast.showToast(msg: "Required");
+                    ),
+                    validator: (value) {
+                      if (firstName.text.isEmpty) {
+                        return ("Required");
                       }
                     },
                   ),
@@ -291,34 +305,35 @@ Fluttertoast.showToast(msg: "Required");
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                   child: TextFormField(
-                      textInputAction: TextInputAction.next,
-                      controller: otherName,
-                      decoration: InputDecoration(
-                        label: Text("Other Name"),
-                        prefixIcon:
-                            Icon(Icons.drive_file_rename_outline_outlined),
-                        prefixIconColor: Colors.black,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                    textInputAction: TextInputAction.next,
+                    controller: otherName,
+                    decoration: InputDecoration(
+                      label: Text("Other Name"),
+                      prefixIcon:
+                          Icon(Icons.drive_file_rename_outline_outlined),
+                      prefixIconColor: Colors.black,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                    validator: (value){
-                      if(otherName.text.isEmpty){
+                    ),
+                    validator: (value) {
+                      if (otherName.text.isEmpty) {
                         Fluttertoast.showToast(msg: "required");
                       }
-                    },),
+                    },
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                   child: GestureDetector(
                     onTap: () {
-                      selectDate(context);
+                      birthDate(context);
                     },
                     child: AbsorbPointer(
                       child: TextFormField(
-                          validator: (value){
-                            if(dateOfBirth.text.isEmpty){
-                              Fluttertoast.showToast(msg: "required");
+                          validator: (value) {
+                            if (dateOfBirth.text.isEmpty) {
+                              return ("Required");
                             }
                           },
                           textInputAction: TextInputAction.next,
@@ -476,9 +491,9 @@ Fluttertoast.showToast(msg: "Required");
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                   child: TextFormField(
-                      validator: (value){
-                        if(homeTown.text.isEmpty){
-                          Fluttertoast.showToast(msg: "Required");
+                      validator: (value) {
+                        if (homeTown.text.isEmpty) {
+                          return ("Required");
                         }
                       },
                       textInputAction: TextInputAction.next,
@@ -495,9 +510,9 @@ Fluttertoast.showToast(msg: "Required");
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                   child: TextFormField(
-                      validator: (value){
-                        if(residentialAddress.text.isEmpty){
-                          Fluttertoast.showToast(msg: "required");
+                      validator: (value) {
+                        if (residentialAddress.text.isEmpty) {
+                          return ("Required");
                         }
                       },
                       textInputAction: TextInputAction.done,
@@ -559,36 +574,247 @@ Fluttertoast.showToast(msg: "Required");
           ),
         ),
         Step(
-          title: Text("STATUS",style: TextStyle(fontSize: 14),),
+          title: Text(
+            "STATUS",
+            style: TextStyle(fontSize: 14),
+          ),
           isActive: currentStep >= 2,
           content: Form(
             key: maritalFormKey,
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 2, vertical: 1),
-                  child: TextFormField(
-                      validator: (value){
-                        if(profession.text.isEmpty){
-                          Fluttertoast.showToast(msg: "Required");
-                        }
-                      },
-                      controller: profession,
-                      decoration: InputDecoration(
-                        label: Text("Profession"),
-                        prefixIcon: Icon(Icons.password_outlined),
-                        prefixIconColor: Colors.black,
-                        border: OutlineInputBorder(
+                  padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
+                  child: Column(
+                    children: [
+                      Text("Level", style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 5),
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black38, width: 1),
                           borderRadius: BorderRadius.circular(10),
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                                color: Color.fromRGBO(124, 252, 0, 0.57),
+                                blurRadius: 0.1)
+                          ],
                         ),
-                      )),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: DropdownButton<String>(
+                            isExpanded: true,
+                            value: level,
+                            onChanged: (value) {
+                              setState(() {
+                                level = value!;
+                              });
+                            },
+                            items: levels["level"]
+                                ?.map((e) => DropdownMenuItem<String>(
+                                      child: Text(e),
+                                      value: e,
+                                    ))
+                                .toList(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
+                level == "Tertiary"
+                    ? Container(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 2, vertical: 1),
+                              child: TextFormField(
+                                  validator: (value) {
+                                    if (nameOfTertiary.text.isEmpty) {
+                                      return ("Required");
+                                    }
+                                  },
+                                  controller: nameOfTertiary,
+                                  decoration: InputDecoration(
+                                    label: Text("Name Of Tertiary"),
+                                    prefixIcon: Icon(Icons.school),
+                                    prefixIconColor: Colors.black,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  )),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 2, vertical: 1),
+                              child: GestureDetector(
+                                onTap: () {
+                                  starting(context);
+                                },
+                                child: AbsorbPointer(
+                                  child: TextFormField(
+                                      validator: (value) {
+                                        if (startingYear.text.isEmpty) {
+                                          Fluttertoast.showToast(
+                                              msg: "Required");
+                                        }
+                                      },
+                                      onChanged: (value) {
+                                        setState(() {
+                                          value = startingYear.toString();
+                                        });
+                                      },
+                                      onSaved: (value) {
+                                        value = startingYear.toString();
+                                      },
+                                      controller: startingYear,
+                                      decoration: InputDecoration(
+                                        label: Text("Started Year"),
+                                        prefixIcon:
+                                            Icon(Icons.not_started_outlined),
+                                        prefixIconColor: Colors.black,
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      )),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 2, vertical: 1),
+                              child: GestureDetector(
+                                onTap: () {
+                                  completing(context);
+                                },
+                                child: AbsorbPointer(
+                                  child: TextFormField(
+                                      validator: (value) {
+                                        if (completingYear.text.isEmpty) {
+                                          return ("Required");
+                                        }
+                                      },
+                                      onChanged: (value) {
+                                        setState(() {
+                                          value = completingYear.toString();
+                                        });
+                                      },
+                                      onSaved: (value) {
+                                        value = completingYear.toString();
+                                      },
+                                      controller: completingYear,
+                                      decoration: InputDecoration(
+                                        label: Text("Yeah To Complete"),
+                                        prefixIcon: Icon(Icons.schedule_sharp),
+                                        prefixIconColor: Colors.black,
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      )),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    : level == "Primary School"
+                        ? Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 2, vertical: 1),
+                            child: TextFormField(
+                                validator: (value) {
+                                  if (nameOfPrimarySchool.text.isEmpty) {
+                                    return ("Required");
+                                  }
+                                },
+                                controller: nameOfPrimarySchool,
+                                decoration: InputDecoration(
+                                  label: Text("Name Of Primary School"),
+                                  prefixIcon: Icon(Icons.school),
+                                  prefixIconColor: Colors.black,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                )),
+                          )
+                        : level == "Junior High School"
+                            ? Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 2, vertical: 1),
+                                child: TextFormField(
+                                    validator: (value) {
+                                      if (nameOfJunior.text.isEmpty) {
+                                        return ("Required");
+                                      }
+                                    },
+                                    controller: nameOfJunior,
+                                    decoration: InputDecoration(
+                                      label: Text("Name Of Junior High School"),
+                                      prefixIcon: Icon(Icons.school),
+                                      prefixIconColor: Colors.black,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    )),
+                              )
+                            : level == "Senior High School"
+                                ? Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 2, vertical: 1),
+                                    child: TextFormField(
+                                        validator: (value) {
+                                          if (nameOfSeniorSchool.text.isEmpty) {
+                                            return ("Required");
+                                          }
+                                        },
+                                        controller: nameOfSeniorSchool,
+                                        decoration: InputDecoration(
+                                          label: Text(
+                                              "Name Of Senior High School"),
+                                          prefixIcon:
+                                              Icon(Icons.school_outlined),
+                                          prefixIconColor: Colors.black,
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                        )),
+                                  )
+                                : Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 2, vertical: 1),
+                                    child: TextFormField(
+                                        validator: (value) {
+                                          if (profession.text.isEmpty) {
+                                            return ("Required");
+                                          }
+                                        },
+                                        controller: profession,
+                                        decoration: InputDecoration(
+                                          label: Text("Profession"),
+                                          prefixIcon: Icon(Icons.work),
+                                          prefixIconColor: Colors.black,
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                        )),
+                                  ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                   child: TextFormField(
-                      validator: (value){
-                        if(numberOfDependent.text.isEmpty){
-                          Fluttertoast.showToast(msg: "Required");
+                      validator: (value) {
+                        if (numberOfDependent.text.isEmpty) {
+                          return ("Required");
                         }
                       },
                       controller: numberOfDependent,
@@ -653,9 +879,9 @@ Fluttertoast.showToast(msg: "Required");
                               child: SizedBox(
                                 width: 200,
                                 child: TextFormField(
-                                    validator: (value){
-                                      if(numberOfWive.text.isEmpty){
-                                        Fluttertoast.showToast(msg: "Required");
+                                    validator: (value) {
+                                      if (numberOfWive.text.isEmpty) {
+                                        return ("Required");
                                       }
                                     },
                                     controller: numberOfWive,
@@ -686,9 +912,10 @@ Fluttertoast.showToast(msg: "Required");
                                       SizedBox(
                                         width: 150,
                                         child: TextFormField(
-                                            validator: (value){
-                                              if(numberOfMaleChildren.text.isEmpty){
-                                                Fluttertoast.showToast(msg: "Required");
+                                            validator: (value) {
+                                              if (numberOfMaleChildren
+                                                  .text.isEmpty) {
+                                                return ("Required");
                                               }
                                             },
                                             controller: numberOfMaleChildren,
@@ -704,7 +931,7 @@ Fluttertoast.showToast(msg: "Required");
                                       SizedBox(
                                         width: 150,
                                         child: TextFormField(
-                                            controller: numberOfFemalChildren,
+                                            controller: numberOfFemaleChildren,
                                             decoration: InputDecoration(
                                               label: Text("No. Of Females"),
                                               border: OutlineInputBorder(
@@ -722,9 +949,9 @@ Fluttertoast.showToast(msg: "Required");
                               padding: EdgeInsets.symmetric(
                                   horizontal: 2, vertical: 20),
                               child: TextFormField(
-                                  validator: (value){
-                                    if(nameOfMuslimChildren.text.isEmpty){
-                                      Fluttertoast.showToast(msg: "Required");
+                                  validator: (value) {
+                                    if (nameOfMuslimChildren.text.isEmpty) {
+                                      return ("Required");
                                     }
                                   },
                                   controller: nameOfMuslimChildren,
@@ -742,9 +969,9 @@ Fluttertoast.showToast(msg: "Required");
                               padding: EdgeInsets.symmetric(
                                   horizontal: 2, vertical: 20),
                               child: TextFormField(
-                                  validator: (value){
-                                    if(nameOfNonMuslimChildren.text.isEmpty){
-                                      Fluttertoast.showToast(msg: "Required");
+                                  validator: (value) {
+                                    if (nameOfNonMuslimChildren.text.isEmpty) {
+                                      return ("Required");
                                     }
                                   },
                                   controller: nameOfNonMuslimChildren,
@@ -769,7 +996,7 @@ Fluttertoast.showToast(msg: "Required");
       ];
 
   //for selection date
-  selectDate(BuildContext context) async {
+  birthDate(BuildContext context) async {
     if (Platform.isAndroid) {
       final DateTime? picked = await showDatePicker(
           context: context,
@@ -793,25 +1020,86 @@ Fluttertoast.showToast(msg: "Required");
     }
   }
 
-  void signUp(String email, String password)async{
+//starting date
+  starting(BuildContext context) async {
+    if (Platform.isAndroid) {
+      final DateTime? picked = await showDatePicker(
+          context: context,
+          initialDate: datePicker,
+          firstDate: DateTime(1900, 8),
+          lastDate: DateTime(2100));
+      if (picked != null && picked != datePicker)
+        setState(() {
+          startingYear.text = DateFormat('yyyy-MM-dd').format(picked);
+        });
+    } else {
+      final DateTime? picked = await showDatePicker(
+          context: context,
+          initialDate: datePicker,
+          firstDate: DateTime(2019, 8),
+          lastDate: DateTime(2100));
+      if (picked != null && picked != datePicker)
+        setState(() {
+          startingYear.text = DateFormat('yyyy-MM-dd').format(picked);
+        });
+    }
+  }
+
+  //completing date
+  completing(BuildContext context) async {
+    if (Platform.isAndroid) {
+      final DateTime? picked = await showDatePicker(
+          context: context,
+          initialDate: datePicker,
+          firstDate: DateTime(1900, 8),
+          lastDate: DateTime(2100));
+      if (picked != null && picked != datePicker)
+        setState(() {
+          completingYear.text = DateFormat('yyyy-MM-dd').format(picked);
+        });
+    } else {
+      final DateTime? picked = await showDatePicker(
+          context: context,
+          initialDate: datePicker,
+          firstDate: DateTime(2019, 8),
+          lastDate: DateTime(2100));
+      if (picked != null && picked != datePicker)
+        setState(() {
+          completingYear.text = DateFormat('yyyy-MM-dd').format(picked);
+        });
+    }
+  }
+
+  void signUp(String email, String password) async {
     showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (BuildContext context){
+        builder: (BuildContext context) {
           return progressBar(message: "Please Wait...");
-        }
-    );
-    if(credentialFormKey.currentState!.validate()){
-      await _auth.createUserWithEmailAndPassword(email: email, password: password).then((value) => {
-        postDetailsToFireStore(),
-      }).catchError((e){
-        Fluttertoast.showToast(msg: e!.message);
-      });
+        });
+    try {
+      if (credentialFormKey.currentState!.validate()) {
+        await _auth
+            .createUserWithEmailAndPassword(email: email, password: password)
+            .then((value) => {
+                  postDetailsToFireStore(),
+                })
+            .catchError((e) {
+          Fluttertoast.showToast(msg: e!.message);
+        });
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already') {
+        Fluttertoast.showToast(msg: "The Account Already Exist");
+      }
+    } on SocketException catch (e) {
+      Fluttertoast.showToast(msg: e.message);
     }
   }
-  postDetailsToFireStore() async{
+
+  postDetailsToFireStore() async {
 //calling firestore
-  //calling user model
+    //calling user model
     //sending data to the server
     FirebaseFirestore firebaseStore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
@@ -823,7 +1111,7 @@ Fluttertoast.showToast(msg: "Required");
     userModel.firstName = firstName.text.trim();
     userModel.secondName = otherName.text.trim();
     userModel.dateOfBirth = dateOfBirth.text.trim();
-    userModel.region =region.trim();
+    userModel.region = region.trim();
     userModel.district = district.trim();
     userModel.branches = branches.trim();
     userModel.homeTown = homeTown.text.trim();
@@ -831,17 +1119,29 @@ Fluttertoast.showToast(msg: "Required");
     userModel.group = group.trim();
     userModel.profession = profession.text.trim();
     userModel.numberOfDependent = numberOfDependent.text.trim();
-    userModel.maritalStatus =maritalStatus.trim().toLowerCase();
+    userModel.maritalStatus = maritalStatus.trim().toLowerCase();
     userModel.numberOfWive = numberOfWive.text.trim();
     userModel.numberOfMaleChildren = numberOfMaleChildren.text.trim();
-    userModel.numberOfFemaleChildren = numberOfFemalChildren.text.trim();
+    userModel.numberOfFemaleChildren = numberOfFemaleChildren.text.trim();
     userModel.nameOfMuslimChildren = nameOfMuslimChildren.text.trim();
     userModel.nameOfNonMuslimChildren = nameOfNonMuslimChildren.text.trim();
+    userModel.nameOfPrimarySchool = nameOfPrimarySchool.text.trim();
+    userModel.nameOfJuniorHighSchool = nameOfJunior.text.trim();
+    userModel.nameOfSeniorHighSchool = nameOfSeniorSchool.text.trim();
+    userModel.nameOfTertiary = nameOfTertiary.text.trim();
+    userModel.startingYear = startingYear.text.trim();
+    userModel.completingYear = completingYear.text.trim();
 
-await firebaseStore.collection("Users").doc(user.uid).set(userModel.toMap()).timeout(Duration(seconds: 5));
-Fluttertoast.showToast(msg: "Account Created Successfully");
-    Navigator.pushAndRemoveUntil(context,
-        MaterialPageRoute(builder: (context) => landingPage()), (route) =>false);
-
+    await firebaseStore
+        .collection("Users")
+        .doc(user.uid)
+        .set(userModel.toMap())
+        .timeout(Duration(seconds: 5));
+    Fluttertoast.showToast(msg: "Account Created Successfully");
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => emailVerification()),
+        (route) => route.isFirst);
+    // Navigator.of(context).popUntil((route) => route.isFirst);
   }
 }
