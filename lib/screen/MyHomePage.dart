@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gmm_app/data/userModel.dart';
+import 'package:gmm_app/model/userModel.dart';
 import 'package:gmm_app/screen/dues.dart';
 import 'package:gmm_app/screen/infag.dart';
 import 'package:gmm_app/screen/landingPage.dart';
@@ -9,6 +9,7 @@ import 'package:gmm_app/screen/report.dart';
 import 'package:url_launcher/link.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'addReport.dart';
 import 'home.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -41,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    //print(user);
+    //print(logInUser.nameOfSeniorHighSchool);
     return SafeArea(
       child: Scaffold(
         key: drawerKey,
@@ -62,24 +63,27 @@ class _MyHomePageState extends State<MyHomePage> {
             PopupMenuButton<Widget>(
                 itemBuilder: (BuildContext Context) => [
                       PopupMenuItem(
-                          onTap: () async{
-                            final  url = 'http:/ghanamuslimmission.com/';
-                            openBrowserURL(url: url, inApp: true);
-                          },
-                          child: Text("ABOUT US",style: TextStyle(fontSize: 18, color: Colors.green)),
+                        onTap: () async {
+                          final url = 'http:/ghanamuslimmission.com/';
+                          openBrowserURL(url: url, inApp: true);
+                        },
+                        child: Text("ABOUT US",
+                            style:
+                                TextStyle(fontSize: 18, color: Colors.green)),
                       ),
                       PopupMenuItem(
-                        onTap: (){
+                        onTap: () {
                           logOut(context);
                         },
-                          child: Text(
-                            "SIGN OUT",
-                            style: TextStyle(fontSize: 18, color: Colors.green),
-                          ),
-
+                        child: Text(
+                          "SIGN OUT",
+                          style: TextStyle(fontSize: 18, color: Colors.green),
+                        ),
                       ),
                       PopupMenuItem(
-                        child: Text("Version: 0.0.1",style: TextStyle(fontSize: 18, color: Colors.green)),
+                        child: Text("Version: 1.0.1",
+                            style:
+                                TextStyle(fontSize: 18, color: Colors.green)),
                       ),
                     ])
           ],
@@ -217,10 +221,35 @@ class _MyHomePageState extends State<MyHomePage> {
                         padding: const EdgeInsets.only(left: 10.0),
                         child: Column(
                           children: [
-                            ListTile(
-                              title:
-                                  Text("Profession: ${logInUser.profession} "),
-                            ),
+                            logInUser.nameOfPrimarySchool != ""
+                                ? ListTile(
+                                    title: Text(
+                                        "Primary School: ${logInUser.nameOfPrimarySchool} "),
+                                  )
+                                : logInUser.nameOfJuniorHighSchool != ""
+                                    ? ListTile(
+                                        title: Text(
+                                            "Junior High School: ${logInUser.nameOfJuniorHighSchool} "),
+                                      )
+                                    : logInUser.nameOfSeniorHighSchool != ""
+                                        ? ListTile(
+                                            title: Text(
+                                                "Senior High School: ${logInUser.nameOfSeniorHighSchool} "),
+                                          )
+                                        : logInUser.nameOfTertiary != ""
+                                            ? ListTile(
+                                                title: Text(
+                                                    "Tertiary: ${logInUser.nameOfTertiary} "),
+                                              )
+                                            : logInUser.profession != ""
+                                                ? ListTile(
+                                                    title: Text(
+                                                        "Profession: ${logInUser.profession} "),
+                                                  )
+                                                : ListTile(
+                                                    title:
+                                                        Text("Null: Not Set "),
+                                                  ),
                             ListTile(
                               title: Text(
                                   "No. Of Dependent: ${logInUser.numberOfDependent} "),
@@ -349,15 +378,15 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => landingPage()));
   }
-  Future openBrowserURL({required String url, bool inApp = false}) async{
-    if(await canLaunch(url)){
-      await launch(url,
-      forceSafariVC: inApp,
+
+  Future openBrowserURL({required String url, bool inApp = false}) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: inApp,
         forceWebView: inApp,
         enableJavaScript: true,
-
       );
     }
   }
 }
-

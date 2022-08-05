@@ -56,45 +56,25 @@ Future sendVerificationEmail()async {
       : SafeArea(
           child: Scaffold(
             appBar: AppBar(
-              title: Text("Email Verification"),
+              title: Text("Email Verification".toUpperCase()),
               centerTitle: true,
             ),
             body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text("email verification sent to ${FirebaseAuth.instance.currentUser!.email}", style: TextStyle(fontSize: 16),),
-               ElevatedButton(onPressed: (){
-                 sendVerificationEmail();
-               }, child: Text("Send Email Again", style: TextStyle(fontSize: 14),))
-                ],
+              child: Padding(
+                padding: const EdgeInsets.only(left: 15, right: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("""Email verification sent to ${FirebaseAuth.instance.currentUser!.email}""", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                    Text("""Check Spam box too if you can't find the email in your mail Inbox""", style: TextStyle(fontSize: 16),),
+                 ElevatedButton(onPressed: (){
+                   sendVerificationEmail();
+                   }, child: Text("Send Email Again", style: TextStyle(fontSize: 14),))
+                  ],
+                ),
               ),
             ),
           ),
         );
-// Future<void> emailVerification() async {
-//   showDialog(
-//       context: context,
-//       barrierDismissible: false,
-//       builder: (BuildContext context) => Center(
-//         child: CircularProgressIndicator(
-//           color: Colors.green,
-//         ),
-//       ));
-//   try {
-//     if (user != null) {
-//       await user?.sendEmailVerification().timeout(Duration(seconds: 5));
-//       Fluttertoast.showToast(
-//           msg: "Email Verification Sent", toastLength: Toast.LENGTH_SHORT);
-//       print("email it was sent");
-//       //Navigator.of(context).popUntil((route) => route.isFirst);
-//     }
-//   } on FirebaseAuthException catch (e) {
-//     Fluttertoast.showToast(msg: (e.message!), toastLength: Toast.LENGTH_LONG);
-//     // Navigator.of(context).pop();
-//   } on SocketException catch (e) {
-//     Fluttertoast.showToast(msg: e.message);
-//   }
-// }
 }

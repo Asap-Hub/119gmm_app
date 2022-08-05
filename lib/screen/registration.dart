@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gmm_app/data/otherData.dart';
 import 'package:gmm_app/data/region.dart';
-import 'package:gmm_app/data/userModel.dart';
+import 'package:gmm_app/model/userModel.dart';
 import 'package:gmm_app/screen/emailVerification.dart';
 import 'package:gmm_app/widget/progressBar.dart';
 import 'package:intl/intl.dart';
@@ -127,6 +127,10 @@ class _registrationState extends State<registration> {
                   Fluttertoast.showToast(
                       msg: "Account Created Successfully",
                       toastLength: Toast.LENGTH_LONG);
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => landingPage()),
+                          (route) => route.isFirst);
                   print("am here");
                 }
               } else {
@@ -1071,22 +1075,24 @@ class _registrationState extends State<registration> {
   }
 
   void signUp(String email, String password) async {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return progressBar(message: "Please Wait...");
-        });
     try {
-      if (credentialFormKey.currentState!.validate()) {
+      if (credentialFormKey.currentState!.validate() && personalFormKey.currentState!.validate() && maritalFormKey.currentState!.validate()) {
         await _auth
             .createUserWithEmailAndPassword(email: email, password: password)
             .then((value) => {
                   postDetailsToFireStore(),
+        // showDialog(
+        // context: context,
+        // barrierDismissible: false,
+        // builder: (BuildContext context) {
+        // return progressBar(message: "Please Wait...");
+        // }),
                 })
             .catchError((e) {
           Fluttertoast.showToast(msg: e!.message);
         });
+
+        //Fluttertoast.showToast(msg: "Please Wait, you account is been creating");
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already') {
@@ -1137,11 +1143,6 @@ class _registrationState extends State<registration> {
         .doc(user.uid)
         .set(userModel.toMap())
         .timeout(Duration(seconds: 5));
-    Fluttertoast.showToast(msg: "Account Created Successfully");
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => emailVerification()),
-        (route) => route.isFirst);
-    // Navigator.of(context).popUntil((route) => route.isFirst);
+     //Navigator.of(context).popUntil((route) => route.isFirst);
   }
 }

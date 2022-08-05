@@ -8,7 +8,7 @@ import 'package:gmm_app/screen/passwordRest.dart';
 import 'package:gmm_app/screen/registration.dart';
 import 'package:gmm_app/widget/progressBar.dart';
 
-import 'MyHomePage.dart';
+import 'emailVerification.dart';
 
 class landingPage extends StatefulWidget {
   const landingPage({Key? key}) : super(key: key);
@@ -190,12 +190,14 @@ class _landingPageState extends State<landingPage> {
                         return progressBar(message: "Please Wait...");
                       }),
                   Fluttertoast.showToast(msg: "Login Successful", fontSize: 16),
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MyHomePage())),
+        Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => emailVerification()),
+        (route) => route.isFirst),
                 })
             .catchError((e) {
           Fluttertoast.showToast(msg: e!.message, fontSize: 16);
-        }).timeout(await Duration(seconds: 5));
+        });
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {

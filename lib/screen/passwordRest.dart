@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gmm_app/screen/landingPage.dart';
 
 class passwordReset extends StatefulWidget {
   const passwordReset({Key? key}) : super(key: key);
@@ -49,6 +48,14 @@ class _passwordResetState extends State<passwordReset> {
                         .toUpperCase(),
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child:  Text("""Kindly Check Spam box too if you can't find the email in your mail Inbox""", style: TextStyle(fontSize: 16),),
+
                 ),
                 SizedBox(
                   height: 20,
