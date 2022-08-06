@@ -46,12 +46,16 @@ class _addReportState extends State<addReport> {
             child: Column(
               children: [
                 Container(
-                    // height: cardHeight,
+                    height: 50,
+                    width: double.infinity,
                     child: Card(
-                  elevation: 1.0,
-                  child: Text(
-                    """Please fill out the Report Form""",
-                    style: TextStyle(fontSize: 18),
+                      shadowColor: Colors.red,
+                  //elevation: 4.0,
+                  child: Center(
+                    child: Text(
+                      """Please fill out the Form to submit your Report""",
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ),
                 )),
                 SizedBox(
@@ -139,7 +143,8 @@ class _addReportState extends State<addReport> {
                   child: TextFormField(
                     enableSuggestions: true,
                     minLines: 3,
-                    maxLines: 100,
+                    maxLines: 3,
+                    maxLength: 150,
                     textInputAction: TextInputAction.next,
                     controller: message,
                     decoration: InputDecoration(
@@ -149,9 +154,13 @@ class _addReportState extends State<addReport> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    validator: (value) {
+                    validator: (String? value) {
                       if (message.text.isEmpty) {
-                        return ("Required");
+                       return ("Text cannot be empty");
+
+                      }
+                      else if(message.text.length > 600){
+                        return ("Text Limit Exceed");
                       }
                     },
                   ),
@@ -206,12 +215,5 @@ class _addReportState extends State<addReport> {
     model.time = DateTime.now().toString();
 
    db.push().set(model.toMap()).asStream();
-
-    // await firebaseStore
-    //     .collection("Report")
-    //     .doc(user.uid).collection("myreport").doc(user.uid)
-    //     .set(model.toMap());
-
-    //Navigator.of(context).popUntil((route) => route.isFirst);
   }
 }

@@ -13,11 +13,16 @@ class report extends StatefulWidget {
 }
 
 class _reportState extends State<report> {
+  var _isLoading = true;
 
   @override
   Widget build(BuildContext context) {
-    final data = FirebaseDatabase.instance.reference().child('report');
-    print(data);
+    final data = FirebaseDatabase.instance.reference();
+    final dataDetails = data.child('report');
+    setState(() {
+      _isLoading = false;
+    });
+    //print(dataDetails);
     return SafeArea(
         child: Scaffold(
             floatingActionButton: FloatingActionButton(
@@ -28,37 +33,77 @@ class _reportState extends State<report> {
               child: Image.asset('assets/pencil.png'),
               backgroundColor: Colors.green,
             ),
-            body:
-            Container(
+            body: Container(
               height: double.infinity,
-              child: FirebaseAnimatedList(
-                query: data,
-                itemBuilder: (BuildContext context, DataSnapshot snapshot,
-                    Animation<double> animation, int index) {
-                  Map reportData = snapshot.value as Map;
-                  reportData["key"] = snapshot.key;
-                  print(reportData['email']);
-                  return listItem(reportData: reportData);
-
-                },
-              ),
-            )
-            ));
+              child: _isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(
+                      color: Colors.green,
+                    ))
+                  : FirebaseAnimatedList(
+                      query: dataDetails,
+                      itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                          Animation<double> animation, int index) {
+                        Map reportData = snapshot.value as Map;
+                        reportData["key"] = snapshot.key;
+                        //print(reportData['email']);
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: listItem(reportData: reportData),
+                        );
+                      },
+                    ),
+            )));
   }
 
-  Widget listItem({required Map reportData}){
-    return Container(margin: EdgeInsets.all(10),
-    padding: EdgeInsets.all(10),
-      height: 100,
-        color: Colors.grey,
-      child: Column(mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(reportData['email'], style: TextStyle(fontSize:
-        16),)
-      ],
+  Widget listItem({required Map reportData}) {
+    return Card(
+      shadowColor: Colors.green,
+      elevation: 5.0,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.elliptical(10.0, 10.0),
+              bottomRight: Radius.elliptical(10.0, 10.0))),
+      child: Container(
+        height: 250,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Full Name: ${reportData['fullName']}',
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+              Text(
+                'Email: ${reportData['email']}',
+                style: TextStyle(fontSize: 18),
+              ),
+              Text(
+                'Contact: ${reportData['contact']}',
+                style: TextStyle(fontSize: 18),
+              ),
+              Divider(
+                color: Colors.grey,
+                height: 5.0,
+              ),
+              Text(
+                'Message: ${reportData['message']}',
+                style: TextStyle(fontSize: 20),
+              ),
+              Divider(
+                color: Colors.grey,
+              ),
+              Text(
+                'Created At: ${reportData['time']}',
+                style: TextStyle(fontSize: 16),
+              ),
+            ],
+          ),
+        ),
       ),
     );
-
   }
 }
