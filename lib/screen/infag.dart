@@ -1,3 +1,5 @@
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:gmm_app/screen/payInfaq.dart';
 
@@ -9,8 +11,14 @@ class infag extends StatefulWidget {
 }
 
 class _infagState extends State<infag> {
+  var isLoading = false;
   @override
   Widget build(BuildContext context) {
+    final data = FirebaseDatabase.instance.reference();
+    final dataDetails = data.child('payInfaq');
+    setState(() {
+      isLoading = true;
+    });
     return SafeArea(
         child: Scaffold(
       // appBar: AppBar(automaticallyImplyLeading: false,),
@@ -22,56 +30,86 @@ class _infagState extends State<infag> {
               context, MaterialPageRoute(builder: (context) => payInfaq()));
         },
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Container(
-              height: MediaQuery.of(context).size.height / 10,
-              child: Card(
-                elevation: 2.0,
-                child: ListTile(
-                  title: Text("PAY INFAQ"),
-                  leading: Image.asset('assets/Charity.png',
-                      height: 100, width: 100),
+      body: Container(
+        height: double.infinity,
+        child: isLoading != true
+            ? Center(
+            child: CircularProgressIndicator(
+              color: Colors.green,
+            ))
+            : FirebaseAnimatedList(
+          query: dataDetails,
+          itemBuilder: (BuildContext context, DataSnapshot snapshot,
+              Animation<double> animation, int index) {
+            Map reportData = snapshot.value as Map;
+            reportData["key"] = snapshot.key;
+            //print(reportData['email']);
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: listItem(reportData: reportData),
+            );
+          },
+        ),
+      ),
+
+    ));
+  }
+  Widget listItem({required Map reportData}) {
+    return Card(
+      shadowColor: Colors.green,
+      elevation: 5.0,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.elliptical(10.0, 10.0),
+              bottomRight: Radius.elliptical(10.0, 10.0))),
+      child: Container(
+        height: 250,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'userId: ${reportData['uuid']}',
+                style: TextStyle(
+                  fontSize: 18,
                 ),
               ),
-            ),
+              Text(
+                'Infaq Number: ${reportData['infaqNumber']}',
+                style: TextStyle(fontSize: 18),
+              ),
+              Text(
+                'Payer Name: ${reportData['payerName']}',
+                style: TextStyle(fontSize: 18),
+              ),
+              Divider(
+                color: Colors.grey,
+                height: 5.0,
+              ),
+              Text(
+                'Payer Number: ${reportData['payerNumber']}',
+                style: TextStyle(fontSize: 20),
+              ),
+              Text(
+                'Reference ID: ${reportData['refId']}',
+                style: TextStyle(fontSize: 20),
+              ),
+              Text(
+                'Status: ${reportData['status']}',
+                style: TextStyle(fontSize: 20),
+              ),
+              Divider(
+                color: Colors.grey,
+              ),
+              Text(
+                'Created At: ${reportData['time']}',
+                style: TextStyle(fontSize: 16),
+              ),
+            ],
           ),
-          Divider(
-            color: Colors.green,
-            thickness: 1.0,
-          ),
-          Card(
-            margin: EdgeInsets.all(5.0),
-            child: Text("INFAQ PAYMENT RECORDS"),
-          ),
-          Container(
-            height: MediaQuery.of(context).size.height / 10,
-            child: Card(
-                elevation: 2.0,
-                child: ListView(
-                  children: [
-                    ListTile(
-                      title: Text("PAY INFAG"),
-                      leading: Image.asset('assets/Charity.png',
-                          height: 100, width: 100),
-                    ),
-                    ListTile(
-                      title: Text("PAY INFAG"),
-                      leading: Image.asset('assets/Charity.png',
-                          height: 100, width: 100),
-                    ),
-                    ListTile(
-                      title: Text("PAY INFAG"),
-                      leading: Image.asset('assets/Charity.png',
-                          height: 100, width: 100),
-                    ),
-                  ],
-                )),
-          ),
-        ],
+        ),
       ),
-    ));
+    );
   }
 }

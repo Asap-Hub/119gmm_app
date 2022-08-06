@@ -13,47 +13,49 @@ class report extends StatefulWidget {
 }
 
 class _reportState extends State<report> {
-  var _isLoading = true;
+  var _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     final data = FirebaseDatabase.instance.reference();
     final dataDetails = data.child('report');
     setState(() {
-      _isLoading = false;
+      _isLoading = true;
     });
     //print(dataDetails);
     return SafeArea(
-        child: Scaffold(
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => addReport()));
-              },
-              child: Image.asset('assets/pencil.png'),
-              backgroundColor: Colors.green,
-            ),
-            body: Container(
-              height: double.infinity,
-              child: _isLoading
-                  ? Center(
-                      child: CircularProgressIndicator(
-                      color: Colors.green,
-                    ))
-                  : FirebaseAnimatedList(
-                      query: dataDetails,
-                      itemBuilder: (BuildContext context, DataSnapshot snapshot,
-                          Animation<double> animation, int index) {
-                        Map reportData = snapshot.value as Map;
-                        reportData["key"] = snapshot.key;
-                        //print(reportData['email']);
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: listItem(reportData: reportData),
-                        );
-                      },
-                    ),
-            )));
+      child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => addReport()));
+          },
+          child: Image.asset('assets/pencil.png'),
+          backgroundColor: Colors.green,
+        ),
+        body: Container(
+          height: double.infinity,
+          child: _isLoading != true
+              ? Center(
+                  child: CircularProgressIndicator(
+                  color: Colors.green,
+                ))
+              : FirebaseAnimatedList(
+                  query: dataDetails,
+                  itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                      Animation<double> animation, int index) {
+                    Map reportData = snapshot.value as Map;
+                    reportData["key"] = snapshot.key;
+                    //print(reportData['email']);
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: listItem(reportData: reportData),
+                    );
+                  },
+                ),
+        ),
+      ),
+    );
   }
 
   Widget listItem({required Map reportData}) {

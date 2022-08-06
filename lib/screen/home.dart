@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gmm_app/screen/infag.dart';
+import 'package:gmm_app/screen/payInfaq.dart';
 import 'package:gmm_app/screen/report.dart';
 
 import 'addReport.dart';
@@ -29,90 +30,99 @@ class _homeState extends State<home> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: <Widget>[
-                    Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(10), // if you need this
-                      ),
-                      elevation: 1.0,
-                      margin: EdgeInsets.all(15),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            Text(
-                              "Upcoming National Congregation",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
-                            ),
-                            Image.asset(
-                              'assets/gmm_logo.png',
-                              width: 100,
-                              height: 100,
-                            ),
-                            Text(
-                              "Coming Soon",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
+                    Container(
+                      width: MediaQuery.of(context).size.width/1,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(10), // if you need this
+                        ),
+                        elevation: 1.0,
+                        margin: EdgeInsets.all(15),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              Text(
+                                "Upcoming National Congregation",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                              Image.asset(
+                                'assets/gmm_logo.png',
+                                width: 100,
+                                height: 100,
+                              ),
+                              Text(
+                                "Coming Soon",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                    Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(10), // if you need this
-                      ),
-                      elevation: 1.0,
-                      margin: EdgeInsets.all(15),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            Text(
-                              "Upcoming National Congregation",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
-                            ),
-                            Image.asset(
-                              'assets/gmm_logo.png',
-                              width: 100,
-                              height: 100,
-                            ),
-                            Text(
-                              "Coming Soon",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
+                    Container(
+                      width: MediaQuery.of(context).size.width/1,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(10), // if you need this
+                        ),
+                        elevation: 1.0,
+                        margin: EdgeInsets.all(15),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              Text(
+                                "Upcoming National Congregation",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                              Image.asset(
+                                'assets/gmm_logo.png',
+                                width: 100,
+                                height: 100,
+                              ),
+                              Text(
+                                "Coming Soon",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                    Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(10), // if you need this
-                      ),
-                      elevation: 1.0,
-                      margin: EdgeInsets.all(15),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            Text(
-                              "Upcoming National Congregation",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
-                            ),
-                            Image.asset(
-                              'assets/gmm_logo.png',
-                              width: 100,
-                              height: 100,
-                            ),
-                            Text(
-                              "Coming Soon",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
+                    Container(
+                      width: MediaQuery.of(context).size.width/1,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(10), // if you need this
+                        ),
+                        elevation: 1.0,
+                        margin: EdgeInsets.all(15),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              Text(
+                                "Upcoming National Congregation",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                              Image.asset(
+                                'assets/gmm_logo.png',
+                                width: 100,
+                                height: 100,
+                              ),
+                              Text(
+                                "Coming Soon",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -130,40 +140,48 @@ class _homeState extends State<home> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 10),
-                  child: Container(
-                    height: MediaQuery.of(context).size.height/2,
-                    child: ListView.builder(
-                      itemCount: 1,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, position) {
-                        return GestureDetector(
-                          onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=> addReport()));
-                          },
-                          child: Card(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius. circular(20),),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child:  ListTile(
-                                title: Text("Report"),
+                  child: GestureDetector(
+                    onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> payInfaq())),
+                    child: Container(
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              title: Text("INFAQ"),
                               leading: Image.asset(
-                                'assets/pencil.png',
-                                color: Colors.green,
+                                  'assets/Charity.png', height: 50, width: 50,
                               ),
-                            )
-                            ),
-                          ),
-                        );
-                      },
+                            )),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: GestureDetector(
+                    onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>addReport())),
+                    child: Container(
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              title: Text("REPORT"),
+                              leading: Image.asset(
+                                'assets/pencil.png',height: 50, width: 50,
+                              ),
+                            )),
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
-
-            /**   Navigator.push(context, MaterialPageRoute(builder: (context)=> addReport()));
-                    },
-                    child: Image.asset('assets/pencil.png'),backgroundColor: Colors.white,**/
           ],
         ),
       ),
