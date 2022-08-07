@@ -14,14 +14,10 @@ class _infagState extends State<infag> {
   var isLoading = false;
   @override
   Widget build(BuildContext context) {
-    final data = FirebaseDatabase.instance.reference();
-    final dataDetails = data.child('payInfaq');
-    setState(() {
-      isLoading = true;
-    });
+    final data = FirebaseDatabase.instance.reference().child('payInfaq').orderByValue();
+
     return SafeArea(
         child: Scaffold(
-      // appBar: AppBar(automaticallyImplyLeading: false,),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.white,
         child: Image.asset('assets/Charity.png', height: 50, width: 50),
@@ -32,13 +28,8 @@ class _infagState extends State<infag> {
       ),
       body: Container(
         height: double.infinity,
-        child: isLoading != true
-            ? Center(
-            child: CircularProgressIndicator(
-              color: Colors.green,
-            ))
-            : FirebaseAnimatedList(
-          query: dataDetails,
+        child: FirebaseAnimatedList(
+          query: data,
           itemBuilder: (BuildContext context, DataSnapshot snapshot,
               Animation<double> animation, int index) {
             Map reportData = snapshot.value as Map;

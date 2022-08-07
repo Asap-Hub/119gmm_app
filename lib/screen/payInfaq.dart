@@ -28,11 +28,13 @@ class _payInfaqState extends State<payInfaq> {
   User? user = FirebaseAuth.instance.currentUser;
   final realtimeDb = FirebaseDatabase.instance;
   String status = "pending";
+  int infaqID = 100;
   //global key
   final allKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -227,6 +229,7 @@ class _payInfaqState extends State<payInfaq> {
     model.amount = amount.text.trim();
     model.refId = refId.text.trim();
     model.status =status;
+    model.infagID = infaqID++;
     model.time = DateTime.now().toString();
 
     db.push().set(model.toMap()).asStream();

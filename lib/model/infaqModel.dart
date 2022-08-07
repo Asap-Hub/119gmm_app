@@ -7,13 +7,15 @@ class infaqModel{
   String? refId;
   String? time;
   String? status;
-  infaqModel({this.status,this.time, this.uid,this.payerNumber, this.amount,this.infaqNumber,this.payerName
+  int? infagID;
+  infaqModel({this.infagID,this.status,this.time, this.uid,this.payerNumber, this.amount,this.infaqNumber,this.payerName
   ,this.refId});
 
   //sending data to the server
   Map <String, dynamic> toMap(){
     return{
       'status': status,
+      'infaqID': infagID,
       'time': time,
       'uuid': uid,
       'infaqNumber': infaqNumber,
@@ -28,6 +30,7 @@ class infaqModel{
   factory infaqModel.fromMap(map){
     return infaqModel(
       uid: map["uuid"],
+      infagID: map["infaqID"],
       status: map["status"],
       time: map["time"],
       infaqNumber: map["infaqNumber"],

@@ -13,16 +13,11 @@ class report extends StatefulWidget {
 }
 
 class _reportState extends State<report> {
-  var _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
-    final data = FirebaseDatabase.instance.reference();
-    final dataDetails = data.child('report');
-    setState(() {
-      _isLoading = true;
-    });
-    //print(dataDetails);
+    //print(dataDetails)fetchData() == null ? CircularProgressIndicator():;
+    final data  = FirebaseDatabase.instance.reference().child('report');
     return SafeArea(
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
@@ -33,15 +28,10 @@ class _reportState extends State<report> {
           child: Image.asset('assets/pencil.png'),
           backgroundColor: Colors.green,
         ),
-        body: Container(
+        body: data.key.isEmpty ? Center(child: CircularProgressIndicator()): Container(
           height: double.infinity,
-          child: _isLoading != true
-              ? Center(
-                  child: CircularProgressIndicator(
-                  color: Colors.green,
-                ))
-              : FirebaseAnimatedList(
-                  query: dataDetails,
+          child:FirebaseAnimatedList(
+                  query: data,
                   itemBuilder: (BuildContext context, DataSnapshot snapshot,
                       Animation<double> animation, int index) {
                     Map reportData = snapshot.value as Map;
