@@ -13,11 +13,9 @@ class report extends StatefulWidget {
 }
 
 class _reportState extends State<report> {
-
   @override
   Widget build(BuildContext context) {
-    //print(dataDetails)fetchData() == null ? CircularProgressIndicator():;
-    final data  = FirebaseDatabase.instance.reference().child('report');
+   final data  = FirebaseDatabase.instance.reference().child('report');
     return SafeArea(
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
@@ -28,9 +26,10 @@ class _reportState extends State<report> {
           child: Image.asset('assets/pencil.png'),
           backgroundColor: Colors.green,
         ),
-        body: data.key.isEmpty ? Center(child: CircularProgressIndicator()): Container(
+        body: Container(
           height: double.infinity,
           child:FirebaseAnimatedList(
+            defaultChild: Center(child: CircularProgressIndicator(color: Colors.green,),),
                   query: data,
                   itemBuilder: (BuildContext context, DataSnapshot snapshot,
                       Animation<double> animation, int index) {

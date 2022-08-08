@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gmm_app/model/infaqModel.dart';
 
@@ -34,7 +35,8 @@ class _payInfaqState extends State<payInfaq> {
 
   @override
   Widget build(BuildContext context) {
-
+    final data = FirebaseDatabase.instance.reference().child('payInfaq');
+    print(user);
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -80,6 +82,27 @@ class _payInfaqState extends State<payInfaq> {
                     ],),),
                   ),
                   SizedBox(height: cardHeight,),
+                  GestureDetector(
+                    onTap: (){
+                      Clipboard.setData(ClipboardData(text:user!.uid)).then((value){
+                        Fluttertoast.showToast(msg: "Copied to Clipboard");
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10,bottom: 5),
+                      child: Row(
+                        children: [
+                          Text(
+                            '${user!.uid}',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          Icon(Icons.copy_outlined)
+                        ],
+                      ),
+                    ),
+                  ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 2, vertical: 1),
                     child: TextFormField(
