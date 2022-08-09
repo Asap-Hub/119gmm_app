@@ -8,8 +8,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gmm_app/data/otherData.dart';
 import 'package:gmm_app/data/region.dart';
 import 'package:gmm_app/model/userModel.dart';
-import 'package:gmm_app/screen/emailVerification.dart';
-import 'package:gmm_app/widget/progressBar.dart';
 import 'package:intl/intl.dart';
 
 import 'landingPage.dart';

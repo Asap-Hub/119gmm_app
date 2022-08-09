@@ -16,7 +16,7 @@ class payZakat extends StatefulWidget {
 }
 
 class _payZakatState extends State<payZakat> {
-  final infaqNumber = TextEditingController();
+  final zakatNumber = TextEditingController();
   final payerName = TextEditingController();
   final payerNumber = TextEditingController();
   final amount = TextEditingController();
@@ -35,7 +35,7 @@ class _payZakatState extends State<payZakat> {
 
   @override
   Widget build(BuildContext context) {
-    final data = FirebaseDatabase.instance.reference().child('payInfaq');
+    final data = FirebaseDatabase.instance.reference().child('payZakat');
     print(user);
     return SafeArea(
         child: Scaffold(
@@ -108,7 +108,7 @@ class _payZakatState extends State<payZakat> {
                         child: TextFormField(
                           textInputAction: TextInputAction.next,
                           keyboardType: TextInputType.numberWithOptions(),
-                          controller: infaqNumber,
+                          controller: zakatNumber,
                           decoration: InputDecoration(
                             label: Text("Infag Number", style: TextStyle(fontSize: 20),),
                             prefixIcon: Icon(Icons.drive_file_rename_outline),
@@ -118,7 +118,7 @@ class _payZakatState extends State<payZakat> {
                             ),
                           ),
                           validator: (value) {
-                            if (infaqNumber.text.isEmpty) {
+                            if (zakatNumber.value.text.isEmpty) {
                               return ("Required");
                             }
                           },
@@ -246,7 +246,7 @@ class _payZakatState extends State<payZakat> {
     final db = realtimeDb.reference().child("payInfaq");
     //writing values to the FirebaseStore
     model.uid = user!.uid;
-    model.infaqNumber = infaqNumber.text.trim();
+    model.infaqNumber = zakatNumber.text.trim();
     model.payerName = payerName.text.trim();
     model.payerNumber = payerNumber.text.trim();
     model.amount = amount.text.trim();
