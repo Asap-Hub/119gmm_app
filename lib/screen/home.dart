@@ -7,7 +7,7 @@ import 'package:gmm_app/screen/report.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'addReport.dart';
-import 'dues.dart';
+import 'zakat.dart';
 
 class home extends StatefulWidget {
   const home({Key? key}) : super(key: key);
@@ -220,7 +220,7 @@ class _homeState extends State<home> {
     ));
   }
 
-  List<Widget> Screen = <Widget>[home(), infag(), dues(), report()];
+  List<Widget> Screen = <Widget>[home(), infag(), Zakat(), report()];
 
   void _onItemTapped(Widget index) {
     setState(() {

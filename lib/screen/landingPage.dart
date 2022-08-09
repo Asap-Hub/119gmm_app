@@ -133,6 +133,11 @@ class _landingPageState extends State<landingPage> {
                         children: [
                           ElevatedButton(
                               onPressed: () {
+                               Fluttertoast.showToast(msg: "Please Wait...");
+                                // Center(child: Container(
+                                //     height: 50,
+                                //     width: 50,
+                                //     child: Card(child: CircularProgressIndicator(color: Colors.green,))));
                                 signIn(email.text.trim(), password.text.trim());
                               },
                               child: Text("LOGIN",

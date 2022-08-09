@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gmm_app/model/userModel.dart';
-import 'package:gmm_app/screen/dues.dart';
+import 'package:gmm_app/screen/zakat.dart';
 import 'package:gmm_app/screen/infag.dart';
 import 'package:gmm_app/screen/landingPage.dart';
 import 'package:gmm_app/screen/report.dart';
@@ -365,7 +365,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  List<Widget> Screen = <Widget>[home(), infag(), dues(), report()];
+  List<Widget> Screen = <Widget>[home(), infag(), Zakat(), report()];
 
   void _onItemTapped(int index) {
     setState(() {
