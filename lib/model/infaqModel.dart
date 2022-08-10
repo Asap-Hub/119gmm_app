@@ -16,7 +16,6 @@ class infaqModel{
     return{
       'status': status,
       'infaqID': infagID,
-      'time': time,
       'uuid': uid,
       'infaqNumber': infaqNumber,
       'payerName': payerName,

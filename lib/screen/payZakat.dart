@@ -1,3 +1,4 @@
+import 'dart:core';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gmm_app/model/infaqModel.dart';
+import 'package:gmm_app/model/zakatModel.dart';
+import 'package:intl/intl.dart';
 
 class payZakat extends StatefulWidget {
   const payZakat({Key? key}) : super(key: key);
@@ -118,7 +121,7 @@ class _payZakatState extends State<payZakat> {
                             ),
                           ),
                           validator: (value) {
-                            if (zakatNumber.value.text.isEmpty) {
+                            if (value!.isEmpty) {
                               return ("Required");
                             }
                           },
@@ -139,7 +142,7 @@ class _payZakatState extends State<payZakat> {
                             ),
                           ),
                           validator: (value) {
-                            if (payerName.text.isEmpty) {
+                            if (value!.isEmpty) {
                               return ("Required");
                             }
                           },
@@ -212,8 +215,10 @@ class _payZakatState extends State<payZakat> {
                       ),
                       SizedBox(height: Height,),
                       ElevatedButton(onPressed: (){
-                        payInfaq();
-                        Navigator.pop(context);
+                        if(allKey.currentState!.validate()){
+                          payZakat(zakatNumber.text);
+                          Navigator.pop(context);
+                        }
                       }, child: Text("SUBMIT"))
                     ],
                   ),
@@ -223,13 +228,18 @@ class _payZakatState extends State<payZakat> {
           ),
         ));
   }
-  void payInfaq() async {
+  void payZakat(String textNumber) async {
     try {
-      if (allKey.currentState!.validate()) {
+      if ( zakatNumber.value.text.trim() == "0245045867" && zakatNumber.value.text.trim() == "0245045867") {
         postReportToFireStore();
         Fluttertoast.showToast(
             msg:
-            "Payment Submitted Successful, Admins will review it in soon. Thank you.");
+            "Payment Submitted Successful, Admins will review it soon. Thank you.");
+      }
+        else if (zakatNumber.value.text.trim() != "0245045867" && zakatNumber.value.text.trim() != "0245045867"){
+        Fluttertoast.showToast(
+            msg:
+            "Kindly input correct Zakat Account Number.");
       }
     } on SocketException catch (e) {
       Fluttertoast.showToast(msg: e.message);
@@ -242,17 +252,16 @@ class _payZakatState extends State<payZakat> {
     //sending data to the server
     FirebaseFirestore firebaseStore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
-    infaqModel model = infaqModel();
-    final db = realtimeDb.reference().child("payInfaq");
+    zakatModel model = zakatModel();
+    final db = realtimeDb.reference().child("payZakat");
     //writing values to the FirebaseStore
     model.uid = user!.uid;
-    model.infaqNumber = zakatNumber.text.trim();
+    model.zakatNumber = zakatNumber.text.trim();
     model.payerName = payerName.text.trim();
     model.payerNumber = payerNumber.text.trim();
     model.amount = amount.text.trim();
     model.refId = refId.text.trim();
     model.status =status;
-    model.infagID = infaqID++;
     model.time = DateTime.now().toString();
 
     db.push().set(model.toMap()).asStream();
