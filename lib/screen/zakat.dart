@@ -4,28 +4,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gmm_app/screen/payInfaq.dart';
+import 'package:gmm_app/screen/payZakat.dart';
 
-class Zakat extends StatefulWidget {
-  const Zakat({Key? key}) : super(key: key);
+class zakat extends StatefulWidget {
+  const zakat({Key? key}) : super(key: key);
 
   @override
-  _ZakatState createState() => _ZakatState();
+  _zakatState createState() => _zakatState();
 }
 
-class _ZakatState extends State<Zakat> {
+class _zakatState extends State<zakat> {
   var isLoading = false;
   @override
   Widget build(BuildContext context) {
-    final data = FirebaseDatabase.instance.reference().child('payInfaq');
+    final data = FirebaseDatabase.instance.reference().child('payZakat');
 
     return SafeArea(
         child: Scaffold(
           floatingActionButton: FloatingActionButton(
             backgroundColor: Colors.white,
-            child: Image.asset('assets/Charity.png', height: 50, width: 50),
+            child: Image.asset('assets/zakat.png', height: 50, width: 50),
             onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => payInfaq()));
+                  context, MaterialPageRoute(builder: (context) => payZakat()));
             },
           ),
           body: Container(
@@ -76,12 +77,12 @@ class _ZakatState extends State<Zakat> {
                     child: Row(
                       children: [
                         Text(
-                          'INFAQ NO: ${reportData['infaqNumber']}',
+                          'Zakat NO: ${reportData['zakatNumber']}',
                           style: TextStyle(fontSize: 18, color: Colors.white),
                         ),
                         SizedBox(width: 10,),
                         Text(
-                          'STATUS: ${reportData['status']}',
+                          'Status: ${reportData['status']}',
                           style: TextStyle(fontSize: 20,color: Colors.white),
                         ),
                       ],
@@ -101,7 +102,7 @@ class _ZakatState extends State<Zakat> {
                 child: Row(
                   children: [
                     Text(
-                      '${reportData['uuid']}',
+                      '${reportData['transactionID']}',
                       style: TextStyle(
                         fontSize: 18,
                       ),
@@ -135,7 +136,7 @@ class _ZakatState extends State<Zakat> {
             Padding(
               padding: const EdgeInsets.only(left: 10,bottom: 5),
               child: Text(
-                'REF.ID:${reportData['refId']}',
+                'Zakat ID:${reportData['zakatID']}',
                 style: TextStyle(fontSize: 20),
               ),
             ),

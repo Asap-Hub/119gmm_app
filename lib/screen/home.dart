@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gmm_app/screen/infag.dart';
 import 'package:gmm_app/screen/payInfaq.dart';
+import 'package:gmm_app/screen/payZakat.dart';
 import 'package:gmm_app/screen/report.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -168,6 +169,27 @@ class _homeState extends State<home> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10,left: 10,right: 10),
                   child: GestureDetector(
+                    onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> payZakat())),
+                    child: Container(
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              title: Text("ZAKAT"),
+                              leading: Image.asset(
+                                  'assets/zakat.png', height: 50, width: 50,
+                              ),
+                            )),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10,left: 10,right: 10),
+                  child: GestureDetector(
                     onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>addReport())),
                     child: Container(
                       child: Card(
@@ -179,7 +201,7 @@ class _homeState extends State<home> {
                             child: ListTile(
                               title: Text("REPORT"),
                               leading: Image.asset(
-                                'assets/pencil.png',height: 70, width: 70,
+                                'assets/feedback.png',height: 70, width: 70,
                               ),
                             )),
                       ),
@@ -220,7 +242,7 @@ class _homeState extends State<home> {
     ));
   }
 
-  List<Widget> Screen = <Widget>[home(), infag(), Zakat(), report()];
+  List<Widget> Screen = <Widget>[home(), infag(), zakat(), report()];
 
   void _onItemTapped(Widget index) {
     setState(() {

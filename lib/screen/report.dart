@@ -23,8 +23,8 @@ class _reportState extends State<report> {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => addReport()));
           },
-          child: Image.asset('assets/pencil.png'),
-          backgroundColor: Colors.green,
+          child: Image.asset('assets/feedback.png'),
+          backgroundColor: Colors.white,
         ),
         body: Container(
           height: double.infinity,

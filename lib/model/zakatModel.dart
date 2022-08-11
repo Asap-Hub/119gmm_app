@@ -4,24 +4,25 @@ class zakatModel{
   String? payerName;
   String? payerNumber;
   String? amount;
-  String? refId;
+  String? tranID;
   String? time;
   String? status;
-  int? zakatID;
+  String? zakatID;
   zakatModel({this.zakatID,this.status,this.time, this.uid,this.payerNumber, this.amount,this.zakatNumber,this.payerName
-    ,this.refId});
+    ,this.tranID});
 
   //sending data to the server
   Map <String, dynamic> toMap(){
     return{
       'status': status,
+      'time': time,
       'zakatID': zakatID,
       'uuid': uid,
       'zakatNumber': zakatNumber,
       'payerName': payerName,
       'payerNumber':payerNumber,
       'amount': amount,
-      'refId': refId,
+      'transactionID': tranID,
     };
   }
 
@@ -36,7 +37,7 @@ class zakatModel{
         payerName: map["payerName"],
         payerNumber: map["payerName"],
         amount: map["amount"],
-        refId: map["refId"]
+        tranID: map["transactionID"]
     );
   }
 }

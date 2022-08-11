@@ -161,7 +161,7 @@ class _landingPageState extends State<landingPage> {
                                 MaterialPageRoute(
                                     builder: (context) => passwordReset()));
                           },
-                          child: Text("Forgot Password",
+                          child: Text("Forgot Password?",
                               style: TextStyle(fontSize: 18)))
                     ],
                   ),

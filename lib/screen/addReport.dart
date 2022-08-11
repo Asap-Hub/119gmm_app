@@ -17,7 +17,7 @@ class addReport extends StatefulWidget {
 
 class _addReportState extends State<addReport> {
   TextEditingController fullName = TextEditingController();
-  TextEditingController email = TextEditingController();
+  //TextEditingController email = TextEditingController();
   TextEditingController contact = TextEditingController();
   TextEditingController message = TextEditingController();
   double Height = 10.0;
@@ -34,7 +34,7 @@ class _addReportState extends State<addReport> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        title: Text("REPORT"),
+        title: Text(" ADD REPORT"),
         centerTitle: true,
         elevation: 1.0,
       ),
@@ -50,14 +50,14 @@ class _addReportState extends State<addReport> {
                     width: double.infinity,
                     child: Card(
                       shadowColor: Colors.red,
-                  //elevation: 4.0,
-                  child: Center(
-                    child: Text(
-                      """Please fill out the Form to submit your Report""",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                )),
+                      //elevation: 4.0,
+                      child: Center(
+                        child: Text(
+                          """Please fill out the Form to submit your Report""",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    )),
                 SizedBox(
                   height: cardHeight,
                 ),
@@ -90,23 +90,25 @@ class _addReportState extends State<addReport> {
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 1),
-                  child: TextFormField(
-                    textInputAction: TextInputAction.next,
-                    controller: email,
-                    decoration: InputDecoration(
-                      label: Text("Email"),
-                      prefixIcon: Icon(Icons.email),
-                      prefixIconColor: Colors.black,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (email.text != user?.email) {
-                        // return ("Add existing email");
-                        Fluttertoast.showToast(msg: "Add existing email");
-                      }
-                    },
+                  child: Container(
+                    height: 50,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.green,
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10.0),
+                            topLeft: Radius.circular(10.0),
+                            bottomRight: Radius.circular(10.0),
+                            topRight: Radius.circular(10.0))),
+                    child: Center(
+                        child: Text(
+                      "${user!.email}",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                    )),
                   ),
                 ),
                 SizedBox(
@@ -115,6 +117,7 @@ class _addReportState extends State<addReport> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 1),
                   child: TextFormField(
+                    maxLength: 10,
                     textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.numberWithOptions(),
                     controller: contact,
@@ -156,11 +159,7 @@ class _addReportState extends State<addReport> {
                     ),
                     validator: (String? value) {
                       if (message.text.isEmpty) {
-                       return ("Text cannot be empty");
-
-                      }
-                      else if(message.text.length > 600){
-                        return ("Text Limit Exceed");
+                        return ("Text cannot be empty");
                       }
                     },
                   ),
@@ -170,9 +169,11 @@ class _addReportState extends State<addReport> {
                 ),
                 ElevatedButton(
                     onPressed: () {
-                      sendReport();
-                      Navigator.of(context).pop();
-                      // Navigator.of(context).popUntil((route) => false);
+                      if (allKey.currentState!.validate()) {
+                        sendReport();
+                        Navigator.of(context).pop();
+                        // Navigator.of(context).popUntil((route) => false);
+                      }
                     },
                     child: Text("SUBMIT"))
               ],
@@ -185,35 +186,39 @@ class _addReportState extends State<addReport> {
 
   void sendReport() async {
     try {
-      if (allKey.currentState!.validate() && email.text == user?.email) {
+      if (allKey.currentState!.validate()) {
         postReportToFireStore();
         Fluttertoast.showToast(
             msg:
                 "Report Submitted Successful, Admins will take note of it. Thank you.");
-      } else if (email.text == user?.email) {
-        Fluttertoast.showToast(msg: "Invalid Email");
       }
+      else{
+         Fluttertoast.showToast(
+            msg:
+            "Sorry Something, went wrong");
+
+      }
+
     } on SocketException catch (e) {
       Fluttertoast.showToast(msg: e.message);
     }
   }
 
   postReportToFireStore() async {
-//calling firestore
+    //calling firestore
     //calling user model
     //sending data to the server
-    FirebaseFirestore firebaseStore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
     reportModel model = reportModel();
     final db = realtimeDb.reference().child("report");
     //writing values to the FirebaseStore
     model.uid = user!.uid;
-    model.email = email.text.trim();
+    model.email = user.email;
     model.fullName = fullName.text.trim();
     model.contact = contact.text.trim();
     model.message = message.text.trim();
     model.time = DateTime.now().toString();
 
-   db.push().set(model.toMap()).asStream();
+    db.push().set(model.toMap()).asStream();
   }
 }

@@ -108,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.monetization_on_outlined),
-                label: "PAYMENT",
+                label: "ZAKAT",
                 backgroundColor: Colors.green,
               ),
               BottomNavigationBarItem(
@@ -365,7 +365,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  List<Widget> Screen = <Widget>[home(), infag(), Zakat(), report()];
+  List<Widget> Screen = <Widget>[home(), infag(), zakat(), report()];
 
   void _onItemTapped(int index) {
     setState(() {

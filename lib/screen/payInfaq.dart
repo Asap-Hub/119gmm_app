@@ -106,6 +106,7 @@ class _payInfaqState extends State<payInfaq> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 2, vertical: 1),
                     child: TextFormField(
+                      maxLength: 10,
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.numberWithOptions(),
                       controller: infaqNumber,
@@ -149,6 +150,7 @@ class _payInfaqState extends State<payInfaq> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 2, vertical: 1),
                     child: TextFormField(
+                      maxLength: 10,
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.numberWithOptions(),
                       controller: payerNumber,
@@ -212,8 +214,10 @@ class _payInfaqState extends State<payInfaq> {
                   ),
                   SizedBox(height: Height,),
                   ElevatedButton(onPressed: (){
-                    payInfaq();
-                    Navigator.pop(context);
+                    if(allKey.currentState!.validate()){
+                      payInfaq();
+                      Navigator.pop(context);
+                    }
                   }, child: Text("SUBMIT"))
                 ],
               ),
