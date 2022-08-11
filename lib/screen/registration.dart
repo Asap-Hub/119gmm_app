@@ -1139,8 +1139,7 @@ class _registrationState extends State<registration> {
     await firebaseStore
         .collection("Users")
         .doc(user.uid)
-        .set(userModel.toMap())
-        .timeout(Duration(seconds: 5));
+        .set(userModel.toMap());
      //Navigator.of(context).popUntil((route) => route.isFirst);
   }
 }

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gmm_app/model/userModel.dart';
+import 'package:gmm_app/screen/updateBranch.dart';
 import 'package:gmm_app/screen/zakat.dart';
 import 'package:gmm_app/screen/infag.dart';
 import 'package:gmm_app/screen/landingPage.dart';
@@ -153,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   elevation: 2.0,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 10.0),
-                    child: Column(
+                    child: Wrap(
                       children: [
                         ListTile(
                           title: Text("Full Name: ${logInUser.firstName} "
@@ -187,7 +188,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   elevation: 2.0,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 10.0),
-                    child: Column(
+                    child: Wrap(
                       children: [
                         ListTile(
                           title: Text("Fellowship: ${logInUser.group} "),
@@ -208,6 +209,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           title: Text(
                               "Residential. Address: ${logInUser.residentialAddress} "),
                         ),
+                        Center(child: ElevatedButton(onPressed: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => updateBranch()));
+                        }, child: Text("update")))
                       ],
                     ),
                   )),
@@ -219,7 +223,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       elevation: 2.0,
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10.0),
-                        child: Column(
+                        child: Wrap(
                           children: [
                             logInUser.nameOfPrimarySchool != ""
                                 ? ListTile(
@@ -259,34 +263,34 @@ class _MyHomePageState extends State<MyHomePage> {
                                   "Marital Status: ${logInUser.maritalStatus} "),
                             ),
                             ListTile(
-                              title: logInUser.numberOfWive == null
+                              title: logInUser.numberOfWive != ""
                                   ? Text(
                                       "No. Of Wive: ${logInUser.numberOfWive} ")
                                   : Text("No. Of Wive: Not Set"),
                             ),
                             ListTile(
-                              title: logInUser.numberOfMaleChildren == null
+                              title: logInUser.numberOfMaleChildren != ""
                                   ? Text(
                                       "No. Of Males: ${logInUser.numberOfMaleChildren} ")
                                   : Text("No. Of Males: Not Set"),
                             ),
                             ListTile(
-                              title: logInUser.numberOfFemaleChildren == null
+                              title: logInUser.numberOfFemaleChildren != ""
                                   ? Text(
-                                      "No. Of Females: ${logInUser.numberOfFemaleChildren} ")
-                                  : Text("No. Of Females: Not Set"),
+                                      "Females: ${logInUser.numberOfFemaleChildren} ")
+                                  : Text("Females: Not Set"),
                             ),
                             ListTile(
-                              title: logInUser.nameOfMuslimChildren == null
+                              title: logInUser.nameOfMuslimChildren != ""
                                   ? Text(
-                                      "Name Of Muslims: ${logInUser.nameOfMuslimChildren} ")
-                                  : Text("Name Of Muslims: Not Set"),
+                                      "Muslims Children: ${logInUser.nameOfMuslimChildren} ")
+                                  : Text("Muslims Children: Not Set"),
                             ),
                             ListTile(
-                              title: logInUser.nameOfNonMuslimChildren == null
+                              title: logInUser.nameOfNonMuslimChildren != ""
                                   ? Text(
-                                      "Name Of Non-Muslims: ${logInUser.nameOfNonMuslimChildren} ")
-                                  : Text("Name Of Non-Muslims: Not Set"),
+                                      "Non-Muslims Children: ${logInUser.nameOfNonMuslimChildren} ")
+                                  : Text("Non-Muslims Children: Not Set"),
                             ),
                           ],
                         ),
@@ -297,7 +301,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       elevation: 2.0,
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10.0),
-                        child: Column(
+                        child: Wrap(
                           children: [
                             ListTile(
                               title:

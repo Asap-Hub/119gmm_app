@@ -18,6 +18,7 @@ class _zakatState extends State<zakat> {
   @override
   Widget build(BuildContext context) {
     final data = FirebaseDatabase.instance.reference().child('payZakat');
+    //Query dataCheck = FirebaseDatabase.instance.reference().child('payZakat');
 
     return SafeArea(
         child: Scaffold(
@@ -38,12 +39,12 @@ class _zakatState extends State<zakat> {
                   Animation<double> animation, int index) {
                 Map reportData = snapshot.value as Map;
                 reportData["key"] = snapshot.key;
-                //print(reportData['email']);
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: listItem(reportData: reportData),
-                );
-              },
+                  //print(reportData['email']);
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child:listItem(reportData: reportData),
+                  );
+                },
             ),
           ),
 
