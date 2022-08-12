@@ -25,7 +25,11 @@ class _MyHomePageState extends State<MyHomePage> {
   int selectedItem = 0;
   User? user = FirebaseAuth.instance.currentUser;
   UserModel logInUser = UserModel();
-
+@override
+  void setState(VoidCallback fn) {
+    // TODO: implement setState
+    super.setState(fn);
+  }
   @override
   void initState() {
     // TODO: implement initState
@@ -43,6 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    User? user = FirebaseAuth.instance.currentUser;
     //print(logInUser.nameOfSeniorHighSchool);
     return SafeArea(
       child: Scaffold(
@@ -130,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   CircleAvatar(
                     backgroundImage: user!.photoURL == null
                         ? AssetImage('assets/gmm_logo.png')
-                        : AssetImage("${user!.photoURL}"),
+                        : AssetImage("${user.photoURL}"),
                     radius: 50,
                   ),
                   Padding(
@@ -172,11 +177,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         ListTile(
                           title: Text(
-                              "Registration Date: ${user!.metadata.creationTime} "),
+                              "Registration Date: ${user.metadata.creationTime} "),
                         ),
                         ListTile(
                           title: Text(
-                              "Last Visit: ${user!.metadata.lastSignInTime}"),
+                              "Last Visit: ${user.metadata.lastSignInTime}"),
                         ),
                       ],
                     ),

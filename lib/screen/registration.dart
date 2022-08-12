@@ -1079,12 +1079,6 @@ class _registrationState extends State<registration> {
             .createUserWithEmailAndPassword(email: email, password: password)
             .then((value) => {
                   postDetailsToFireStore(),
-        // showDialog(
-        // context: context,
-        // barrierDismissible: false,
-        // builder: (BuildContext context) {
-        // return progressBar(message: "Please Wait...");
-        // }),
                 })
             .catchError((e) {
           Fluttertoast.showToast(msg: e!.message);
