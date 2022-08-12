@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gmm_app/data/otherData.dart';
 import 'package:gmm_app/data/region.dart';
 import 'package:gmm_app/model/userModel.dart';
+
 class updateBranch extends StatefulWidget {
   const updateBranch({Key? key}) : super(key: key);
 
@@ -57,16 +58,29 @@ class _updateBranchState extends State<updateBranch> {
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
-
-    return SafeArea(child: Scaffold(
-      appBar: AppBar(title: Text("UPDATE PERSONAL"),
-      elevation: 0.3,
-      centerTitle: true,
+    setState(() {
+      FirebaseFirestore.instance
+          .collection("Users")
+          .doc(user!.uid)
+          .get()
+          .then((value) {
+        setState(() {
+          this.logInUser = UserModel.fromMap(value.data());
+        });
+      });
+    });
+    return SafeArea(
+        child: Scaffold(
+      appBar: AppBar(
+        title: Text("UPDATE PERSONAL"),
+        elevation: 0.3,
+        centerTitle: true,
       ),
       body: Container(
-        padding: EdgeInsets.only(top: 10,bottom: 10, left: 10, right: 10),
+        padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
         width: double.infinity,
         child: SingleChildScrollView(
           child: Form(
@@ -111,8 +125,8 @@ class _updateBranchState extends State<updateBranch> {
                             items: Regions["region"]
                                 ?.map(
                                   (e) => DropdownMenuItem<String>(
-                                  child: Text(e), value: e),
-                            )
+                                      child: Text(e), value: e),
+                                )
                                 .toList(),
                           ),
                         ),
@@ -153,9 +167,9 @@ class _updateBranchState extends State<updateBranch> {
                               },
                               items: Regions[region]
                                   ?.map((e) => DropdownMenuItem<String>(
-                                child: Text(e),
-                                value: e,
-                              ))
+                                        child: Text(e),
+                                        value: e,
+                                      ))
                                   .toList(),
                             ),
                           ),
@@ -189,9 +203,9 @@ class _updateBranchState extends State<updateBranch> {
                               isExpanded: true,
                               items: Regions[district]
                                   ?.map((e) => DropdownMenuItem<String>(
-                                child: Text(e),
-                                value: e,
-                              ))
+                                        child: Text(e),
+                                        value: e,
+                                      ))
                                   .toList(),
                               onChanged: (value) {
                                 setState(() {
@@ -208,7 +222,8 @@ class _updateBranchState extends State<updateBranch> {
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                   child: Column(
                     children: [
-                      Text("Home Town: ${logInUser.homeTown}", style: TextStyle(fontSize: 16)),
+                      Text("Home Town: ${logInUser.homeTown}",
+                          style: TextStyle(fontSize: 16)),
                       TextFormField(
                           validator: (value) {
                             if (homeTown.text.isEmpty) {
@@ -232,7 +247,8 @@ class _updateBranchState extends State<updateBranch> {
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                   child: Column(
                     children: [
-                      Text("Digital Address: ${logInUser.residentialAddress}", style: TextStyle(fontSize: 16)),
+                      Text("Digital Address: ${logInUser.residentialAddress}",
+                          style: TextStyle(fontSize: 16)),
                       TextFormField(
                           validator: (value) {
                             if (residentialAddress.text.isEmpty) {
@@ -256,7 +272,6 @@ class _updateBranchState extends State<updateBranch> {
                     padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                     child: Column(
                       children: [
-
                         Text("Fellowship: ${logInUser.group}",
                             style: TextStyle(fontSize: 16)),
                         SizedBox(height: 5),
@@ -283,9 +298,9 @@ class _updateBranchState extends State<updateBranch> {
                               },
                               items: fellowship["groups"]
                                   ?.map((e) => DropdownMenuItem<String>(
-                                child: Text(e),
-                                value: e,
-                              ))
+                                        child: Text(e),
+                                        value: e,
+                                      ))
                                   .toList(),
                             ),
                           ),
@@ -298,12 +313,17 @@ class _updateBranchState extends State<updateBranch> {
                   color: Colors.green,
                   thickness: 1.0,
                 ),
-                ElevatedButton(onPressed: (){
-                  if(personalFormKey.currentState!.validate()){
-                    updateBran();
-                    Navigator.pop(context);
-                  }
-                }, child: Text("UPDATE"))
+                ElevatedButton(
+                    onPressed: () {
+                      if (personalFormKey.currentState!.validate()) {
+                        updateBran();
+                        Navigator.pop(context);
+                        Fluttertoast.showToast(msg: "Updated Successfully");
+                      } else {
+                        Fluttertoast.showToast(msg: "An Error Occurred");
+                      }
+                    },
+                    child: Text("UPDATE"))
               ],
             ),
           ),
@@ -311,24 +331,33 @@ class _updateBranchState extends State<updateBranch> {
       ),
     ));
   }
+
   void updateBran() async {
     try {
-       // postDetailsToFireStore().catchError((e){
-         // Fluttertoast.showToast(msg: e!.message);
+      // postDetailsToFireStore().catchError((e){
+      // Fluttertoast.showToast(msg: e!.message);
       FirebaseFirestore firebaseStore = FirebaseFirestore.instance;
       User? user = _auth.currentUser;
-      await firebaseStore
-          .collection("Users")
-          .doc(user!.uid).update(updateUserData().toMap()).catchError((e){
-            Fluttertoast.showToast(gravity: ToastGravity.CENTER, toastLength: Toast.LENGTH_LONG,msg: e!.message);
+      await firebaseStore.collection("Users").doc(logInUser.uid).update({
+        "region": region.trim(),
+        "district": district.trim(),
+        "branches": branches.trim(),
+        "homeTown": homeTown.text.trim(),
+        "residentialAddress": residentialAddress.text.trim(),
+        "group": group.trim(),
+      }).catchError((e) {
+        Fluttertoast.showToast(
+            gravity: ToastGravity.CENTER,
+            toastLength: Toast.LENGTH_LONG,
+            msg: e!.message);
       });
-        }
-       // )
-       //      .catchError((e) {
-       //    Fluttertoast.showToast(msg: e!.message);
-       //  });
+    }
+    // )
+    //      .catchError((e) {
+    //    Fluttertoast.showToast(msg: e!.message);
+    //  });
 
-        //Fluttertoast.showToast(msg: "Please Wait, you account is been creating");
+    //Fluttertoast.showToast(msg: "Please Wait, you account is been creating");
     on SocketException catch (e) {
       Fluttertoast.showToast(msg: e.message);
     }
@@ -343,7 +372,7 @@ class _updateBranchState extends State<updateBranch> {
     userModel.residentialAddress = residentialAddress.text.trim();
     userModel.group = group.trim();
   }
-    //Navigator.of(context).popUntil((route) => route.isFirst);
+//Navigator.of(context).popUntil((route) => route.isFirst);
 //   } postDetailsToFireStore() async {
 // //calling firestore
 //     //calling user model

@@ -25,11 +25,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int selectedItem = 0;
   User? user = FirebaseAuth.instance.currentUser;
   UserModel logInUser = UserModel();
-@override
-  void setState(VoidCallback fn) {
-    // TODO: implement setState
-    super.setState(fn);
-  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -48,6 +44,17 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
+    setState(() {
+      FirebaseFirestore.instance
+          .collection("Users")
+          .doc(user!.uid)
+          .get()
+          .then((value) {
+        setState(() {
+          this.logInUser = UserModel.fromMap(value.data());
+        });
+      });
+    });
     //print(logInUser.nameOfSeniorHighSchool);
     return SafeArea(
       child: Scaffold(
@@ -214,9 +221,19 @@ class _MyHomePageState extends State<MyHomePage> {
                           title: Text(
                               "Residential. Address: ${logInUser.residentialAddress} "),
                         ),
-                        Center(child: ElevatedButton(onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => updateBranch()));
-                        }, child: Text("update")))
+                        Center(
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 5),
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                updateBranch()));
+                                  },
+                                  child: Text("update")),
+                            ))
                       ],
                     ),
                   )),
@@ -267,6 +284,67 @@ class _MyHomePageState extends State<MyHomePage> {
                               title: Text(
                                   "Marital Status: ${logInUser.maritalStatus} "),
                             ),
+                            Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 5),
+                                  child: ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    updateBranch()));
+                                      },
+                                      child: Text("update")),
+                                ))
+                          ],
+                        ),
+                      ))
+                  : Card(
+                      margin: EdgeInsets.only(left: 10, top: 10, right: 10),
+                      shadowColor: Colors.green,
+                      elevation: 2.0,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Wrap(
+                          children: [
+                            logInUser.nameOfPrimarySchool != ""
+                                ? ListTile(
+                              title: Text(
+                                  "Primary School: ${logInUser.nameOfPrimarySchool} "),
+                            )
+                                : logInUser.nameOfJuniorHighSchool != ""
+                                ? ListTile(
+                              title: Text(
+                                  "Junior High School: ${logInUser.nameOfJuniorHighSchool} "),
+                            )
+                                : logInUser.nameOfSeniorHighSchool != ""
+                                ? ListTile(
+                                 title: Text(
+                                  "Senior High School: ${logInUser.nameOfSeniorHighSchool} "),
+                            )
+                                : logInUser.nameOfTertiary != ""
+                                ? ListTile(
+                              title: Text(
+                                  "Tertiary: ${logInUser.nameOfTertiary} "),
+                            )
+                                : logInUser.profession != ""
+                                ? ListTile(
+                              title: Text(
+                                  "Profession: ${logInUser.profession} "),
+                            )
+                                : ListTile(
+                              title:
+                              Text("Null: Not Set "),
+                            ),
+                            ListTile(
+                              title: Text(
+                                  "No. Of Dependent: ${logInUser.numberOfDependent} "),
+                            ),
+                            ListTile(
+                              title: Text(
+                                  "Marital Status: ${logInUser.maritalStatus} "),
+                            ),
                             ListTile(
                               title: logInUser.numberOfWive != ""
                                   ? Text(
@@ -282,74 +360,34 @@ class _MyHomePageState extends State<MyHomePage> {
                             ListTile(
                               title: logInUser.numberOfFemaleChildren != ""
                                   ? Text(
-                                      "Females: ${logInUser.numberOfFemaleChildren} ")
-                                  : Text("Females: Not Set"),
-                            ),
-                            ListTile(
-                              title: logInUser.nameOfMuslimChildren != ""
-                                  ? Text(
-                                      "Muslims Children: ${logInUser.nameOfMuslimChildren} ")
-                                  : Text("Muslims Children: Not Set"),
-                            ),
-                            ListTile(
-                              title: logInUser.nameOfNonMuslimChildren != ""
-                                  ? Text(
-                                      "Non-Muslims Children: ${logInUser.nameOfNonMuslimChildren} ")
-                                  : Text("Non-Muslims Children: Not Set"),
-                            ),
-                          ],
-                        ),
-                      ))
-                  : Card(
-                      margin: EdgeInsets.only(left: 10, top: 10, right: 10),
-                      shadowColor: Colors.green,
-                      elevation: 2.0,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Wrap(
-                          children: [
-                            ListTile(
-                              title:
-                                  Text("Profession: ${logInUser.profession} "),
-                            ),
-                            ListTile(
-                              title: Text(
-                                  "No. Of Dependent: ${logInUser.numberOfDependent} "),
-                            ),
-                            ListTile(
-                              title: Text(
-                                  "Marital Status: ${logInUser.maritalStatus} "),
-                            ),
-                            ListTile(
-                              title: logInUser.numberOfWive == null
-                                  ? Text(
-                                      "No. Of Wive: ${logInUser.numberOfWive} ")
-                                  : Text("No. Of Wive: Not Set"),
-                            ),
-                            ListTile(
-                              title: logInUser.numberOfMaleChildren == null
-                                  ? Text(
-                                      "No. Of Males: ${logInUser.numberOfMaleChildren} ")
-                                  : Text("No. Of Males: Not Set"),
-                            ),
-                            ListTile(
-                              title: logInUser.numberOfFemaleChildren == null
-                                  ? Text(
                                       "No. Of Females: ${logInUser.numberOfFemaleChildren} ")
                                   : Text("No. Of Females: Not Set"),
                             ),
                             ListTile(
-                              title: logInUser.nameOfMuslimChildren == null
+                              title: logInUser.nameOfMuslimChildren != ""
                                   ? Text(
                                       "Name Of Muslims: ${logInUser.nameOfMuslimChildren} ")
                                   : Text("Name Of Muslims: Not Set"),
                             ),
                             ListTile(
-                              title: logInUser.nameOfNonMuslimChildren == null
+                              title: logInUser.nameOfNonMuslimChildren != ""
                                   ? Text(
                                       "Name Of Non-Muslims: ${logInUser.nameOfNonMuslimChildren} ")
                                   : Text("Name Of Non-Muslims: Not Set"),
-                            )
+                            ),
+                            Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 5),
+                                  child: ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    updateBranch()));
+                                      },
+                                      child: Text("update")),
+                                ))
                           ],
                         ),
                       )),

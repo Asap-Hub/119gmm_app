@@ -115,16 +115,16 @@ class _registrationState extends State<registration> {
               final isLastStep = currentStep == getSteps().length - 1;
               if (isLastStep) {
                 if (!email.text.trim().contains("@")) {
-                  Fluttertoast.showToast(msg: "Invalid Email");
+                  Fluttertoast.showToast(msg: "");
                 } else if (password.text.trim() !=
                     confirmPassword.text.trim()) {
                   Fluttertoast.showToast(msg: "Password Mismatched");
-                } else {
+                } else if(credentialFormKey.currentState!.validate() && personalFormKey.currentState!.validate() && maritalFormKey.currentState!.validate()) {
                   signUp(email.text.trim().toString(),
                       password.text.trim().toString());
                   Fluttertoast.showToast(
                       msg: "Account Created Successfully",
-                      toastLength: Toast.LENGTH_LONG);
+                      toastLength: Toast.LENGTH_LONG,gravity: ToastGravity.CENTER);
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (context) => landingPage()),
@@ -201,7 +201,7 @@ class _registrationState extends State<registration> {
                       ),
                     ),
                     validator: (value) {
-                      if (email.text.isEmpty) {
+                      if (email.value.text.isEmpty) {
                         return ("Required");
                       }
                     },
@@ -222,7 +222,7 @@ class _registrationState extends State<registration> {
                       ),
                     ),
                     validator: (value) {
-                      if (password.text.isEmpty) {
+                      if (password.value.text.isEmpty) {
                         return ("Required");
                       }
                     },
@@ -243,7 +243,7 @@ class _registrationState extends State<registration> {
                       ),
                     ),
                     validator: (value) {
-                      if (confirmPassword.text.isEmpty) {
+                      if (confirmPassword.value.text.isEmpty) {
                         return ("Required");
                       }
                     },
@@ -264,7 +264,7 @@ class _registrationState extends State<registration> {
                       ),
                     ),
                     validator: (value) {
-                      if (number.text.trim().length < 10) {
+                      if (number.value.text.length < 10) {
                         return(
                             "Phone number can not be less than 10");
                       }
@@ -320,7 +320,7 @@ class _registrationState extends State<registration> {
                     ),
                     validator: (value) {
                       if (otherName.text.isEmpty) {
-                        Fluttertoast.showToast(msg: "required");
+                        return ("Required");
                       }
                     },
                   ),
@@ -661,8 +661,7 @@ class _registrationState extends State<registration> {
                                   child: TextFormField(
                                       validator: (value) {
                                         if (startingYear.text.isEmpty) {
-                                          Fluttertoast.showToast(
-                                              msg: "Required");
+                                          return ("Required");
                                         }
                                       },
                                       onChanged: (value) {
@@ -1074,18 +1073,18 @@ class _registrationState extends State<registration> {
 
   void signUp(String email, String password) async {
     try {
-      if (credentialFormKey.currentState!.validate() && personalFormKey.currentState!.validate() && maritalFormKey.currentState!.validate()) {
-        await _auth
-            .createUserWithEmailAndPassword(email: email, password: password)
-            .then((value) => {
-                  postDetailsToFireStore(),
-                })
-            .catchError((e) {
-          Fluttertoast.showToast(msg: e!.message);
-        });
-
+      // if (credentialFormKey.currentState!.validate() && personalFormKey.currentState!.validate() && maritalFormKey.currentState!.validate()) {
+      await _auth
+          .createUserWithEmailAndPassword(email: email, password: password)
+          .then((value) =>
+      {
+        postDetailsToFireStore(),
+      })
+          .catchError((e) {
+        Fluttertoast.showToast(msg: e!.message);
+      });
+    //}
         //Fluttertoast.showToast(msg: "Please Wait, you account is been creating");
-      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already') {
         Fluttertoast.showToast(msg: "The Account Already Exist");
