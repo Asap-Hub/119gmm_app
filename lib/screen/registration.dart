@@ -41,7 +41,7 @@ class _registrationState extends State<registration> {
   String branches = "";
   String group = "";
 
-  //marital text editing controller
+  //marital status text editing controller
   TextEditingController profession = TextEditingController();
   TextEditingController startingYear = TextEditingController();
   TextEditingController completingYear = TextEditingController();
@@ -85,6 +85,7 @@ class _registrationState extends State<registration> {
     //marital status
     status;
     maritalStatus = status["marital"]![0];
+    //levels
     levels;
     level = levels["level"]![0];
   }

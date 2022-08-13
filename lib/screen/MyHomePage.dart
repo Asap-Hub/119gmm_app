@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gmm_app/model/userModel.dart';
 import 'package:gmm_app/screen/updateBranch.dart';
+import 'package:gmm_app/screen/updateStatus.dart';
 import 'package:gmm_app/screen/zakat.dart';
 import 'package:gmm_app/screen/infag.dart';
 import 'package:gmm_app/screen/landingPage.dart';
@@ -223,17 +224,16 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         Center(
                             child: Padding(
-                              padding: const EdgeInsets.only(bottom: 5),
-                              child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                updateBranch()));
-                                  },
-                                  child: Text("update")),
-                            ))
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => updateBranch()));
+                              },
+                              child: Text("update")),
+                        ))
                       ],
                     ),
                   )),
@@ -265,7 +265,30 @@ class _MyHomePageState extends State<MyHomePage> {
                                         : logInUser.nameOfTertiary != ""
                                             ? ListTile(
                                                 title: Text(
-                                                    "Tertiary: ${logInUser.nameOfTertiary} "),
+                                                    "Tertiary: ${logInUser.nameOfTertiary}",
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                    )),
+                                                subtitle: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Starting Date: ${logInUser.startingYear}",
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    Text(
+                                                      "Completing Year: ${logInUser.completingYear}",
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ],
+                                                ),
                                               )
                                             : logInUser.profession != ""
                                                 ? ListTile(
@@ -286,17 +309,17 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             Center(
                                 child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 5),
-                                  child: ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    updateBranch()));
-                                      },
-                                      child: Text("update")),
-                                ))
+                              padding: const EdgeInsets.only(bottom: 5),
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                updateStatus()));
+                                  },
+                                  child: Text("update")),
+                            ))
                           ],
                         ),
                       ))
@@ -310,33 +333,56 @@ class _MyHomePageState extends State<MyHomePage> {
                           children: [
                             logInUser.nameOfPrimarySchool != ""
                                 ? ListTile(
-                              title: Text(
-                                  "Primary School: ${logInUser.nameOfPrimarySchool} "),
-                            )
+                                    title: Text(
+                                        "Primary School: ${logInUser.nameOfPrimarySchool} "),
+                                  )
                                 : logInUser.nameOfJuniorHighSchool != ""
-                                ? ListTile(
-                              title: Text(
-                                  "Junior High School: ${logInUser.nameOfJuniorHighSchool} "),
-                            )
-                                : logInUser.nameOfSeniorHighSchool != ""
-                                ? ListTile(
-                                 title: Text(
-                                  "Senior High School: ${logInUser.nameOfSeniorHighSchool} "),
-                            )
-                                : logInUser.nameOfTertiary != ""
-                                ? ListTile(
-                              title: Text(
-                                  "Tertiary: ${logInUser.nameOfTertiary} "),
-                            )
-                                : logInUser.profession != ""
-                                ? ListTile(
-                              title: Text(
-                                  "Profession: ${logInUser.profession} "),
-                            )
-                                : ListTile(
-                              title:
-                              Text("Null: Not Set "),
-                            ),
+                                    ? ListTile(
+                                        title: Text(
+                                            "Junior High School: ${logInUser.nameOfJuniorHighSchool} "),
+                                      )
+                                    : logInUser.nameOfSeniorHighSchool != ""
+                                        ? ListTile(
+                                            title: Text(
+                                                "Senior High School: ${logInUser.nameOfSeniorHighSchool} "),
+                                          )
+                                        : logInUser.nameOfTertiary != ""
+                                            ? ListTile(
+                                                title: Text(
+                                                    "Tertiary: ${logInUser.nameOfTertiary}",
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                    )),
+                                                subtitle: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Starting Date: ${logInUser.startingYear}",
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    Text(
+                                                      "Completing Year: ${logInUser.completingYear}",
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            : logInUser.profession != ""
+                                                ? ListTile(
+                                                    title: Text(
+                                                        "Profession: ${logInUser.profession} "),
+                                                  )
+                                                : ListTile(
+                                                    title:
+                                                        Text("Null: Not Set "),
+                                                  ),
                             ListTile(
                               title: Text(
                                   "No. Of Dependent: ${logInUser.numberOfDependent} "),
@@ -377,17 +423,17 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             Center(
                                 child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 5),
-                                  child: ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    updateBranch()));
-                                      },
-                                      child: Text("update")),
-                                ))
+                              padding: const EdgeInsets.only(bottom: 5),
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                updateStatus()));
+                                  },
+                                  child: Text("update")),
+                            ))
                           ],
                         ),
                       )),

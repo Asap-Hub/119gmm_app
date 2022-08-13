@@ -337,7 +337,6 @@ class _updateBranchState extends State<updateBranch> {
       // postDetailsToFireStore().catchError((e){
       // Fluttertoast.showToast(msg: e!.message);
       FirebaseFirestore firebaseStore = FirebaseFirestore.instance;
-      User? user = _auth.currentUser;
       await firebaseStore.collection("Users").doc(logInUser.uid).update({
         "region": region.trim(),
         "district": district.trim(),
@@ -362,34 +361,4 @@ class _updateBranchState extends State<updateBranch> {
       Fluttertoast.showToast(msg: e.message);
     }
   }
-
-  updateUserData() async {
-    UserModel userModel = UserModel();
-    userModel.region = region.trim();
-    userModel.district = district.trim();
-    userModel.branches = branches.trim();
-    userModel.homeTown = homeTown.text.trim();
-    userModel.residentialAddress = residentialAddress.text.trim();
-    userModel.group = group.trim();
-  }
-//Navigator.of(context).popUntil((route) => route.isFirst);
-//   } postDetailsToFireStore() async {
-// //calling firestore
-//     //calling user model
-//     //sending data to the server
-//     FirebaseFirestore firebaseStore = FirebaseFirestore.instance;
-//     User? user = _auth.currentUser;
-//     UserModel userModel = UserModel();
-//     //writing values to the FirebaseStore
-//     userModel.region = region.trim();
-//     userModel.district = district.trim();
-//     userModel.branches = branches.trim();
-//     userModel.homeTown = homeTown.text.trim();
-//     userModel.residentialAddress = residentialAddress.text.trim();
-//     userModel.group = group.trim();
-//     await firebaseStore
-//         .collection("Users")
-//         .doc(logInUser.uid).set(userModel.toMap());
-//     //Navigator.of(context).popUntil((route) => route.isFirst);
-//   }
 }
