@@ -62,7 +62,7 @@ class _payZakatState extends State<payZakat> {
                     elevation: 2.0,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Center(child: Text("""Kindly Adhere to the Instructions!.""", style: TextStyle(fontSize: 17, color: Colors.white),)),
+                      child: Center(child: Text("""Kindly Adhere to the Instructions -:)""", style: TextStyle(fontSize: 17, color: Colors.white),)),
                     ),),),
                   SizedBox(height: 5,),
                   Container(
@@ -75,12 +75,12 @@ class _payZakatState extends State<payZakat> {
                         children: [
                           Text("MTN Mobile Number:",
                               style: TextStyle(fontSize: 16)),
-                          Text(" 0245045867", style: TextStyle(fontSize: 16)),
+                          Text(" 0555857384", style: TextStyle(fontSize: 16)),
                           Divider(
                             color: Colors.green,
                             thickness: 1.5,
                           ),
-                          Text("MoMo Name: Asap Trading",
+                          Text("MoMo Name: Ghana Muslim Mission",
                               style: TextStyle(fontSize: 16)),
                         ],
                       ),
@@ -100,14 +100,14 @@ class _payZakatState extends State<payZakat> {
                           Text("Vodacash Number:",
                               style: TextStyle(fontSize: 16)),
                           Text(
-                            " 0205045867",
+                            "0509705450",
                             style: TextStyle(fontSize: 16),
                           ),
                           Divider(
                             color: Colors.green,
                             thickness: 1.5,
                           ),
-                          Text("MoMo Name: Asap Trading",
+                          Text("Vodacash Name: Ghana Muslim Mission",
                               style: TextStyle(fontSize: 16)),
                         ],
                       ),
@@ -334,14 +334,14 @@ class _payZakatState extends State<payZakat> {
 
   void payZakat() async {
     try {
-      if (zakatNumber.value.text.trim() == "0245045867" &&
-          zakatNumber.value.text.trim() == "0245045867") {
+      if (zakatNumber.value.text.trim() == "0555857384" ||
+          zakatNumber.value.text.trim() == "0509705450") {
         postReportToFireStore();
         Fluttertoast.showToast(
             msg:
-                "Payment Submitted Successful, Admins will review it soon. Thank you.");
-      } else if (zakatNumber.value.text.trim() != "0245045867" &&
-          zakatNumber.value.text.trim() != "0245045867") {
+                "Payment Submitted Successful, Admin will review it soon. Thank you.");
+      } else if (zakatNumber.value.text.trim() != "0555857384" ||
+          zakatNumber.value.text.trim() != "0509705450") {
         Fluttertoast.showToast(
             msg: "Kindly input correct Zakat Account Number.");
       }

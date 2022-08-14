@@ -19,35 +19,40 @@ class _zakatState extends State<zakat> {
     final data = FirebaseDatabase.instance.reference().child('payZakat');
     return SafeArea(
         child: Scaffold(
-          floatingActionButton: FloatingActionButton(
-            backgroundColor: Colors.white,
-            child: Image.asset('assets/zakat.png', height: 50, width: 50),
-            onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => payZakat()));
-            },
-          ),
-          body: Container(
-            height: double.infinity,
-            child: FirebaseAnimatedList(
-              defaultChild: Center(child: CircularProgressIndicator(color: Colors.green,),),
-              query: data,
-              itemBuilder: (BuildContext context, DataSnapshot snapshot,
-                  Animation<double> animation, int index) {
-                Map reportData = snapshot.value as Map;
-                reportData["key"] = snapshot.key;
-                  //print(reportData['email']);
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child:listItem(reportData: reportData),
-                  );
-                },
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white,
+        child: Image.asset('assets/zakat.png', height: 50, width: 50),
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => payZakat()));
+        },
+      ),
+      body: Container(
+        height: double.infinity,
+        child: FirebaseAnimatedList(
+          defaultChild: Center(
+            child: CircularProgressIndicator(
+              color: Colors.green,
             ),
           ),
-
-        ));
+          query: data,
+          itemBuilder: (BuildContext context, DataSnapshot snapshot,
+              Animation<double> animation, int index) {
+            Map reportData = snapshot.value as Map;
+            reportData["key"] = snapshot.key;
+            //print(reportData['email']);
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: listItem(reportData: reportData),
+            );
+          },
+        ),
+      ),
+    ));
   }
+
   Widget listItem({required Map reportData}) {
+    print(reportData);
     return Card(
       shadowColor: Colors.green,
       //elevation: 5.0,
@@ -58,7 +63,7 @@ class _zakatState extends State<zakat> {
               topRight: Radius.elliptical(10.0, 10.0),
               bottomRight: Radius.elliptical(10.0, 10.0))),
       child: Container(
-        height: MediaQuery.of(context).size.height/2.3,
+        height: MediaQuery.of(context).size.height / 2.0,
         width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,22 +71,29 @@ class _zakatState extends State<zakat> {
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Container(
-                color: Colors.green,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.elliptical(10.0, 10.0),
+                      topRight: Radius.elliptical(10.0, 10.0)),
+                  color: Colors.green,
+                ),
                 height: 50,
                 width: double.infinity,
                 child: Center(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 10),
+                    padding: const EdgeInsets.only(left: 10, top: 5,bottom: 5),
                     child: Row(
                       children: [
                         Text(
                           'Zakat NO: ${reportData['zakatNumber']}',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
+                          style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold, color: Colors.white),
                         ),
-                        SizedBox(width: 10,),
+                        SizedBox(
+                          width: 10,
+                        ),
                         Text(
                           'Status: ${reportData['status']}',
-                          style: TextStyle(fontSize: 20,color: Colors.white),
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                         ),
                       ],
                     ),
@@ -89,65 +101,51 @@ class _zakatState extends State<zakat> {
                 ),
               ),
             ),
-            GestureDetector(
-              onTap: (){
-                Clipboard.setData(ClipboardData(text: '${reportData['uuid']}')).then((value){
-                  Fluttertoast.showToast(msg: "Copied to Clipboard");
-                });
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10,bottom: 5),
-                child: Row(
-                  children: [
-                    Text(
-                      '${reportData['transactionID']}',
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                    Icon(Icons.copy_outlined)
-                  ],
-                ),
-              ),
-            ),
             Padding(
-              padding: const EdgeInsets.only(left: 10, top: 5,bottom: 5),
+              padding: const EdgeInsets.only(left: 10, top: 5, bottom: 5),
               child: Text(
-                '${reportData['payerName']}'.toUpperCase(),
+                'Name: ${reportData['payerName']}'.toUpperCase(),
                 style: TextStyle(fontSize: 20),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 10, top: 5,bottom: 5),
+              padding: const EdgeInsets.only(left: 10, top: 5, bottom: 5),
               child: Text(
                 'Amount:${reportData['amount']}'.toUpperCase(),
                 style: TextStyle(fontSize: 20),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 10,bottom: 5),
+              padding: const EdgeInsets.only(left: 10, bottom: 5),
               child: Text(
                 'Payer Number: ${reportData['payerNumber']}',
                 style: TextStyle(fontSize: 20),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 10,bottom: 5),
+              padding: const EdgeInsets.only(left: 10,top: 5,bottom: 5),
+              child: Text(
+                'Ref.ID: ${reportData['transactionID']}',
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, bottom: 5),
               child: Text(
                 'Zakat ID:${reportData['zakatID']}',
                 style: TextStyle(fontSize: 20),
               ),
             ),
             Container(
-              color: Colors.green,
+              color: Color(0xFF5d9671),
               height: 50,
               width: double.infinity,
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 10,bottom: 10),
+                  padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
                   child: Text(
                     'Created At: ${reportData['time']}',
-                    style: TextStyle(fontSize: 16, color: Colors.white),
+                    style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
                 ),
               ),

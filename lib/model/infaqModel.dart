@@ -7,7 +7,7 @@ class infaqModel{
   String? refId;
   String? time;
   String? status;
-  int? infagID;
+  String? infagID;
   infaqModel({this.infagID,this.status,this.time, this.uid,this.payerNumber, this.amount,this.infaqNumber,this.payerName
   ,this.refId});
 

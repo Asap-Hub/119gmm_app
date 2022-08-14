@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +14,9 @@ class infag extends StatefulWidget {
 }
 
 class _infagState extends State<infag> {
-  var isLoading = false;
   @override
   Widget build(BuildContext context) {
     final data = FirebaseDatabase.instance.reference().child('payInfaq');
-
     return SafeArea(
         child: Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -45,10 +44,10 @@ class _infagState extends State<infag> {
           },
         ),
       ),
-
-    ));
+        ));
   }
   Widget listItem({required Map reportData}) {
+    User? user = FirebaseAuth.instance.currentUser;
     return Card(
       shadowColor: Colors.green,
       //elevation: 5.0,
@@ -59,7 +58,7 @@ class _infagState extends State<infag> {
               topRight: Radius.elliptical(10.0, 10.0),
               bottomRight: Radius.elliptical(10.0, 10.0))),
       child: Container(
-        height: MediaQuery.of(context).size.height/2.3,
+        height: MediaQuery.of(context).size.height/2.0,
         width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +66,12 @@ class _infagState extends State<infag> {
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Container(
-                color: Colors.green,
+                decoration: BoxDecoration(borderRadius: BorderRadius.only(
+                    topLeft: Radius.elliptical(10.0, 10.0),
+                    topRight: Radius.elliptical(10.0, 10.0)),
+                    color: Colors.green,
+                ),
+
                 height: 50,
                 width: double.infinity,
                 child: Center(
@@ -77,12 +81,12 @@ class _infagState extends State<infag> {
                       children: [
                         Text(
                           'INFAQ NO: ${reportData['infaqNumber']}',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
+                          style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold, color: Colors.white),
                         ),
                         SizedBox(width: 10,),
                         Text(
-                          'STATUS: ${reportData['status']}',
-                          style: TextStyle(fontSize: 20,color: Colors.white),
+                          'Status: ${reportData['status']}',
+                          style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold, color: Colors.white),
                         ),
                       ],
                     ),
@@ -90,65 +94,51 @@ class _infagState extends State<infag> {
                 ),
               ),
             ),
-            GestureDetector(
-              onTap: (){
-                Clipboard.setData(ClipboardData(text: '${reportData['uuid']}')).then((value){
-                  Fluttertoast.showToast(msg: "Copied to Clipboard");
-                });
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10,bottom: 5),
-                child: Row(
-                  children: [
-                    Text(
-                      '${reportData['uuid']}',
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                    Icon(Icons.copy_outlined)
-                  ],
-                ),
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.only(left: 10, top: 5,bottom: 5),
               child: Text(
-                '${reportData['payerName']}'.toUpperCase(),
+                'Name: ${reportData['payerName']}'.toUpperCase(),
                 style: TextStyle(fontSize: 20),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 10, top: 5,bottom: 5),
               child: Text(
-                'Amount:${reportData['amount']}'.toUpperCase(),
+                'Amount: ${reportData['amount']}'.toUpperCase(),
                 style: TextStyle(fontSize: 20),
               ),
             ),
             Padding(
-                padding: const EdgeInsets.only(left: 10,bottom: 5),
+                padding: const EdgeInsets.only(left: 10,top: 5,bottom: 5),
               child: Text(
                 'Payer Number: ${reportData['payerNumber']}',
                 style: TextStyle(fontSize: 20),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 10,bottom: 5),
+              padding: const EdgeInsets.only(left: 10,top: 5,bottom: 5),
               child: Text(
-                'REF.ID:${reportData['refId']}',
+                'REF.ID: ${reportData['refId']}',
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10,top: 5,bottom: 5),
+              child: Text(
+                'Infaq ID:${reportData['infaqID']}',
                 style: TextStyle(fontSize: 20),
               ),
             ),
             Container(
-              color: Colors.green,
+              color: Color(0xFF5d9671),
               height: 50,
               width: double.infinity,
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10, top: 10,bottom: 10),
                   child: Text(
-                    'Created At: ${reportData['time']}',
-                    style: TextStyle(fontSize: 16, color: Colors.white),
+                    'Created At: ${user?.metadata.creationTime}',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
                 ),
               ),
