@@ -14,12 +14,9 @@ class zakat extends StatefulWidget {
 }
 
 class _zakatState extends State<zakat> {
-  var isLoading = false;
   @override
   Widget build(BuildContext context) {
     final data = FirebaseDatabase.instance.reference().child('payZakat');
-    //Query dataCheck = FirebaseDatabase.instance.reference().child('payZakat');
-
     return SafeArea(
         child: Scaffold(
           floatingActionButton: FloatingActionButton(

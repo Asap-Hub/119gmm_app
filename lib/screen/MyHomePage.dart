@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gmm_app/model/userModel.dart';
 import 'package:gmm_app/screen/updateBranch.dart';
 import 'package:gmm_app/screen/updateStatus.dart';
@@ -8,7 +12,7 @@ import 'package:gmm_app/screen/zakat.dart';
 import 'package:gmm_app/screen/infag.dart';
 import 'package:gmm_app/screen/landingPage.dart';
 import 'package:gmm_app/screen/report.dart';
-import 'package:url_launcher/link.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'addReport.dart';
@@ -26,6 +30,8 @@ class _MyHomePageState extends State<MyHomePage> {
   int selectedItem = 0;
   User? user = FirebaseAuth.instance.currentUser;
   UserModel logInUser = UserModel();
+  final logoUrl = "https://firebasestorage.googleapis.com/v0/b/gmmapp-76672.appspot.com/o/gmm_logo.png?alt=media&token=f3a08baf-b534-4546-962f-316b065205aa";
+
 
   @override
   void initState() {
@@ -40,6 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
         this.logInUser = UserModel.fromMap(value.data());
       });
     });
+    logoUrl;
   }
 
   @override
@@ -56,7 +63,6 @@ class _MyHomePageState extends State<MyHomePage> {
         });
       });
     });
-    //print(logInUser.nameOfSeniorHighSchool);
     return SafeArea(
       child: Scaffold(
         key: drawerKey,
@@ -141,16 +147,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircleAvatar(
-                    backgroundImage: user!.photoURL == null
-                        ? AssetImage('assets/gmm_logo.png')
-                        : AssetImage("${user.photoURL}"),
+                    backgroundColor: Colors.grey,
+                    backgroundImage:
+                    logInUser.url == null ?
+                    NetworkImage(logoUrl):
+                    NetworkImage(logInUser.url.toString()),
                     radius: 50,
                   ),
                   Padding(
                       padding: EdgeInsets.only(top: 50),
                       child: IconButton(
                           onPressed: () {
-                            print("am here");
+                            pickAndUploadFile();
                           },
                           icon: Icon(Icons.edit)))
                 ],
@@ -185,7 +193,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         ListTile(
                           title: Text(
-                              "Registration Date: ${user.metadata.creationTime} "),
+                              "Registration Date: ${user!.metadata.creationTime} "),
                         ),
                         ListTile(
                           title: Text(
@@ -238,7 +246,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   )),
               Divider(color: Colors.green),
-              logInUser.maritalStatus == "Single".toLowerCase().trim()
+              logInUser.maritalStatus == "Single".trim()
                   ? Card(
                       margin: EdgeInsets.only(left: 10, top: 10, right: 10),
                       shadowColor: Colors.green,
@@ -481,5 +489,32 @@ class _MyHomePageState extends State<MyHomePage> {
         enableJavaScript: true,
       );
     }
+  }
+  Future pickAndUploadFile()async{
+
+    FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+    final ImagePicker _picker = ImagePicker();
+    // Pick an image
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery,imageQuality: 50, maxWidth: 150);
+    if(image != null){
+      var snapshot = await firebaseStorage.ref().child('image/imageName').putFile(File(image.path.toString())).storage;
+      var downloadUrl = await snapshot.ref().child('image/imageName').getDownloadURL();
+      //
+      FirebaseFirestore firebaseStore = FirebaseFirestore.instance;
+      await firebaseStore.collection("Users").doc(logInUser.uid).update({
+        "url": downloadUrl,
+      });
+
+
+      // setState(() {
+      //   imageUrl = downloadUrl;
+      //   print("imageUrl: ${imageUrl}");
+      //   print("downloadUrl: ${downloadUrl}");
+      // });
+    }
+    else {
+      Fluttertoast.showToast(msg: "No Image Path Received");
+    }
+
   }
 }

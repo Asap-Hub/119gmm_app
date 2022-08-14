@@ -1,14 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gmm_app/screen/infag.dart';
 import 'package:gmm_app/screen/payInfaq.dart';
 import 'package:gmm_app/screen/payZakat.dart';
-import 'package:gmm_app/screen/report.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'addReport.dart';
-import 'zakat.dart';
 
 class home extends StatefulWidget {
   const home({Key? key}) : super(key: key);
@@ -18,8 +15,6 @@ class home extends StatefulWidget {
 }
 
 class _homeState extends State<home> {
-  late Widget selectedItem;
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -242,14 +237,14 @@ class _homeState extends State<home> {
     ));
   }
 
-  List<Widget> Screen = <Widget>[home(), infag(), zakat(), report()];
-
-  void _onItemTapped(Widget index) {
-    setState(() {
-      selectedItem = index;
-      print(selectedItem);
-    });
-  }
+  // List<Widget> Screen = <Widget>[home(), infag(), zakat(), report()];
+  //
+  // void _onItemTapped(Widget index) {
+  //   setState(() {
+  //     selectedItem = index;
+  //     print(selectedItem);
+  //   });
+  //}
   Future openBrowserURL({required String url, bool inApp = false}) async {
     if (await canLaunch(url)) {
       await launch(

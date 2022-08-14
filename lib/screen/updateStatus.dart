@@ -674,35 +674,29 @@ class _updateStatusState extends State<updateStatus> {
   }
   void updateStat() async {
     try {
-      FirebaseFirestore firebaseStore = FirebaseFirestore.instance;
-      await firebaseStore.collection("Users").doc(logInUser.uid).update({
-        "nameOfPrimarySchool": nameOfPrimarySchool.text.trim(),
-        "nameOfJuniorHighSchool": nameOfJunior.text.trim(),
-        "nameOfSeniorHighSchool": nameOfSeniorSchool.text.trim(),
-        "nameOfTertiary": nameOfTertiary.text.trim(),
-        "profession": profession.text.trim(),
-        "numberOfDependent": numberOfDependent.text.trim(),
-        "maritalStatus": maritalStatus.trim(),
-        "numberOfWive": numberOfWive.text.trim(),
-        "numberOfMaleChildren": numberOfMaleChildren.text.trim(),
-        "numberOfFemaleChildren": numberOfFemaleChildren.text.trim(),
-        "nameOfMuslimChildren": nameOfMuslimChildren.text.trim(),
-        "nameOfNonMuslimChildren": nameOfNonMuslimChildren.text.trim(),
-        "startingYear": startingYear.text.trim(),
-        "completingYear": completingYear.text.trim(),
-      }).catchError((e) {
-        Fluttertoast.showToast(
-            gravity: ToastGravity.CENTER,
-            toastLength: Toast.LENGTH_LONG,
-            msg: e!.message);
-      });
-    }
-    // )
-    //      .catchError((e) {
-    //    Fluttertoast.showToast(msg: e!.message);
-    //  });
-
-    //Fluttertoast.showToast(msg: "Please Wait, you account is been creating");
+        FirebaseFirestore firebaseStore = FirebaseFirestore.instance;
+        await firebaseStore.collection("Users").doc(logInUser.uid).update({
+          "nameOfPrimarySchool": nameOfPrimarySchool.text.trim(),
+          "nameOfJuniorHighSchool": nameOfJunior.text.trim(),
+          "nameOfSeniorHighSchool": nameOfSeniorSchool.text.trim(),
+          "nameOfTertiary": nameOfTertiary.text.trim(),
+          "profession": profession.text.trim(),
+          "numberOfDependent": numberOfDependent.text.trim(),
+          "maritalStatus": maritalStatus.trim(),
+          "numberOfWive": numberOfWive.text.trim(),
+          "numberOfMaleChildren": numberOfMaleChildren.text.trim(),
+          "numberOfFemaleChildren": numberOfFemaleChildren.text.trim(),
+          "nameOfMuslimChildren": nameOfMuslimChildren.text.trim(),
+          "nameOfNonMuslimChildren": nameOfNonMuslimChildren.text.trim(),
+          "startingYear": startingYear.text.trim(),
+          "completingYear": completingYear.text.trim(),
+        }).catchError((e) {
+          Fluttertoast.showToast(
+              gravity: ToastGravity.CENTER,
+              toastLength: Toast.LENGTH_LONG,
+              msg: e!.message);
+        });
+      }
     on SocketException catch (e) {
       Fluttertoast.showToast(msg: e.message);
     }

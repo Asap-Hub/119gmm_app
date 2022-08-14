@@ -1,5 +1,6 @@
 class UserModel {
   String? uid;
+  String? url;
 
   //credentials
   String? email;
@@ -36,6 +37,7 @@ class UserModel {
 
   UserModel(
       {this.uid,
+          this.url,
       this.email,
       this.password,
       this.confirmPassword,
@@ -68,6 +70,7 @@ class UserModel {
   factory UserModel.fromMap(map) {
     return UserModel(
         uid: map['uid'],
+        url: map['url'],
         email: map['email'],
         password: map['password'],
         confirmPassword: map['confirmPassword'],

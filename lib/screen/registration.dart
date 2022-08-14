@@ -1129,6 +1129,7 @@ class _registrationState extends State<registration> {
     userModel.nameOfTertiary = nameOfTertiary.text.trim();
     userModel.startingYear = startingYear.text.trim();
     userModel.completingYear = completingYear.text.trim();
+    userModel.url = "";
 
     await firebaseStore
         .collection("Users")

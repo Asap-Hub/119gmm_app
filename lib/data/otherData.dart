@@ -7,8 +7,9 @@ var fellowship = {
 };
 
 var status = {
-  "marital":["Single", "Marriage"],
+  "marital":["Single", "Married"],
 };
+
 var levels = {
   "level":["Primary School", "Junior High School", "Senior High School", "Tertiary","Worker"],
 };
