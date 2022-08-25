@@ -30,7 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int selectedItem = 0;
   User? user = FirebaseAuth.instance.currentUser;
   UserModel logInUser = UserModel();
-  final logoUrl = "https://firebasestorage.googleapis.com/v0/b/gmmapp-76672.appspot.com/o/gmm_logo.png?alt=media&token=f3a08baf-b534-4546-962f-316b065205aa";
+  final defaultUserLogo = "https://firebasestorage.googleapis.com/v0/b/gmmapp-76672.appspot.com/o/gmm_logo.png?alt=media&token=f3a08baf-b534-4546-962f-316b065205aa";
 
 
   @override
@@ -46,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
         this.logInUser = UserModel.fromMap(value.data());
       });
     });
-    logoUrl;
+    defaultUserLogo;
   }
 
   @override
@@ -62,7 +62,11 @@ class _MyHomePageState extends State<MyHomePage> {
           this.logInUser = UserModel.fromMap(value.data());
         });
       });
+      logInUser.url;
     });
+    // print("default Logo: $defaultUserLogo");
+    // print(logInUser.url);
+
     return SafeArea(
       child: Scaffold(
         key: drawerKey,
@@ -150,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     backgroundColor: Colors.grey,
                     backgroundImage:
                     logInUser.url == null ?
-                    NetworkImage(logoUrl):
+                    NetworkImage(defaultUserLogo):
                     NetworkImage(logInUser.url.toString()),
                     radius: 50,
                   ),
@@ -159,6 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: IconButton(
                           onPressed: () {
                             pickAndUploadFile();
+                            Fluttertoast.showToast(msg: "Kindly Pick An Image", toastLength: Toast.LENGTH_LONG );
                           },
                           icon: Icon(Icons.edit)))
                 ],
@@ -491,14 +496,13 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
   Future pickAndUploadFile()async{
-
     FirebaseStorage firebaseStorage = FirebaseStorage.instance;
     final ImagePicker _picker = ImagePicker();
     // Pick an image
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery,imageQuality: 50, maxWidth: 150);
     if(image != null){
-      var snapshot = await firebaseStorage.ref().child('image/imageName').putFile(File(image.path.toString())).storage;
-      var downloadUrl = await snapshot.ref().child('image/imageName').getDownloadURL();
+      var snapshot = await firebaseStorage.ref().child(user!.uid).child('image/imageName').putFile(File(image.path.toString())).storage;
+      var downloadUrl = await snapshot.ref().child(user!.uid).child('image/imageName').getDownloadURL();
       //
       FirebaseFirestore firebaseStore = FirebaseFirestore.instance;
       await firebaseStore.collection("Users").doc(logInUser.uid).update({

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +15,10 @@ class zakat extends StatefulWidget {
 }
 
 class _zakatState extends State<zakat> {
+  User? user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
-    final data = FirebaseDatabase.instance.reference().child('payZakat');
+    final data = FirebaseDatabase.instance.reference().child('Zakat').child(user!.uid).child("myZakat");
     return SafeArea(
         child: Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -52,7 +54,6 @@ class _zakatState extends State<zakat> {
   }
 
   Widget listItem({required Map reportData}) {
-    print(reportData);
     return Card(
       shadowColor: Colors.green,
       //elevation: 5.0,

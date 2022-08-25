@@ -356,9 +356,9 @@ class _payZakatState extends State<payZakat> {
     //sending data to the server
     User? user = _auth.currentUser;
     zakatModel model = zakatModel();
-    final db = realtimeDb.reference().child("payZakat");
+    final db = realtimeDb.reference().child("Zakat").child(user!.uid).child("myZakat");
     //writing values to the FirebaseStore
-    model.uid = user!.uid;
+    model.uid = user.uid;
     model.zakatNumber = zakatNumber.text.trim();
     model.payerName = payerName.text.trim();
     model.payerNumber = payerNumber.text.trim();

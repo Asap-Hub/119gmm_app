@@ -340,9 +340,9 @@ class _payInfaqState extends State<payInfaq> {
     FirebaseFirestore firebaseStore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
     infaqModel model = infaqModel();
-    final db = realtimeDb.reference().child("payInfaq");
+    final db = realtimeDb.reference().child("Infaq").child(user!.uid).child("myInfaq");
     //writing values to the FirebaseStore
-    model.uid = user!.uid;
+    model.uid = user.uid;
     model.infaqNumber = infaqNumber.text.trim();
     model.payerName = payerName.text.trim();
     model.payerNumber = payerNumber.text.trim();

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,9 +14,12 @@ class report extends StatefulWidget {
 }
 
 class _reportState extends State<report> {
+  //FirebaseAuth _auth = FirebaseAuth.instance;
+  User? user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
-   final data  = FirebaseDatabase.instance.reference().child('report');
+   final data  = FirebaseDatabase.instance.reference().child("Report").child(user!.uid).child("MyReports");
+   print(user);
     return SafeArea(
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
@@ -54,44 +58,82 @@ class _reportState extends State<report> {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
               bottomLeft: Radius.elliptical(10.0, 10.0),
-              bottomRight: Radius.elliptical(10.0, 10.0))),
-      child: Container(
-        height: 250,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Full Name: ${reportData['fullName']}',
-                style: TextStyle(
-                  fontSize: 18,
+              bottomRight: Radius.elliptical(10.0, 10.0),
+
+          )),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.elliptical(10.0, 10.0),
+                topRight: Radius.elliptical(10.0, 10.0),
+              bottomLeft: Radius.elliptical(10.0, 10.0),
+              bottomRight: Radius.elliptical(10.0, 10.0),
+            ),
+            color: Colors.green,
+          ),
+          height: MediaQuery.of(context).size.height / 2.15,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, top: 5,bottom: 5),
+                  child: Text(
+                    'Name: ${reportData['fullName']}',
+                    style: TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold,color: Colors.white
+                    ),
+                  ),
                 ),
-              ),
-              Text(
-                'Email: ${reportData['email']}',
-                style: TextStyle(fontSize: 18),
-              ),
-              Text(
-                'Contact: ${reportData['contact']}',
-                style: TextStyle(fontSize: 18),
-              ),
-              Divider(
-                color: Colors.grey,
-                height: 5.0,
-              ),
-              Text(
-                'Message: ${reportData['message']}',
-                style: TextStyle(fontSize: 20),
-              ),
-              Divider(
-                color: Colors.grey,
-              ),
-              Text(
-                'Created At: ${reportData['time']}',
-                style: TextStyle(fontSize: 16),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, top: 5,bottom: 5),
+                  child: Text(
+                    'Email: ${reportData['email']}',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, top: 5,bottom: 5),
+                  child: Text(
+                    'Contact: ${reportData['contact']}',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                ),
+                Divider(
+                  color: Colors.grey,
+                  height: 5.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, top: 5,bottom: 5),
+                  child: Text(
+                    'Message: ${reportData['message']}',
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                ),
+                Divider(
+                  color: Colors.grey,
+                ),
+                Container(
+                  color: Color(0xFF5d9671),
+                  height: 50,
+                  width: double.infinity,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+                      child: Wrap(
+                        children:[ Text(
+                          'Created At: ${reportData['time']}',
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),]
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

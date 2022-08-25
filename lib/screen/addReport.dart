@@ -210,9 +210,9 @@ class _addReportState extends State<addReport> {
     //sending data to the server
     User? user = _auth.currentUser;
     reportModel model = reportModel();
-    final db = realtimeDb.reference().child("report");
+    final db = realtimeDb.reference().child("Report").child(user!.uid).child("MyReports");
     //writing values to the FirebaseStore
-    model.uid = user!.uid;
+    model.uid = user.uid;
     model.email = user.email;
     model.fullName = fullName.text.trim();
     model.contact = contact.text.trim();

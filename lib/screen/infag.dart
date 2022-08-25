@@ -14,9 +14,10 @@ class infag extends StatefulWidget {
 }
 
 class _infagState extends State<infag> {
+  User? user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
-    final data = FirebaseDatabase.instance.reference().child('payInfaq');
+    final data = FirebaseDatabase.instance.reference().child('Infaq').child(user!.uid).child("myInfaq");
     return SafeArea(
         child: Scaffold(
       floatingActionButton: FloatingActionButton(
