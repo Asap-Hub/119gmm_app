@@ -28,16 +28,28 @@ class UserModel {
   String? numberOfFemaleChildren;
   String? numberOfMaleChildren;
   String? maritalStatus;
-  String? nameOfTertiary;
-  String? startingYear;
-  String? completingYear;
   String? nameOfPrimarySchool;
   String? nameOfJuniorHighSchool;
   String? nameOfSeniorHighSchool;
+  //student info.
+  String? nameOfTertiary;
+  String? startingYear;
+  String? completingYear;
+  String? locationOfCampus;
+  String? addressOfCampus;
+  String? programme;
+  String? department;
+  //employee staus
+  String? value;
+  String? employee;
+  String? unemployed;
+  String? nationalService;
+
 
   UserModel(
       {this.uid,
-          this.url,
+          this.url,this.locationOfCampus, this.addressOfCampus, this.programme,
+        this.department,
       this.email,
       this.password,
       this.confirmPassword,
@@ -64,7 +76,12 @@ class UserModel {
       this.numberOfWive,
       this.numberOfMaleChildren,
       this.numberOfFemaleChildren,
-      this.maritalStatus});
+      this.maritalStatus,
+      this.value,
+      this.employee,
+      this.unemployed,
+      this.nationalService,
+      });
 
 //receiving data to the server
   factory UserModel.fromMap(map) {
@@ -72,6 +89,10 @@ class UserModel {
         uid: map['uid'],
         url: map['url'],
         email: map['email'],
+        locationOfCampus: map["locationOfCampus"],
+        addressOfCampus: map["addressOfCampus"],
+        programme: map["programme"],
+        department: map["department"],
         password: map['password'],
         confirmPassword: map['confirmPassword'],
         number: map['number'],
@@ -97,7 +118,12 @@ class UserModel {
         nameOfSeniorHighSchool: map['nameOfSeniorHighSchool'],
         nameOfTertiary: map["nameOfTertiary"],
         startingYear: map["startingYear"],
-        completingYear: map["completingYear"]);
+        completingYear: map["completingYear"],
+        value: map["value"],
+        employee: map["employee"],
+        unemployed: map["unemployed"],
+        nationalService: map["nationalService"],
+    );
   }
 
 //sending data to the server
@@ -131,6 +157,10 @@ class UserModel {
       'nameOfSeniorHighSchool': nameOfSeniorHighSchool,
       'startingYear': startingYear,
       'completingYear': completingYear,
+      'locationOfCampus': locationOfCampus,
+      'addressOfCampus': addressOfCampus,
+      'programme':programme,
+      'department':department,
     };
   }
 }

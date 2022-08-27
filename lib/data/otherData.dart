@@ -13,3 +13,7 @@ var status = {
 var levels = {
   "level":["Primary School", "Junior High School", "Senior High School", "Tertiary","Worker"],
 };
+
+var eduStatus = {
+  "status":["Employee", "Unemployed", "National Service"],
+};

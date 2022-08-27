@@ -9,6 +9,9 @@ import 'package:gmm_app/data/otherData.dart';
 import 'package:gmm_app/data/region.dart';
 import 'package:gmm_app/model/userModel.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/intl.dart';
 
 import 'landingPage.dart';
 
@@ -35,17 +38,16 @@ class _registrationState extends State<registration> {
   TextEditingController dateOfBirth = TextEditingController();
   TextEditingController homeTown = TextEditingController();
   TextEditingController residentialAddress = TextEditingController();
+  TextEditingController branches = TextEditingController();
   String region = "";
   bool isChosen = true;
   String district = "";
-  String branches = "";
   String group = "";
+  String employeeStatus = "";
+  DateTime Date = DateTime.now();
 
   //marital status text editing controller
   TextEditingController profession = TextEditingController();
-  TextEditingController startingYear = TextEditingController();
-  TextEditingController completingYear = TextEditingController();
-  TextEditingController nameOfTertiary = TextEditingController();
   TextEditingController nameOfPrimarySchool = TextEditingController();
   TextEditingController nameOfJunior = TextEditingController();
   TextEditingController nameOfSeniorSchool = TextEditingController();
@@ -55,8 +57,20 @@ class _registrationState extends State<registration> {
   TextEditingController numberOfWive = TextEditingController();
   TextEditingController numberOfMaleChildren = TextEditingController();
   TextEditingController numberOfFemaleChildren = TextEditingController();
+
+  //student details
+  TextEditingController startingYear = TextEditingController();
+  TextEditingController completingYear = TextEditingController();
+  TextEditingController nameOfTertiary = TextEditingController();
+  TextEditingController locationOfCampus = TextEditingController();
+  TextEditingController addressOfCampus = TextEditingController();
+  TextEditingController programme = TextEditingController();
+  TextEditingController department = TextEditingController();
   String maritalStatus = "";
   String level = "";
+
+  //checkbox value
+  bool value = false;
 
   //global keys
   final credentialFormKey = GlobalKey<FormState>();
@@ -79,7 +93,9 @@ class _registrationState extends State<registration> {
     fellowship;
     region = Regions["region"]![0];
     district = Regions[region]![0];
-    branches = Regions[district]![0];
+    //education status
+    eduStatus;
+    employeeStatus = eduStatus["status"]![0];
     //fellowship data
     group = fellowship["groups"]![0];
     //marital status
@@ -120,16 +136,22 @@ class _registrationState extends State<registration> {
                 } else if (password.text.trim() !=
                     confirmPassword.text.trim()) {
                   Fluttertoast.showToast(msg: "Password Mismatched");
-                } else if(credentialFormKey.currentState!.validate() && personalFormKey.currentState!.validate() && maritalFormKey.currentState!.validate()) {
+                } else if (credentialFormKey.currentState!.validate() &&
+                    personalFormKey.currentState!.validate() &&
+                    maritalFormKey.currentState!.validate()) {
                   signUp(email.text.trim().toString(),
                       password.text.trim().toString());
                   Fluttertoast.showToast(
+                      msg: "Please Wait...",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER);
+                  Fluttertoast.showToast(
                       msg: "Account Created Successfully",
-                      toastLength: Toast.LENGTH_LONG,gravity: ToastGravity.CENTER);
-                  Navigator.pushAndRemoveUntil(
-                      context,
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.CENTER);
+                  Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(builder: (context) => landingPage()),
-                          (route) => route.isFirst);
+                      (route) => route.isFirst);
                   print("am here");
                 }
               } else {
@@ -149,26 +171,30 @@ class _registrationState extends State<registration> {
                 margin: EdgeInsets.only(top: 10),
                 child: Row(
                   children: [
+                    if (currentStep != 0)
+                      Expanded(
+                        child: ElevatedButton(
+                            onPressed: () {
+                              details.onStepCancel;
+                            },
+                            child: Text(
+                              "BACK",
+                              style: TextStyle(fontSize: 20),
+                            )),
+                      ),
+                    SizedBox(
+                      width: 12,
+                    ),
                     Expanded(
                       child: ElevatedButton(
-                          onPressed: details.onStepContinue,
+                          onPressed: () {
+                            details.onStepContinue;
+                          },
                           child: Text(
                             isLastStep ? "SUBMIT" : "NEXT",
                             style: TextStyle(fontSize: 20),
                           )),
                     ),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    if (currentStep != 0)
-                      Expanded(
-                        child: ElevatedButton(
-                            onPressed: details.onStepCancel,
-                            child: Text(
-                              "BACK",
-                              style: TextStyle(fontSize: 20),
-                            )),
-                      )
                   ],
                 ),
               );
@@ -266,8 +292,7 @@ class _registrationState extends State<registration> {
                     ),
                     validator: (value) {
                       if (number.value.text.length < 10) {
-                        return(
-                            "Phone number can not be less than 10");
+                        return ("Phone number can not be less than 10");
                       }
                     },
                   ),
@@ -360,6 +385,12 @@ class _registrationState extends State<registration> {
                     ),
                   ),
                 ),
+                // Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
+                //   child: Card(
+                //     child: Text(calculateAge(birthDate(context))),
+                //   ),
+                // ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                   child: Column(
@@ -435,7 +466,6 @@ class _registrationState extends State<registration> {
                                 setState(() {
                                   district = value!;
                                   isChosen = true;
-                                  branches = Regions[district]!.first;
                                 });
                               },
                               items: Regions[region]
@@ -450,47 +480,25 @@ class _registrationState extends State<registration> {
                       ],
                     ),
                   ),
-                if (isChosen)
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
-                    child: Column(
-                      children: [
-                        Text("Select Your Branch",
-                            style: TextStyle(fontSize: 16)),
-                        SizedBox(height: 5),
-                        DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.black38, width: 1),
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                  color: Color.fromRGBO(124, 252, 0, 0.57),
-                                  blurRadius: 0.1)
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: DropdownButton<String>(
-                              value: branches,
-                              isExpanded: true,
-                              items: Regions[district]
-                                  ?.map((e) => DropdownMenuItem<String>(
-                                        child: Text(e),
-                                        value: e,
-                                      ))
-                                  .toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  branches = value!;
-                                });
-                              },
-                            ),
-                          ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
+                  child: TextFormField(
+                      validator: (value) {
+                        if (branches.text.isEmpty) {
+                          return ("Required");
+                        }
+                      },
+                      textInputAction: TextInputAction.next,
+                      controller: branches,
+                      decoration: InputDecoration(
+                        label: Text("Branch"),
+                        prefixIcon: Icon(Icons.tour_outlined),
+                        prefixIconColor: Colors.black,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                      ],
-                    ),
-                  ),
+                      )),
+                ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                   child: TextFormField(
@@ -654,6 +662,96 @@ class _registrationState extends State<registration> {
                             Padding(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 2, vertical: 1),
+                              child: TextFormField(
+                                  validator: (value) {
+                                    if (locationOfCampus.text.isEmpty) {
+                                      return ("Required");
+                                    }
+                                  },
+                                  controller: locationOfCampus,
+                                  decoration: InputDecoration(
+                                    label: Text("Location Of Campus"),
+                                    prefixIcon:
+                                        Icon(Icons.add_location_alt_outlined),
+                                    prefixIconColor: Colors.green,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  )),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 2, vertical: 1),
+                              child: TextFormField(
+                                  validator: (value) {
+                                    if (addressOfCampus.text.isEmpty) {
+                                      return ("Required");
+                                    }
+                                  },
+                                  controller: addressOfCampus,
+                                  decoration: InputDecoration(
+                                    label: Text("Address Of Campus"),
+                                    prefixIcon: Icon(Icons.gps_fixed_rounded),
+                                    prefixIconColor: Colors.black,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  )),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 2, vertical: 1),
+                              child: TextFormField(
+                                  validator: (value) {
+                                    if (programme.text.isEmpty) {
+                                      return ("Required");
+                                    }
+                                  },
+                                  controller: programme,
+                                  decoration: InputDecoration(
+                                    label: Text("Name Of programme"),
+                                    prefixIcon:
+                                        Icon(Icons.account_balance_rounded),
+                                    prefixIconColor: Colors.black,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  )),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 2, vertical: 1),
+                              child: TextFormField(
+                                  validator: (value) {
+                                    if (department.text.isEmpty) {
+                                      return ("Required");
+                                    }
+                                  },
+                                  controller: department,
+                                  decoration: InputDecoration(
+                                    label: Text("Name Of Department"),
+                                    prefixIcon: Icon(Icons.workspaces_outline),
+                                    prefixIconColor: Colors.black,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  )),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 2, vertical: 1),
                               child: GestureDetector(
                                 onTap: () {
                                   starting(context);
@@ -723,6 +821,78 @@ class _registrationState extends State<registration> {
                                         ),
                                       )),
                                 ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Completed ?",
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(width: 10),
+                                      Checkbox(
+                                        value: this.value,
+                                        onChanged: (bool? value) {
+                                          setState(() {
+                                            this.value = value!;
+                                            print(value);
+                                          });
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                   value == true ? Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
+                                      child: Column(
+                                        children: [
+                                          Text("Employee Status",
+                                              style: TextStyle(fontSize: 16)),
+                                          SizedBox(height: 5),
+                                          DecoratedBox(
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              border: Border.all(color: Colors.black38, width: 1),
+                                              borderRadius: BorderRadius.circular(10),
+                                              boxShadow: <BoxShadow>[
+                                                BoxShadow(
+                                                    color: Color.fromRGBO(124, 252, 0, 0.57),
+                                                    blurRadius: 0.1)
+                                              ],
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(left: 10),
+                                              child: DropdownButton<String>(
+                                                value: employeeStatus,
+                                                isExpanded: true,
+                                                items: eduStatus["status"]
+                                                    ?.map((e) => DropdownMenuItem<String>(
+                                                          child: Text(e),
+                                                          value: e,
+                                                        ))
+                                                    .toList(),
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    employeeStatus = value!;
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ): Text(""),
+                                ],
                               ),
                             )
                           ],
@@ -997,8 +1167,26 @@ class _registrationState extends State<registration> {
         )
       ];
 
+  //age
+  // calculateAge(DateTime birthDate) {
+  //   DateTime currentDate = DateTime.now();
+  //   int age = currentDate.year - birthDate.year;
+  //   int month1 = currentDate.month;
+  //   int month2 = birthDate.month;
+  //   if (month2 > month1) {
+  //     age--;
+  //   } else if (month1 == month2) {
+  //     int day1 = currentDate.day;
+  //     int day2 = birthDate.day;
+  //     if (day2 > day1) {
+  //       age--;
+  //     }
+  //   }
+  //   return age;
+  // }
+
   //for selection date
-  birthDate(BuildContext context) async {
+  birthDate(context) async {
     if (Platform.isAndroid) {
       final DateTime? picked = await showDatePicker(
           context: context,
@@ -1077,15 +1265,14 @@ class _registrationState extends State<registration> {
       // if (credentialFormKey.currentState!.validate() && personalFormKey.currentState!.validate() && maritalFormKey.currentState!.validate()) {
       await _auth
           .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) =>
-      {
-        postDetailsToFireStore(),
-      })
+          .then((value) => {
+                postDetailsToFireStore(),
+              })
           .catchError((e) {
         Fluttertoast.showToast(msg: e!.message);
       });
-    //}
-        //Fluttertoast.showToast(msg: "Please Wait, you account is been creating");
+      //}
+      //Fluttertoast.showToast(msg: "Please Wait, you account is been creating");
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already') {
         Fluttertoast.showToast(msg: "The Account Already Exist");
@@ -1111,8 +1298,13 @@ class _registrationState extends State<registration> {
     userModel.dateOfBirth = dateOfBirth.text.trim();
     userModel.region = region.trim();
     userModel.district = district.trim();
-    userModel.branches = branches.trim();
+    userModel.branches = branches.text.trim();
     userModel.homeTown = homeTown.text.trim();
+    userModel.department = department.text.trim();
+    userModel.addressOfCampus = addressOfCampus.text.trim();
+    userModel.locationOfCampus = locationOfCampus.text.trim();
+    userModel.programme = programme.text.trim();
+
     userModel.residentialAddress = residentialAddress.text.trim();
     userModel.group = group.trim();
     userModel.profession = profession.text.trim();
@@ -1131,10 +1323,12 @@ class _registrationState extends State<registration> {
     userModel.completingYear = completingYear.text.trim();
     userModel.url = "";
 
+    //live afer school
+
     await firebaseStore
         .collection("Users")
         .doc(user.uid)
         .set(userModel.toMap());
-     //Navigator.of(context).popUntil((route) => route.isFirst);
+    //Navigator.of(context).popUntil((route) => route.isFirst);
   }
 }
