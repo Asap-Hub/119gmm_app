@@ -9,9 +9,6 @@ import 'package:gmm_app/data/otherData.dart';
 import 'package:gmm_app/data/region.dart';
 import 'package:gmm_app/model/userModel.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/intl.dart';
-import 'package:intl/intl.dart';
-import 'package:intl/intl.dart';
 
 import 'landingPage.dart';
 
@@ -43,6 +40,7 @@ class _registrationState extends State<registration> {
   bool isChosen = true;
   String district = "";
   String group = "";
+  String typeJob = "";
   String employeeStatus = "";
   DateTime Date = DateTime.now();
 
@@ -72,6 +70,19 @@ class _registrationState extends State<registration> {
   //checkbox value
   bool value = false;
 
+  //public type section
+  TextEditingController publicDepartment = TextEditingController();
+  TextEditingController position = TextEditingController();
+  TextEditingController yearsInPosition = TextEditingController();
+  TextEditingController publicAddress = TextEditingController();
+  TextEditingController publicLocation = TextEditingController();
+
+  //private type section
+  TextEditingController nameOfCompany = TextEditingController();
+  TextEditingController role = TextEditingController();
+  TextEditingController privateLocation = TextEditingController();
+  TextEditingController privateAddress = TextEditingController();
+  TextEditingController contact = TextEditingController();
   //global keys
   final credentialFormKey = GlobalKey<FormState>();
   final personalFormKey = GlobalKey<FormState>();
@@ -104,6 +115,8 @@ class _registrationState extends State<registration> {
     //levels
     levels;
     level = levels["level"]![0];
+    typeOfJob;
+    typeJob = typeOfJob["worker"]![0];
   }
 
   @override
@@ -174,9 +187,7 @@ class _registrationState extends State<registration> {
                     if (currentStep != 0)
                       Expanded(
                         child: ElevatedButton(
-                            onPressed: () {
-                              details.onStepCancel;
-                            },
+                            onPressed:  details.onStepCancel,
                             child: Text(
                               "BACK",
                               style: TextStyle(fontSize: 20),
@@ -187,9 +198,7 @@ class _registrationState extends State<registration> {
                     ),
                     Expanded(
                       child: ElevatedButton(
-                          onPressed: () {
-                            details.onStepContinue;
-                          },
+                          onPressed: details.onStepContinue,
                           child: Text(
                             isLastStep ? "SUBMIT" : "NEXT",
                             style: TextStyle(fontSize: 20),
@@ -538,44 +547,45 @@ class _registrationState extends State<registration> {
                       )),
                 ),
                 Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
-                    child: Column(
-                      children: [
-                        Text("Select Your Fellowship",
-                            style: TextStyle(fontSize: 16)),
-                        SizedBox(height: 5),
-                        DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.black38, width: 1),
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                  color: Color.fromRGBO(124, 252, 0, 0.57),
-                                  blurRadius: 0.1)
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: DropdownButton<String>(
-                              value: group,
-                              isExpanded: true,
-                              onChanged: (value) {
-                                setState(() {
-                                  group = value!;
-                                });
-                              },
-                              items: fellowship["groups"]
-                                  ?.map((e) => DropdownMenuItem<String>(
-                                        child: Text(e),
-                                        value: e,
-                                      ))
-                                  .toList(),
-                            ),
+                  padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
+                  child: Column(
+                    children: [
+                      Text("Select Your Fellowship",
+                          style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 5),
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black38, width: 1),
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                                color: Color.fromRGBO(124, 252, 0, 0.57),
+                                blurRadius: 0.1)
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: DropdownButton<String>(
+                            value: group,
+                            isExpanded: true,
+                            onChanged: (value) {
+                              setState(() {
+                                group = value!;
+                              });
+                            },
+                            items: fellowship["groups"]
+                                ?.map((e) => DropdownMenuItem<String>(
+                                      child: Text(e),
+                                      value: e,
+                                    ))
+                                .toList(),
                           ),
                         ),
-                      ],
-                    )),
+                      ),
+                    ],
+                  ),
+                ),
                 Divider(
                   color: Colors.black,
                   thickness: 1.0,
@@ -852,49 +862,61 @@ class _registrationState extends State<registration> {
                                       ),
                                     ],
                                   ),
-                                   value == true ? Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
-                                      child: Column(
-                                        children: [
-                                          Text("Employee Status",
-                                              style: TextStyle(fontSize: 16)),
-                                          SizedBox(height: 5),
-                                          DecoratedBox(
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              border: Border.all(color: Colors.black38, width: 1),
-                                              borderRadius: BorderRadius.circular(10),
-                                              boxShadow: <BoxShadow>[
-                                                BoxShadow(
-                                                    color: Color.fromRGBO(124, 252, 0, 0.57),
-                                                    blurRadius: 0.1)
-                                              ],
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(left: 10),
-                                              child: DropdownButton<String>(
-                                                value: employeeStatus,
-                                                isExpanded: true,
-                                                items: eduStatus["status"]
-                                                    ?.map((e) => DropdownMenuItem<String>(
-                                                          child: Text(e),
-                                                          value: e,
-                                                        ))
-                                                    .toList(),
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    employeeStatus = value!;
-                                                  });
-                                                },
+                                  value == true
+                                      ? Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 2, vertical: 20),
+                                          child: Column(
+                                            children: [
+                                              Text("Employee Status",
+                                                  style:
+                                                      TextStyle(fontSize: 16)),
+                                              SizedBox(height: 5),
+                                              DecoratedBox(
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  border: Border.all(
+                                                      color: Colors.black38,
+                                                      width: 1),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  boxShadow: <BoxShadow>[
+                                                    BoxShadow(
+                                                        color: Color.fromRGBO(
+                                                            124, 252, 0, 0.57),
+                                                        blurRadius: 0.1)
+                                                  ],
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10),
+                                                  child: DropdownButton<String>(
+                                                    value: employeeStatus,
+                                                    isExpanded: true,
+                                                    items: eduStatus["status"]
+                                                        ?.map((e) =>
+                                                            DropdownMenuItem<
+                                                                String>(
+                                                              child: Text(e),
+                                                              value: e,
+                                                            ))
+                                                        .toList(),
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        employeeStatus = value!;
+                                                      });
+                                                    },
+                                                  ),
+                                                ),
                                               ),
-                                            ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                    ): Text(""),
+                                        )
+                                      : Text(""),
                                 ],
                               ),
-                            )
+                            ),
                           ],
                         ),
                       )
@@ -961,43 +983,393 @@ class _registrationState extends State<registration> {
                                           ),
                                         )),
                                   )
-                                : Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 2, vertical: 1),
-                                    child: TextFormField(
-                                        validator: (value) {
-                                          if (profession.text.isEmpty) {
-                                            return ("Required");
-                                          }
-                                        },
-                                        controller: profession,
-                                        decoration: InputDecoration(
-                                          label: Text("Profession"),
-                                          prefixIcon: Icon(Icons.work),
-                                          prefixIconColor: Colors.black,
-                                          border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                        )),
+                                : Column(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 2, vertical: 20),
+                                        child: Column(
+                                          children: [
+                                            Text("Job Type",
+                                                style: TextStyle(fontSize: 16)),
+                                            SizedBox(height: 5),
+                                            DecoratedBox(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                border: Border.all(
+                                                    color: Colors.black38,
+                                                    width: 1),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                boxShadow: <BoxShadow>[
+                                                  BoxShadow(
+                                                      color: Color.fromRGBO(
+                                                          124, 252, 0, 0.57),
+                                                      blurRadius: 0.1)
+                                                ],
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 10),
+                                                child: DropdownButton<String>(
+                                                  value: typeJob,
+                                                  isExpanded: true,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      typeJob = value!;
+                                                    });
+                                                  },
+                                                  items: typeOfJob["worker"]
+                                                      ?.map((e) =>
+                                                          DropdownMenuItem<
+                                                              String>(
+                                                            child: Text(e),
+                                                            value: e,
+                                                          ))
+                                                      .toList(),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+
+                                    typeJob == "Public" ?
+                                    Container(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 2, vertical: 1),
+                                              child: TextFormField(
+                                                  validator: (value) {
+                                                    if (profession
+                                                        .text.isEmpty) {
+                                                      return ("Required");
+                                                    }
+                                                  },
+                                                  controller: profession,
+                                                  decoration: InputDecoration(
+                                                    label: Text("Profession"),
+                                                    prefixIcon:
+                                                        Icon(Icons.work),
+                                                    prefixIconColor:
+                                                        Colors.black,
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                  )),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 2, vertical: 1),
+                                              child: TextFormField(
+                                                  validator: (value) {
+                                                    if (publicDepartment
+                                                        .text.isEmpty) {
+                                                      return ("Required");
+                                                    }
+                                                  },
+                                                  controller: publicDepartment,
+                                                  decoration: InputDecoration(
+                                                    label: Text(
+                                                        "Department"),
+                                                    prefixIcon:
+                                                        Icon(Icons.workspaces_outline),
+                                                    prefixIconColor:
+                                                        Colors.black,
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                  )),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 2, vertical: 1),
+                                              child: TextFormField(
+                                                  validator: (value) {
+                                                    if (position.text.isEmpty) {
+                                                      return ("Required");
+                                                    }
+                                                  },
+                                                  controller: position,
+                                                  decoration: InputDecoration(
+                                                    label: Text("position"),
+                                                    prefixIcon:
+                                                        Icon(Icons.height),
+                                                    prefixIconColor:
+                                                        Colors.black,
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                  )),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 2, vertical: 1),
+                                              child: TextFormField(
+                                                  validator: (value) {
+                                                    if (yearsInPosition
+                                                        .text.isEmpty) {
+                                                      return ("Required");
+                                                    }
+                                                  },
+                                                  controller: yearsInPosition,
+                                                  decoration: InputDecoration(
+                                                    label:
+                                                        Text("Experience In Years"),
+                                                    prefixIcon:
+                                                        Icon(Icons.calendar_today_outlined),
+                                                    prefixIconColor:
+                                                        Colors.black,
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                  )),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 2, vertical: 1),
+                                              child: TextFormField(
+                                                  validator: (value) {
+                                                    if (publicAddress
+                                                        .text.isEmpty) {
+                                                      return ("Required");
+                                                    }
+                                                  },
+                                                  controller: publicAddress,
+                                                  decoration: InputDecoration(
+                                                    label:
+                                                        Text("Address"),
+                                                    prefixIcon:
+                                                        Icon(Icons.email_outlined),
+                                                    prefixIconColor:
+                                                        Colors.black,
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                  )),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 2, vertical: 1),
+                                              child: TextFormField(
+                                                  validator: (value) {
+                                                    if (publicLocation
+                                                        .text.isEmpty) {
+                                                      return ("Required");
+                                                    }
+                                                  },
+                                                  controller: publicLocation,
+                                                  decoration: InputDecoration(
+                                                    label: Text("Location"),
+                                                    prefixIcon:
+                                                        Icon(Icons.gps_fixed_outlined),
+                                                    prefixIconColor:
+                                                        Colors.black,
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                  )),
+                                            ),
+                                          ],
+                                        ),
+                                      ):
+                                      Container(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 2, vertical: 1),
+                                              child: TextFormField(
+                                                  validator: (value) {
+                                                    if (nameOfCompany
+                                                        .text.isEmpty) {
+                                                      return ("Required");
+                                                    }
+                                                  },
+                                                  controller: nameOfCompany,
+                                                  decoration: InputDecoration(
+                                                    label: Text("Name Of Company/ Organization"),
+                                                    prefixIcon:
+                                                        Icon(Icons.workspaces_outline),
+                                                    prefixIconColor:
+                                                        Colors.black,
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                  )),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 2, vertical: 1),
+                                              child: TextFormField(
+                                                  validator: (value) {
+                                                    if (role
+                                                        .text.isEmpty) {
+                                                      return ("Required");
+                                                    }
+                                                  },
+                                                  controller: role,
+                                                  decoration: InputDecoration(
+                                                    label: Text(
+                                                        "Role"),
+                                                    prefixIcon:
+                                                        Icon(Icons.anchor_outlined),
+                                                    prefixIconColor:
+                                                        Colors.black,
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                  )),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 2, vertical: 1),
+                                              child: TextFormField(
+                                                  validator: (value) {
+                                                    if (privateAddress.text.isEmpty) {
+                                                      return ("Required");
+                                                    }
+                                                  },
+                                                  controller: privateAddress,
+                                                  decoration: InputDecoration(
+                                                    label: Text("Address"),
+                                                    prefixIcon:
+                                                        Icon(Icons.email_outlined),
+                                                    prefixIconColor:
+                                                        Colors.black,
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                  )),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 2, vertical: 1),
+                                              child: TextFormField(
+                                                  validator: (value) {
+                                                    if (privateLocation
+                                                        .text.isEmpty) {
+                                                      return ("Required");
+                                                    }
+                                                  },
+                                                  controller: privateLocation,
+                                                  decoration: InputDecoration(
+                                                    label:
+                                                        Text("Location"),
+                                                    prefixIcon:
+                                                        Icon(Icons.gps_fixed_outlined),
+                                                    prefixIconColor:
+                                                        Colors.black,
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                  )),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 2, vertical: 1),
+                                              child: TextFormField(
+                                                  validator: (value) {
+                                                    if (contact
+                                                        .text.isEmpty) {
+                                                      return ("Required");
+                                                    }
+                                                  },
+                                                  controller: contact,
+                                                  decoration: InputDecoration(
+                                                    label:
+                                                        Text("Contact"),
+                                                    prefixIcon:
+                                                        Icon(Icons.contact_phone_outlined ),
+                                                    prefixIconColor:
+                                                        Colors.black,
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                  )),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
-                  child: TextFormField(
-                      validator: (value) {
-                        if (numberOfDependent.text.isEmpty) {
-                          return ("Required");
-                        }
-                      },
-                      controller: numberOfDependent,
-                      decoration: InputDecoration(
-                        label: Text("No. Of Dependent"),
-                        prefixIcon: Icon(Icons.password_outlined),
-                        prefixIconColor: Colors.black,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      )),
+                  child: Column(
+                    children: [
+                      Text("Dependent", style: TextStyle(fontSize: 16),),
+                      TextFormField(
+                          validator: (value) {
+                            if (numberOfDependent.text.isEmpty) {
+                              return ("Required");
+                            }
+                          },
+                          controller: numberOfDependent,
+                          decoration: InputDecoration(
+                            label: Text("No. Of Dependent"),
+                            prefixIcon: Icon(Icons.password_outlined),
+                            prefixIconColor: Colors.black,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          )),
+                    ],
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
@@ -1322,8 +1694,20 @@ class _registrationState extends State<registration> {
     userModel.startingYear = startingYear.text.trim();
     userModel.completingYear = completingYear.text.trim();
     userModel.url = "";
-
-    //live afer school
+    //live after school
+    userModel.value = value;
+    userModel.liveAfterSchool = employeeStatus.trim();
+    //job
+    userModel.publicDepartment = publicDepartment.text.trim();
+    userModel.position = position.text.trim();
+   userModel.yearsInPosition = yearsInPosition.text.trim();
+    userModel.publicAddress = publicAddress.text.trim();
+    userModel.publicLocation = publicLocation.text.trim();
+    userModel.nameOfCompany = nameOfCompany.text.trim();
+    userModel.role = role.text.trim();
+    userModel.privateLocation = privateLocation.text.trim();
+    userModel.privateAddress = privateAddress.text.trim();
+    userModel.contact = contact.text.trim();
 
     await firebaseStore
         .collection("Users")

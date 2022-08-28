@@ -21,10 +21,10 @@ class _updateBranchState extends State<updateBranch> {
   TextEditingController dateOfBirth = TextEditingController();
   TextEditingController homeTown = TextEditingController();
   TextEditingController residentialAddress = TextEditingController();
+  TextEditingController branches = TextEditingController();
   String region = "";
   bool isChosen = true;
   String district = "";
-  String branches = "";
   String group = "";
 
   //personal key
@@ -43,7 +43,6 @@ class _updateBranchState extends State<updateBranch> {
     fellowship;
     region = Regions["region"]![0];
     district = Regions[region]![0];
-    branches = Regions[district]![0];
     //fellowship data
     group = fellowship["groups"]![0];
 
@@ -162,7 +161,6 @@ class _updateBranchState extends State<updateBranch> {
                                 setState(() {
                                   district = value!;
                                   isChosen = true;
-                                  branches = Regions[district]!.first;
                                 });
                               },
                               items: Regions[region]
@@ -177,7 +175,7 @@ class _updateBranchState extends State<updateBranch> {
                       ],
                     ),
                   ),
-                if (isChosen)
+
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                     child: Column(
@@ -185,35 +183,24 @@ class _updateBranchState extends State<updateBranch> {
                         Text("Branch: ${logInUser.branches}",
                             style: TextStyle(fontSize: 16)),
                         SizedBox(height: 5),
-                        DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.black38, width: 1),
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                  color: Color.fromRGBO(124, 252, 0, 0.57),
-                                  blurRadius: 0.1)
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: DropdownButton<String>(
-                              value: branches,
-                              isExpanded: true,
-                              items: Regions[district]
-                                  ?.map((e) => DropdownMenuItem<String>(
-                                        child: Text(e),
-                                        value: e,
-                                      ))
-                                  .toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  branches = value!;
-                                });
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
+                          child: TextFormField(
+                              validator: (value) {
+                                if (branches.text.isEmpty) {
+                                  return ("Required");
+                                }
                               },
-                            ),
-                          ),
+                              textInputAction: TextInputAction.next,
+                              controller: branches,
+                              decoration: InputDecoration(
+                                label: Text("Branch"),
+                                prefixIcon: Icon(Icons.tour_outlined),
+                                prefixIconColor: Colors.black,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              )),
                         ),
                       ],
                     ),
@@ -340,7 +327,7 @@ class _updateBranchState extends State<updateBranch> {
       await firebaseStore.collection("Users").doc(logInUser.uid).update({
         "region": region.trim(),
         "district": district.trim(),
-        "branches": branches.trim(),
+        "branches": branches.text.trim(),
         "homeTown": homeTown.text.trim(),
         "residentialAddress": residentialAddress.text.trim(),
         "group": group.trim(),

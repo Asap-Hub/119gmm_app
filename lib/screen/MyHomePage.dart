@@ -251,7 +251,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   )),
               Divider(color: Colors.green),
-              logInUser.maritalStatus == "Single".trim()
+              logInUser.maritalStatus == "single".trim()
                   ? Card(
                       margin: EdgeInsets.only(left: 10, top: 10, right: 10),
                       shadowColor: Colors.green,
@@ -276,33 +276,77 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 "Senior High School: ${logInUser.nameOfSeniorHighSchool} "),
                                           )
                                         : logInUser.nameOfTertiary != ""
-                                            ? ListTile(
-                                                title: Text(
-                                                    "Tertiary: ${logInUser.nameOfTertiary}",
-                                                    style: TextStyle(
-                                                      fontSize: 16,
-                                                    )),
-                                                subtitle: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "Starting Date: ${logInUser.startingYear}",
+                                            ? Column(
+                                              children: [
+                                                ListTile(
+                                                    title: Text(
+                                                        "Tertiary: ${logInUser.nameOfTertiary}",
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                        )),
+                                                  ),
+                                                SizedBox(height: 5,),
+                                                ListTile(
+                                                    title: Text(
+                                                        "Started Year: ${logInUser.startingYear}",
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                        )),
+                                                  ),
+                                                SizedBox(height: 5,),
+                                                ListTile(
+                                                    title: Text(
+                                                        "Year To Complete: ${logInUser.completingYear}",
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                        )),
+                                                  ),
+                                                SizedBox(height: 5,),
+                                                ListTile(
+                                                    title: Text(
+                                                        "Location: ${logInUser.locationOfCampus}",
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                        )),
+                                                  ),
+                                                SizedBox(height: 5,),
+                                                ListTile(
+                                                    title: Text(
+                                                        "Address: ${logInUser.addressOfCampus}",
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                        )),
+                                                  ),
+                                                SizedBox(height: 5,),
+                                                ListTile(
+                                                    title: Text(
+                                                        "Program: ${logInUser.programme}",
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                        )),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                ListTile(
+                                                  title: Text(
+                                                      "Department: ${logInUser.department}",
                                                       style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    Text(
-                                                      "Completing Year: ${logInUser.completingYear}",
-                                                      style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ],
+                                                        fontSize: 16,
+                                                      )),
                                                 ),
-                                              )
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+                                                ListTile(
+                                                  title: Text(
+                                                      "Employee Status: ${logInUser.liveAfterSchool}",
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                      )),
+                                                ),
+                                                ],
+                                            )
                                             : logInUser.profession != ""
                                                 ? ListTile(
                                                     title: Text(

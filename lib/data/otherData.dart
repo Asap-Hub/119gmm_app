@@ -17,3 +17,6 @@ var levels = {
 var eduStatus = {
   "status":["Employee", "Unemployed", "National Service"],
 };
+var typeOfJob = {
+  "worker":["Public", "Private"],
+};
