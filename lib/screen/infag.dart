@@ -30,8 +30,9 @@ class _infagState extends State<infag> {
       ),
       body: Container(
         height: double.infinity,
-        child: FirebaseAnimatedList(
-          defaultChild: Center(child: CircularProgressIndicator(color: Colors.green,),),
+         child:FirebaseAnimatedList(
+          defaultChild: Center(
+            child: CircularProgressIndicator(color: Colors.green,),),
           query: data,
           itemBuilder: (BuildContext context, DataSnapshot snapshot,
               Animation<double> animation, int index) {
@@ -40,7 +41,7 @@ class _infagState extends State<infag> {
             //print(reportData['email']);
             return Padding(
               padding: const EdgeInsets.all(8.0),
-              child: listItem(reportData: reportData),
+              child:listItem(reportData: reportData),
             );
           },
         ),

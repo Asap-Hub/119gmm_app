@@ -251,7 +251,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   )),
               Divider(color: Colors.green),
-              logInUser.maritalStatus == "single".trim()
+              logInUser.maritalStatus == "Single".trim()
                   ? Card(
                       margin: EdgeInsets.only(left: 10, top: 10, right: 10),
                       shadowColor: Colors.green,
@@ -543,7 +543,7 @@ class _MyHomePageState extends State<MyHomePage> {
     FirebaseStorage firebaseStorage = FirebaseStorage.instance;
     final ImagePicker _picker = ImagePicker();
     // Pick an image
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery,imageQuality: 50, maxWidth: 150);
+    final XFile? image = await _picker.pickImage(preferredCameraDevice: CameraDevice.rear, source: ImageSource.gallery,imageQuality: 50, maxWidth: 150);
     if(image != null){
       var snapshot = await firebaseStorage.ref().child(user!.uid).child('image/imageName').putFile(File(image.path.toString())).storage;
       var downloadUrl = await snapshot.ref().child(user!.uid).child('image/imageName').getDownloadURL();
