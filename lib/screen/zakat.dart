@@ -18,10 +18,10 @@ class _zakatState extends State<zakat> {
   User? user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
-    final data = FirebaseDatabase.instance.reference().child('Zakat').child(user!.uid).child("myZakat");
+    final data = FirebaseDatabase.instance.ref().child('Zakat').child(user!.uid).child("myZakat");
     return SafeArea(
         child: Scaffold(
-      floatingActionButton: FloatingActionButton(
+        floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.white,
         child: Image.asset('assets/zakat.png', height: 50, width: 50),
         onPressed: () {

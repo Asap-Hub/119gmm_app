@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gmm_app/controller/Auth_controller.dart';
 import 'package:gmm_app/data/otherData.dart';
 import 'package:gmm_app/data/region.dart';
 import 'package:gmm_app/model/userModel.dart';
@@ -21,6 +22,7 @@ class registration extends StatefulWidget {
 
 class _registrationState extends State<registration> {
   int currentStep = 0;
+  final helpUser = userController();
   List<GlobalKey<FormState>> formKey = [
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
@@ -97,9 +99,7 @@ class _registrationState extends State<registration> {
   DateTime datePicker = DateTime.now();
   int age = 0;
 
-  // firebase authentication
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  User? user = FirebaseAuth.instance.currentUser;
+
 
   @override
   void initState() {
@@ -126,11 +126,11 @@ class _registrationState extends State<registration> {
 
   @override
   Widget build(BuildContext context) {
-    print(dateOfBirth);
+    //print(dateOfBirth);
     // print(branches);
     // print(group);
-    print(datePicker);
-    print(age);
+    //print(datePicker);
+    //print(age);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -168,7 +168,7 @@ class _registrationState extends State<registration> {
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(builder: (context) => landingPage()),
                               (route) => route.isFirst);
-                          print("am here");
+                    //  print("am here");
 
                   } else {
                     setState(() {
@@ -1755,7 +1755,7 @@ class _registrationState extends State<registration> {
   void signUp(String email, String password) async {
     try {
       if (formKey[currentStep].currentState!.validate()) {
-      await _auth
+      await helpUser.Auth
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) => {
                 postDetailsToFireStore(),
@@ -1775,15 +1775,10 @@ class _registrationState extends State<registration> {
   }
 
   postDetailsToFireStore() async {
-//calling firestore
-    //calling user model
-    //sending data to the server
-    FirebaseFirestore firebaseStore = FirebaseFirestore.instance;
-    User? user = _auth.currentUser;
     UserModel userModel = UserModel();
     //writing values to the FirebaseStore
-    userModel.email = user!.email;
-    userModel.uid = user.uid;
+    userModel.email = helpUser.user!.email;
+    userModel.uid = helpUser.user!.uid;
     userModel.number = number.text.trim();
     userModel.firstName = firstName.text.trim();
     userModel.secondName = otherName.text.trim();
@@ -1829,9 +1824,7 @@ class _registrationState extends State<registration> {
     userModel.privateAddress = privateAddress.text.trim();
     userModel.contact = contact.text.trim();
 
-    await firebaseStore
-        .collection("Users")
-        .doc(user.uid)
+    await helpUser.FirebaseFireStore.doc(helpUser.user!.uid)
         .set(userModel.toMap());
     //Navigator.of(context).popUntil((route) => route.isFirst);
   }

@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gmm_app/screen/passwordRest.dart';
 import 'package:gmm_app/screen/registration.dart';
-import 'package:gmm_app/widget/progressBar.dart';
 
+import '../controller/Auth_controller.dart';
+import '../view/progressBar.dart';
 import 'emailVerification.dart';
 
 class landingPage extends StatefulWidget {
@@ -22,7 +23,7 @@ class _landingPageState extends State<landingPage> {
   TextEditingController password = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
-  final _auth = FirebaseAuth.instance;
+ final helpUser = userController();
   bool isLoading = false;
 
   @override
@@ -133,13 +134,12 @@ class _landingPageState extends State<landingPage> {
                         children: [
                           ElevatedButton(
                               onPressed: () {
-                               Fluttertoast.showToast(msg: "Please Wait...");
-                                // Center(child: Container(
-                                //     height: 50,
-                                //     width: 50,
-                                //     child: Card(child: CircularProgressIndicator(color: Colors.green,))));
-                                signIn(email.text.trim(), password.text.trim());
-                              },
+                                if(formKey.currentState!.validate())
+                                {
+                                  Fluttertoast.showToast(msg: "Please Wait...");
+                                  helpUser.signIn(context, email.text.trim(), password.text.trim());
+                                }
+                             },
                               child: Text("LOGIN",
                                   style: TextStyle(fontSize: 20))),
                           SizedBox(width: 10.0),
@@ -174,44 +174,5 @@ class _landingPageState extends State<landingPage> {
     );
   }
 
-  //Login Function
-  void signIn(String email, String password) async {
-    // showDialog(
-    //     context: context,
-    //     barrierDismissible: false,
-    //     builder: (BuildContext context){
-    //       return progressBar(message: "Please Wait...");
-    //     }
-    // );
-    try {
-      if (formKey.currentState!.validate()) {
-        await _auth
-            .signInWithEmailAndPassword(email: email, password: password)
-            .then((uid) => {
-                  showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (BuildContext context) {
-                        return progressBar(message: "Please Wait...");
-                      }),
-                  Fluttertoast.showToast(msg: "Login Successful", fontSize: 16),
-        Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => emailVerification()),
-        (route) => route.isFirst),
-                })
-            .catchError((e) {
-          Fluttertoast.showToast(msg: e!.message, fontSize: 16);
-        });
-      }
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        Fluttertoast.showToast(msg: "User Not Found");
-      } else if (e.code == 'wrong-password') {
-        Fluttertoast.showToast(msg: "Enter Correct Password");
-      }
-    } on SocketException catch (e) {
-      Fluttertoast.showToast(msg: e.message);
-    }
-  }
+
 }

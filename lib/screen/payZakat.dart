@@ -38,8 +38,8 @@ class _payZakatState extends State<payZakat> {
 
   @override
   Widget build(BuildContext context) {
-    final data = FirebaseDatabase.instance.reference().child('payZakat');
-    print(user);
+    final data = FirebaseDatabase.instance.ref().child('payZakat');
+
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(

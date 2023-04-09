@@ -8,6 +8,8 @@ import 'package:gmm_app/data/otherData.dart';
 import 'package:gmm_app/model/userModel.dart';
 import 'package:intl/intl.dart';
 
+import '../controller/Auth_controller.dart';
+
 class updateStatus extends StatefulWidget {
   const updateStatus({Key? key}) : super(key: key);
 
@@ -48,10 +50,7 @@ class _updateStatusState extends State<updateStatus> {
   DateTime datePicker = DateTime.now();
   int age = 0;
 
-  //declaring user and appending usermodel
-  User? user = FirebaseAuth.instance.currentUser;
-  UserModel logInUser = UserModel();
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  final helpUser = userController();
 
   @override
   void initState() {
@@ -63,13 +62,11 @@ class _updateStatusState extends State<updateStatus> {
     eduStatus;
     employeeStatus = eduStatus["status"]![0];
     //getting user data to display
-    FirebaseFirestore.instance
-        .collection("Users")
-        .doc(user!.uid)
+    helpUser.FirebaseFireStore.doc(helpUser.user!.uid)
         .get()
         .then((value) {
       setState(() {
-        this.logInUser = UserModel.fromMap(value.data());
+        this.helpUser.logInUser = UserModel.fromMap(value.data());
       });
     });
   }
@@ -77,13 +74,11 @@ class _updateStatusState extends State<updateStatus> {
   @override
   Widget build(BuildContext context) {
     setState(() {
-      FirebaseFirestore.instance
-          .collection("Users")
-          .doc(user!.uid)
+      helpUser.FirebaseFireStore.doc(helpUser.user!.uid)
           .get()
           .then((value) {
         setState(() {
-          this.logInUser = UserModel.fromMap(value.data());
+          this.helpUser.logInUser = UserModel.fromMap(value.data());
         });
       });
     });
@@ -105,48 +100,6 @@ class _updateStatusState extends State<updateStatus> {
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                   child: Column(
                     children: [
-                      // logInUser.nameOfPrimarySchool != ""
-                      //     ? Text(
-                      //         "Primary School: ${logInUser.nameOfPrimarySchool} ")
-                      //     : logInUser.nameOfJuniorHighSchool != ""
-                      //         ? Text(
-                      //             "Junior High School: ${logInUser.nameOfJuniorHighSchool} ")
-                      //         : logInUser.nameOfSeniorHighSchool != ""
-                      //             ? Text(
-                      //                 "Senior High School: ${logInUser.nameOfSeniorHighSchool} ")
-                      //             : logInUser.nameOfTertiary != ""
-                      //                 ? ListTile(
-                      //                     title: Text(
-                      //                         "Tertiary: ${logInUser.nameOfTertiary}",
-                      //                         style: TextStyle(
-                      //                           fontSize: 16,
-                      //                         )),
-                      //                     subtitle: Column(
-                      //                       crossAxisAlignment:
-                      //                           CrossAxisAlignment.start,
-                      //                       children: [
-                      //                         Text(
-                      //                           "Starting Date: ${logInUser.startingYear}",
-                      //                           style: TextStyle(
-                      //                               fontSize: 14,
-                      //                               fontWeight:
-                      //                                   FontWeight.bold),
-                      //                         ),
-                      //                         Text(
-                      //                           "Completing Year: ${logInUser.completingYear}",
-                      //                           style: TextStyle(
-                      //                               fontSize: 14,
-                      //                               fontWeight:
-                      //                                   FontWeight.bold),
-                      //                         ),
-                      //                       ],
-                      //                     ),
-                      //                   )
-                      //                 : logInUser.profession != ""
-                      //                     ? Text(
-                      //                         "Profession: ${logInUser.profession} ")
-                      //                     : Text("Level: ",
-                      //                         style: TextStyle(fontSize: 16)),
                       SizedBox(height: 5),
                       DecoratedBox(
                         decoration: BoxDecoration(
@@ -188,7 +141,7 @@ class _updateStatusState extends State<updateStatus> {
                             //sub-column
                             Column(
                               children: [
-                        Text("Name Of Tertiary: ${logInUser.nameOfTertiary} ", style: TextStyle(fontSize: 16),),
+                        Text("Name Of Tertiary: ${helpUser.logInUser.nameOfTertiary} ", style: TextStyle(fontSize: 16),),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 2, vertical: 1),
@@ -215,7 +168,7 @@ class _updateStatusState extends State<updateStatus> {
                             ),
                             Column(
                               children: [
-                                Text("Name Of Tertiary: ${logInUser.startingYear} ", style: TextStyle(fontSize: 16),),
+                                Text("Name Of Tertiary: ${helpUser.logInUser.startingYear} ", style: TextStyle(fontSize: 16),),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 2, vertical: 1),
@@ -259,7 +212,7 @@ class _updateStatusState extends State<updateStatus> {
                             ),
                             Column(
                               children: [
-                                Text("Name Of Tertiary: ${logInUser.completingYear} ", style: TextStyle(fontSize: 16),),
+                                Text("Name Of Tertiary: ${helpUser.logInUser.completingYear} ", style: TextStyle(fontSize: 16),),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 2, vertical: 1),
@@ -300,7 +253,7 @@ class _updateStatusState extends State<updateStatus> {
                             SizedBox(height: 10,),
                             Column(
                               children: [
-                                Text("Location: ${logInUser.locationOfCampus} ", style: TextStyle(fontSize: 16),),
+                                Text("Location: ${helpUser.logInUser.locationOfCampus} ", style: TextStyle(fontSize: 16),),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 2, vertical: 1),
@@ -328,7 +281,7 @@ class _updateStatusState extends State<updateStatus> {
                             ),
                             Column(
                               children: [
-                                Text("Address: ${logInUser.addressOfCampus} ", style: TextStyle(fontSize: 16),),
+                                Text("Address: ${helpUser.logInUser.addressOfCampus} ", style: TextStyle(fontSize: 16),),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 2, vertical: 1),
@@ -355,7 +308,7 @@ class _updateStatusState extends State<updateStatus> {
                             ),
                             Column(
                               children: [
-                                Text("Programme: ${logInUser.programme} ", style: TextStyle(fontSize: 16),),
+                                Text("Programme: ${helpUser.logInUser.programme} ", style: TextStyle(fontSize: 16),),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 2, vertical: 1),
@@ -383,7 +336,7 @@ class _updateStatusState extends State<updateStatus> {
                             ),
                             Column(
                               children: [
-                                Text("Department: ${logInUser.department} ", style: TextStyle(fontSize: 16),),
+                                Text("Department: ${helpUser.logInUser.department} ", style: TextStyle(fontSize: 16),),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 2, vertical: 1),
@@ -440,7 +393,7 @@ class _updateStatusState extends State<updateStatus> {
                                         horizontal: 2, vertical: 20),
                                     child: Column(
                                       children: [
-                                        Text("Employee Status: ${logInUser.liveAfterSchool} ", style: TextStyle(fontSize: 16),),
+                                        Text("Employee Status: ${helpUser.logInUser.liveAfterSchool} ", style: TextStyle(fontSize: 16),),
                                         SizedBox(height: 5),
                                         DecoratedBox(
                                           decoration: BoxDecoration(
@@ -496,7 +449,7 @@ class _updateStatusState extends State<updateStatus> {
                                 horizontal: 2, vertical: 1),
                             child: Column(
                               children: [
-                                Text("Primary School: ${logInUser.nameOfPrimarySchool} ", style: TextStyle(fontSize: 16),),
+                                Text("Primary School: ${helpUser.logInUser.nameOfPrimarySchool} ", style: TextStyle(fontSize: 16),),
                                 TextFormField(
                                     validator: (value) {
                                       if (nameOfPrimarySchool.text.isEmpty) {
@@ -521,7 +474,7 @@ class _updateStatusState extends State<updateStatus> {
                                     horizontal: 2, vertical: 1),
                                 child: Column(
                                   children: [
-                                    Text("Junior High School: ${logInUser.nameOfJuniorHighSchool} ", style: TextStyle(fontSize: 16),),
+                                    Text("Junior High School: ${helpUser.logInUser.nameOfJuniorHighSchool} ", style: TextStyle(fontSize: 16),),
                                     TextFormField(
                                         validator: (value) {
                                           if (nameOfJunior.text.isEmpty) {
@@ -546,7 +499,7 @@ class _updateStatusState extends State<updateStatus> {
                                         horizontal: 2, vertical: 1),
                                     child: Column(
                                       children: [
-                                        Text("Senior High School: ${logInUser.nameOfSeniorHighSchool} ", style: TextStyle(fontSize: 16),),
+                                        Text("Senior High School: ${helpUser.logInUser.nameOfSeniorHighSchool} ", style: TextStyle(fontSize: 16),),
                                         TextFormField(
                                             validator: (value) {
                                               if (nameOfSeniorSchool.text.isEmpty) {
@@ -575,7 +528,7 @@ class _updateStatusState extends State<updateStatus> {
                                             horizontal: 2, vertical: 1),
                                         child: Column(
                                           children: [
-                                            Text("profession: ${logInUser.profession} ", style: TextStyle(fontSize: 16),),
+                                            Text("profession: ${helpUser.logInUser.profession} ", style: TextStyle(fontSize: 16),),
                                             TextFormField(
                                                 validator: (value) {
                                                   if (profession.text.isEmpty) {
@@ -601,7 +554,7 @@ class _updateStatusState extends State<updateStatus> {
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                   child: Column(
                     children: [
-                      Text("No. Of Dependent: ${logInUser.numberOfDependent} ", style: TextStyle(fontSize: 16),),
+                      Text("No. Of Dependent: ${helpUser.logInUser.numberOfDependent} ", style: TextStyle(fontSize: 16),),
                       TextFormField(
                           validator: (value) {
                             if (numberOfDependent.text.isEmpty) {
@@ -625,7 +578,7 @@ class _updateStatusState extends State<updateStatus> {
                   child: Column(
                     children: [
                       Text(
-                        "Marital Status: ${logInUser.maritalStatus} ",
+                        "Marital Status: ${helpUser.logInUser.maritalStatus} ",
                         style: TextStyle(fontSize: 16),
                       ),
                       SizedBox(height: 5),
@@ -677,7 +630,7 @@ class _updateStatusState extends State<updateStatus> {
                                 child: Column(
                                   children: [
                                     Text(
-                                      "No. Of Wive: ${logInUser.numberOfWive}",
+                                      "No. Of Wive: ${helpUser.logInUser.numberOfWive}",
                                       style: TextStyle(fontSize: 16),
                                     ),
                                     TextFormField(
@@ -719,7 +672,7 @@ class _updateStatusState extends State<updateStatus> {
                                         child: Column(
                                           children: [
                                             Text(
-                                              "No. Of Males: ${logInUser.numberOfMaleChildren}",
+                                              "No. Of Males: ${helpUser.logInUser.numberOfMaleChildren}",
                                               style: TextStyle(fontSize: 16),
                                             ),
                                             TextFormField(
@@ -748,7 +701,7 @@ class _updateStatusState extends State<updateStatus> {
                                         child: Column(
                                           children: [
                                             Text(
-                                              "No. Of Females: ${logInUser.numberOfFemaleChildren}",
+                                              "No. Of Females: ${helpUser.logInUser.numberOfFemaleChildren}",
                                               style: TextStyle(fontSize: 16),
                                             ),
                                             TextFormField(
@@ -778,7 +731,7 @@ class _updateStatusState extends State<updateStatus> {
                                   Wrap(
                                     children:[
                                       Text(
-                                        "Name Of Muslims: ${logInUser.nameOfMuslimChildren}",
+                                        "Name Of Muslims: ${helpUser.logInUser.nameOfMuslimChildren}",
                                         style: TextStyle(fontSize: 16),
                                       ),
                                     ],
@@ -811,7 +764,7 @@ class _updateStatusState extends State<updateStatus> {
                                   Wrap(
                                     children:[
                                       Text(
-                                        "Name Of Non-Muslims: ${logInUser.nameOfNonMuslimChildren}",
+                                        "Name Of Non-Muslims: ${helpUser.logInUser.nameOfNonMuslimChildren}",
                                         style: TextStyle(fontSize: 16),
                                       ),
                                     ],
@@ -912,10 +865,11 @@ class _updateStatusState extends State<updateStatus> {
         });
     }
   }
+
   void updateStat() async {
     try {
         FirebaseFirestore firebaseStore = FirebaseFirestore.instance;
-        await firebaseStore.collection("Users").doc(logInUser.uid).update({
+        await helpUser.FirebaseFireStore.doc(helpUser.logInUser.uid).update({
           "nameOfPrimarySchool": nameOfPrimarySchool.text.trim(),
           "nameOfJuniorHighSchool": nameOfJunior.text.trim(),
           "nameOfSeniorHighSchool": nameOfSeniorSchool.text.trim(),

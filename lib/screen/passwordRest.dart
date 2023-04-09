@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../controller/Auth_controller.dart';
+
 class passwordReset extends StatefulWidget {
   const passwordReset({Key? key}) : super(key: key);
 
@@ -14,9 +16,10 @@ class passwordReset extends StatefulWidget {
 
 class _passwordResetState extends State<passwordReset> {
   final resetKey = GlobalKey<FormState>();
+  final helpUser = userController();
+
   TextEditingController Rest = TextEditingController();
-  User? user = FirebaseAuth.instance.currentUser;
-  final Auth = FirebaseAuth.instance;
+
 
   @override
   void dispose() {
@@ -27,7 +30,6 @@ class _passwordResetState extends State<passwordReset> {
 
   @override
   Widget build(BuildContext context) {
-    print(Auth.currentUser?.emailVerified);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -94,7 +96,7 @@ class _passwordResetState extends State<passwordReset> {
                 ElevatedButton.icon(
                   onPressed: () {
                     if (resetKey.currentState!.validate()) {
-                      resetPassword();
+                      helpUser.resetPassword(context,Rest);
                     }
                   },
                   label: Text(
@@ -109,29 +111,5 @@ class _passwordResetState extends State<passwordReset> {
         ),
       ),
     );
-  }
-
-  Future<void> resetPassword() async {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) => Center(
-              child: CircularProgressIndicator(
-                color: Colors.green,
-              ),
-            ));
-    try {
-      await Auth.sendPasswordResetEmail(email: Rest.text.trim())
-          .timeout(Duration(seconds: 10));
-      Fluttertoast.showToast(msg: "Password Reset Email Sent");
-      print("am here");
-       Navigator.of(context).popUntil((route) => route.isFirst);
-      //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>landingPage()));
-    } on FirebaseAuthException catch (e) {
-      Fluttertoast.showToast(msg: (e.message!));
-      Navigator.of(context).pop();
-    } on SocketException catch(e){
-      Fluttertoast.showToast(msg: e.message);
-    }
   }
 }

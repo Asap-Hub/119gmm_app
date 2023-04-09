@@ -36,7 +36,7 @@ class _payInfaqState extends State<payInfaq> {
 
   @override
   Widget build(BuildContext context) {
-    final data = FirebaseDatabase.instance.reference().child('payInfaq');
+    final data = FirebaseDatabase.instance.ref().child('payInfaq');
     print(user);
     return SafeArea(
         child: Scaffold(

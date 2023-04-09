@@ -29,7 +29,7 @@ class _homeState extends State<home> {
                 child: Row(
                   children: <Widget>[
                     Container(
-                      width: MediaQuery.of(context).size.width/1,
+                      width: MediaQuery.of(context).size.width / 1,
                       child: Card(
                         shape: RoundedRectangleBorder(
                           borderRadius:
@@ -61,7 +61,7 @@ class _homeState extends State<home> {
                       ),
                     ),
                     Container(
-                      width: MediaQuery.of(context).size.width/1,
+                      width: MediaQuery.of(context).size.width / 1,
                       child: Card(
                         shape: RoundedRectangleBorder(
                           borderRadius:
@@ -93,7 +93,7 @@ class _homeState extends State<home> {
                       ),
                     ),
                     Container(
-                      width: MediaQuery.of(context).size.width/1,
+                      width: MediaQuery.of(context).size.width / 1,
                       child: Card(
                         shape: RoundedRectangleBorder(
                           borderRadius:
@@ -138,12 +138,16 @@ class _homeState extends State<home> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 5),
-                  child: Text("FEATURES",style: TextStyle(fontSize: 18),),
+                  child: Text(
+                    "FEATURES",
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 10,left: 10,right: 10),
+                  padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
                   child: GestureDetector(
-                    onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> payInfaq())),
+                    onTap: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => payInfaq())),
                     child: Container(
                       child: Card(
                         shape: RoundedRectangleBorder(
@@ -154,7 +158,9 @@ class _homeState extends State<home> {
                             child: ListTile(
                               title: Text("INFAQ"),
                               leading: Image.asset(
-                                  'assets/Charity.png', height: 50, width: 50,
+                                'assets/Charity.png',
+                                height: 50,
+                                width: 50,
                               ),
                             )),
                       ),
@@ -162,9 +168,10 @@ class _homeState extends State<home> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 10,left: 10,right: 10),
+                  padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
                   child: GestureDetector(
-                    onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> payZakat())),
+                    onTap: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => payZakat())),
                     child: Container(
                       child: Card(
                         shape: RoundedRectangleBorder(
@@ -175,7 +182,9 @@ class _homeState extends State<home> {
                             child: ListTile(
                               title: Text("ZAKAT"),
                               leading: Image.asset(
-                                  'assets/zakat.png', height: 50, width: 50,
+                                'assets/zakat.png',
+                                height: 50,
+                                width: 50,
                               ),
                             )),
                       ),
@@ -183,9 +192,10 @@ class _homeState extends State<home> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 10,left: 10,right: 10),
+                  padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
                   child: GestureDetector(
-                    onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>addReport())),
+                    onTap: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => addReport())),
                     child: Container(
                       child: Card(
                         shape: RoundedRectangleBorder(
@@ -196,7 +206,9 @@ class _homeState extends State<home> {
                             child: ListTile(
                               title: Text("REPORT"),
                               leading: Image.asset(
-                                'assets/feedback.png',height: 70, width: 70,
+                                'assets/feedback.png',
+                                height: 70,
+                                width: 70,
                               ),
                             )),
                       ),
@@ -204,13 +216,12 @@ class _homeState extends State<home> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 10,left: 10,right: 10),
+                  padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
                   child: GestureDetector(
-                    onTap: ()async{
-                        final url = 'http:/ghanamuslimmission.com/';
-                        openBrowserURL(url: url, inApp: true);
-                        Fluttertoast.showToast(msg: "Please Wait...");
-
+                    onTap: () async {
+                      final url = 'http:/ghanamuslimmission.com/';
+                      openBrowserURL(url: url, inApp: true);
+                      Fluttertoast.showToast(msg: "Please Wait...");
                     },
                     child: Container(
                       child: Card(
@@ -222,7 +233,9 @@ class _homeState extends State<home> {
                             child: ListTile(
                               title: Text("ABOUT US"),
                               leading: Image.asset(
-                                'assets/about.png',height: 70, width: 70,
+                                'assets/about.png',
+                                height: 70,
+                                width: 70,
                               ),
                             )),
                       ),
@@ -237,14 +250,6 @@ class _homeState extends State<home> {
     ));
   }
 
-  // List<Widget> Screen = <Widget>[home(), infag(), zakat(), report()];
-  //
-  // void _onItemTapped(Widget index) {
-  //   setState(() {
-  //     selectedItem = index;
-  //     print(selectedItem);
-  //   });
-  //}
   Future openBrowserURL({required String url, bool inApp = false}) async {
     if (await canLaunch(url)) {
       await launch(

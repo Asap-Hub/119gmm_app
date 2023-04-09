@@ -20,7 +20,7 @@ class _infagState extends State<infag> {
     final data = FirebaseDatabase.instance.reference().child('Infaq').child(user!.uid).child("myInfaq");
     return SafeArea(
         child: Scaffold(
-      floatingActionButton: FloatingActionButton(
+        floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.white,
         child: Image.asset('assets/Charity.png', height: 50, width: 50),
         onPressed: () {
