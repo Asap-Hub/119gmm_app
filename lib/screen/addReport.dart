@@ -6,6 +6,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gmm_app/controller/Auth_controller.dart';
 import 'package:gmm_app/model/reportModel.dart';
 
 class addReport extends StatefulWidget {
@@ -25,9 +26,10 @@ class _addReportState extends State<addReport> {
   final allKey = GlobalKey<FormState>();
 
   //firebase initialization
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  User? user = FirebaseAuth.instance.currentUser;
-  final realtimeDb = FirebaseDatabase.instance;
+  final helpUser = userController();
+  //final FirebaseAuth _auth = FirebaseAuth.instance;
+  //User? user = FirebaseAuth.instance.currentUser;
+  //final realtimeDb = FirebaseDatabase.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +105,7 @@ class _addReportState extends State<addReport> {
                             topRight: Radius.circular(10.0))),
                     child: Center(
                         child: Text(
-                      "${user!.email}",
+                      "${helpUser.user!.email}",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -196,9 +198,7 @@ class _addReportState extends State<addReport> {
          Fluttertoast.showToast(
             msg:
             "Sorry Something, went wrong");
-
       }
-
     } on SocketException catch (e) {
       Fluttertoast.showToast(msg: e.message);
     }
@@ -208,12 +208,11 @@ class _addReportState extends State<addReport> {
     //calling firestore
     //calling user model
     //sending data to the server
-    User? user = _auth.currentUser;
     reportModel model = reportModel();
-    final db = realtimeDb.reference().child("Report").child(user!.uid).child("MyReports");
+    final db = helpUser.realtimeDb.ref().child("Report").child(helpUser.user!.uid).child("MyReports");
     //writing values to the FirebaseStore
-    model.uid = user.uid;
-    model.email = user.email;
+    model.uid = helpUser.user!.uid;
+    model.email = helpUser.user!.email;
     model.fullName = fullName.text.trim();
     model.contact = contact.text.trim();
     model.message = message.text.trim();

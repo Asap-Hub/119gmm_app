@@ -3,7 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gmm_app/model/reportModel.dart';
+import 'package:gmm_app/controller/Auth_controller.dart';
 import 'package:gmm_app/screen/addReport.dart';
 
 class report extends StatefulWidget {
@@ -14,12 +14,11 @@ class report extends StatefulWidget {
 }
 
 class _reportState extends State<report> {
-  //FirebaseAuth _auth = FirebaseAuth.instance;
-  User? user = FirebaseAuth.instance.currentUser;
+  // firebase instance
+  final helpUser = userController();
   @override
   Widget build(BuildContext context) {
-   final data  = FirebaseDatabase.instance.reference().child("Report").child(user!.uid).child("MyReports");
-   print(user);
+   final data  = helpUser.realtimeDb.ref().child("Report").child(helpUser.user!.uid).child("MyReports");
     return SafeArea(
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
@@ -27,7 +26,7 @@ class _reportState extends State<report> {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => addReport()));
           },
-          child: Image.asset('assets/feedback.png'),
+          child: Image.asset('assets/feedback.png', height: 50, width: 50),
           backgroundColor: Colors.white,
         ),
         body: Container(
@@ -52,91 +51,108 @@ class _reportState extends State<report> {
   }
 
   Widget listItem({required Map reportData}) {
-    return Card(
-      shadowColor: Colors.green,
-      elevation: 5.0,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.elliptical(10.0, 10.0),
-              bottomRight: Radius.elliptical(10.0, 10.0),
+    return Flex(
+      direction: Axis.horizontal,
+      children:[
+        Expanded(
+          child: Card(
+            shadowColor: Colors.black,
+            elevation: 5.0,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.elliptical(10.0, 10.0),
+                        topLeft: Radius.elliptical(10.0, 10.0),
+                        topRight: Radius.elliptical(10.0, 10.0),
+                        bottomRight: Radius.elliptical(10.0, 10.0)
+                )),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Container(
 
-          )),
-      child: Padding(
-        padding: const EdgeInsets.only(top: 10),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.elliptical(10.0, 10.0),
-                topRight: Radius.elliptical(10.0, 10.0),
-              bottomLeft: Radius.elliptical(10.0, 10.0),
-              bottomRight: Radius.elliptical(10.0, 10.0),
-            ),
-            color: Colors.green,
-          ),
-          height: MediaQuery.of(context).size.height / 2.15,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 5,bottom: 5),
-                  child: Text(
-                    'Name: ${reportData['fullName']}',
-                    style: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold,color: Colors.white
-                    ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.elliptical(10.0, 10.0),
+                    topRight: Radius.elliptical(10.0, 10.0),
+                    bottomLeft: Radius.elliptical(10.0, 10.0),
+                    bottomRight: Radius.elliptical(10.0, 10.0),
                   ),
+                  color: Colors.white,
+
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 5,bottom: 5),
-                  child: Text(
-                    'Email: ${reportData['email']}',
-                    style: TextStyle(fontSize: 18, color: Colors.white),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 5,bottom: 5),
-                  child: Text(
-                    'Contact: ${reportData['contact']}',
-                    style: TextStyle(fontSize: 18, color: Colors.white),
-                  ),
-                ),
-                Divider(
-                  color: Colors.grey,
-                  height: 5.0,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 5,bottom: 5),
-                  child: Text(
-                    'Message: ${reportData['message']}',
-                    style: TextStyle(fontSize: 20, color: Colors.white),
-                  ),
-                ),
-                Divider(
-                  color: Colors.grey,
-                ),
-                Container(
-                  color: Color(0xFF5d9671),
-                  height: 50,
-                  width: double.infinity,
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
-                      child: Wrap(
-                        children:[ Text(
-                          'Created At: ${reportData['time']}',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),]
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: ListTile(
+                          title: Text(
+                            'Name: ${reportData['fullName']}',
+                            style: TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.bold,color: Colors.black
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: ListTile(
+                          title: Text(
+                            'Email: ${reportData['email']}',
+                            style: TextStyle(fontSize: 22, color: Colors.black),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: ListTile(
+                          title: Text(
+                            'Contact: ${reportData['contact']}',
+                            style: TextStyle(fontSize:22, color: Colors.black),
+                          ),
+                        ),
+                      ),
+                      Divider(
+                        color: Colors.grey,
+                        height: 5.0,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: ListTile(
+                          title: Text(
+                            'Message: ${reportData['message']}',
+                            style: TextStyle(fontSize: 22, color: Colors.black),
+                          ),
+                        ),
+                      ),
+                      Divider(
+                        color: Colors.grey,
+                      ),
+                      Container(
+                        color: Colors.green,
+                        height: 50,
+                        width: double.infinity,
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+                            child: Wrap(
+                                children:[ Text(
+                                  'Created At: ${reportData['time']}',
+                                  style: TextStyle(fontSize: 22, color: Colors.white),
+                                ),]
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
           ),
         ),
-      ),
+      ]
     );
   }
 }

@@ -177,35 +177,6 @@ class _registrationState extends State<registration> {
                   }
                 }
               });
-
-              // final isLastStep = currentStep == getSteps().length - 1;
-              // if (isLastStep) {
-              //   if (!email.text.trim().contains("@")) {
-              //     Fluttertoast.showToast(msg: "");
-              //   } else if (password.text.trim() !=
-              //       confirmPassword.text.trim()) {
-              //     Fluttertoast.showToast(msg: "Password Mismatched");
-              //   } else if (StepperKey.currentState!.validate() ) {
-              //     signUp(email.text.trim().toString(),
-              //         password.text.trim().toString());
-              //     Fluttertoast.showToast(
-              //         msg: "Please Wait...",
-              //         toastLength: Toast.LENGTH_SHORT,
-              //         gravity: ToastGravity.CENTER);
-              //     Fluttertoast.showToast(
-              //         msg: "Account Created Successfully",
-              //         toastLength: Toast.LENGTH_LONG,
-              //         gravity: ToastGravity.CENTER);
-              //     Navigator.of(context).pushAndRemoveUntil(
-              //         MaterialPageRoute(builder: (context) => landingPage()),
-              //         (route) => route.isFirst);
-              //     print("am here");
-              //   }
-              // } else {
-              //   setState(() {
-              //     currentStep += 1;
-              //   });
-              // }
             },
             onStepCancel: () {
               currentStep == 0
@@ -444,7 +415,8 @@ class _registrationState extends State<registration> {
                           )),
                     ),
                   ),
-                ),Padding(
+                ),
+                Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 10),
                   child: DecoratedBox(
                       child: Padding(
@@ -1763,9 +1735,8 @@ class _registrationState extends State<registration> {
           .catchError((e) {
         Fluttertoast.showToast(msg: e!.message);
       });
-      //}
-      //Fluttertoast.showToast(msg: "Please Wait, you account is been creating");
-    } }on FirebaseAuthException catch (e) {
+    }
+    }on FirebaseAuthException catch (e) {
       if (e.code == 'email-already') {
         Fluttertoast.showToast(msg: "The Account Already Exist");
       }

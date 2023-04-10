@@ -1,8 +1,6 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gmm_app/controller/Auth_controller.dart';
@@ -16,6 +14,7 @@ import 'package:gmm_app/screen/report.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../controller/constant.dart';
 import 'home.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -41,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
         this.helpUser.logInUser = UserModel.fromMap(value.data());
       });
     });
-    helpUser.defaultUserLogo;
+    defaultUserLogo;
   }
 
   @override
@@ -144,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     backgroundColor: Colors.grey,
                     backgroundImage:
                     helpUser.logInUser.url == null ?
-                    NetworkImage(helpUser.defaultUserLogo):
+                    NetworkImage(defaultUserLogo):
                     NetworkImage(helpUser.logInUser.url.toString()),
                     radius: 50,
                   ),

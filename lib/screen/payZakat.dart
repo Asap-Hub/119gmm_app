@@ -1,13 +1,13 @@
 import 'dart:core';
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gmm_app/controller/Auth_controller.dart';
 import 'package:gmm_app/model/zakatModel.dart';
+
+import '../controller/constant.dart';
 
 class payZakat extends StatefulWidget {
   const payZakat({Key? key}) : super(key: key);
@@ -27,19 +27,13 @@ class _payZakatState extends State<payZakat> {
   double cardHeight = 10.0;
 
   //connecting to database
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  User? user = FirebaseAuth.instance.currentUser;
-  final realtimeDb = FirebaseDatabase.instance;
-  String status = "pending";
-  int infaqID = 100;
+  final helpUser = userController();
 
   //global key
   final allKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    final data = FirebaseDatabase.instance.ref().child('payZakat');
-
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -236,7 +230,7 @@ class _payZakatState extends State<payZakat> {
                           ),),),
                         GestureDetector(
                           onTap: () {
-                            Clipboard.setData(ClipboardData(text: user!.uid))
+                            Clipboard.setData(ClipboardData(text: helpUser.user!.uid))
                                 .then((value) {
                               Fluttertoast.showToast(msg: "Copied to Clipboard");
                             });
@@ -245,7 +239,7 @@ class _payZakatState extends State<payZakat> {
                             padding: const EdgeInsets.only(left: 10, bottom: 5),
                             child:  Wrap(children: [
                                   Text(
-                                    '${user!.uid}',
+                                    '${helpUser.user!.uid}',
                                     style: TextStyle(
                                       fontSize: 18,
                                     ),
@@ -317,7 +311,7 @@ class _payZakatState extends State<payZakat> {
                   ElevatedButton(
                       onPressed: () {
                         if (allKey.currentState!.validate() &&
-                            zakatID.value.text == user!.uid ) {
+                            zakatID.value.text == helpUser.user!.uid ) {
                           payZakat();
                           Navigator.pop(context);
                         }
@@ -354,11 +348,10 @@ class _payZakatState extends State<payZakat> {
     //calling firestore
     //calling user model
     //sending data to the server
-    User? user = _auth.currentUser;
     zakatModel model = zakatModel();
-    final db = realtimeDb.reference().child("Zakat").child(user!.uid).child("myZakat");
+    final db = helpUser.realtimeDb.ref().child("Zakat").child(helpUser.user!.uid).child("myZakat");
     //writing values to the FirebaseStore
-    model.uid = user.uid;
+    model.uid = helpUser.user!.uid;
     model.zakatNumber = zakatNumber.text.trim();
     model.payerName = payerName.text.trim();
     model.payerNumber = payerNumber.text.trim();

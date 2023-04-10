@@ -6,6 +6,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gmm_app/controller/Auth_controller.dart';
 import 'package:gmm_app/model/infaqModel.dart';
 
 class payInfaq extends StatefulWidget {
@@ -27,17 +28,16 @@ class _payInfaqState extends State<payInfaq> {
   double cardHeight = 20.0;
 
   //connecting to database
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  User? user = FirebaseAuth.instance.currentUser;
-  final realtimeDb = FirebaseDatabase.instance;
+  final helpUser = userController();
+
+
   String status = "pending";
   //global key
   final allKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    final data = FirebaseDatabase.instance.ref().child('payInfaq');
-    print(user);
+
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -223,7 +223,7 @@ class _payInfaqState extends State<payInfaq> {
                           ),),),
                         GestureDetector(
                           onTap: () {
-                            Clipboard.setData(ClipboardData(text: user!.uid))
+                            Clipboard.setData(ClipboardData(text: helpUser.user!.uid))
                                 .then((value) {
                               Fluttertoast.showToast(msg: "Copied to Clipboard");
                             });
@@ -232,7 +232,7 @@ class _payInfaqState extends State<payInfaq> {
                             padding: const EdgeInsets.only(left: 10, bottom: 5),
                             child:  Wrap(children: [
                               Text(
-                                '${user!.uid}',
+                                '${helpUser.user!.uid}',
                                 style: TextStyle(
                                   fontSize: 18,
                                 ),
@@ -300,7 +300,7 @@ class _payInfaqState extends State<payInfaq> {
                   ),
                   SizedBox(height: Height,),
                   ElevatedButton(onPressed: (){
-                    if(allKey.currentState!.validate() && infaqID.value.text == user!.uid){
+                    if(allKey.currentState!.validate() && infaqID.value.text == helpUser.user!.uid){
                       payInfaq();
                       Navigator.pop(context);
                       print("am here");
@@ -337,10 +337,9 @@ class _payInfaqState extends State<payInfaq> {
 //calling firestore
     //calling user model
     //sending data to the server
-    FirebaseFirestore firebaseStore = FirebaseFirestore.instance;
-    User? user = _auth.currentUser;
+    User? user = helpUser.Auth.currentUser;
     infaqModel model = infaqModel();
-    final db = realtimeDb.reference().child("Infaq").child(user!.uid).child("myInfaq");
+    final db = helpUser.realtimeDb.ref().child("Infaq").child(user!.uid).child("myInfaq");
     //writing values to the FirebaseStore
     model.uid = user.uid;
     model.infaqNumber = infaqNumber.text.trim();
