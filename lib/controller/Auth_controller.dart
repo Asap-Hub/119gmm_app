@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +21,12 @@ import '../view/progressBar.dart';
   User? user = FirebaseAuth.instance.currentUser;
   FirebaseStorage firebaseStorage = FirebaseStorage.instance;
   final FirebaseFireStore = FirebaseFirestore.instance.collection("Users");
+
   UserModel logInUser = UserModel();
   final FirebaseAuth Auth = FirebaseAuth.instance;
+  final realtimeDb = FirebaseDatabase.instance;
+  FirebaseFirestore firebaseStore = FirebaseFirestore.instance;
 
-  final defaultUserLogo = "https://firebasestorage.googleapis.com/v0/b/gmmapp-76672.appspot.com/o/gmm_logo.png?alt=media&token=f3a08baf-b534-4546-962f-316b065205aa";
 
 
 
