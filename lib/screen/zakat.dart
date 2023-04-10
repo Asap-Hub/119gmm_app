@@ -18,7 +18,7 @@ class zakat extends StatefulWidget {
 }
 
 class _zakatState extends State<zakat> {
- // User? user = FirebaseAuth.instance.currentUser;
+ // firebase instantiation
   final helpUser = userController();
   @override
   Widget build(BuildContext context) {
