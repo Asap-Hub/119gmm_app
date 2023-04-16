@@ -1,15 +1,10 @@
-import 'dart:io';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/material.dart'; 
 import 'package:gmm_app/screen/passwordRest.dart';
 import 'package:gmm_app/screen/registration.dart';
 
 import '../controller/Auth_controller.dart';
-import '../view/progressBar.dart';
-import 'emailVerification.dart';
+import '../utils/progressBar.dart';
 
 class landingPage extends StatefulWidget {
   const landingPage({Key? key}) : super(key: key);
@@ -25,6 +20,7 @@ class _landingPageState extends State<landingPage> {
 
  final helpUser = userController();
   bool isLoading = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -121,6 +117,7 @@ class _landingPageState extends State<landingPage> {
                             if (!regexp.hasMatch(value)) {
                               return ("Enter a valid Password(Min. 6 Character)");
                             }
+                            return null;
                           },
                           onSaved: (value) {
                             password.text = value!;
@@ -136,9 +133,9 @@ class _landingPageState extends State<landingPage> {
                               onPressed: () {
                                 if(formKey.currentState!.validate())
                                 {
-                                  Fluttertoast.showToast(msg: "Please Wait...");
-                                  helpUser.signIn(context, email.text.trim(), password.text.trim());
-                                }
+                               helpUser.signIn(context, email.text.trim(), password.text.trim());
+
+                              }
                              },
                               child: Text("LOGIN",
                                   style: TextStyle(fontSize: 20))),

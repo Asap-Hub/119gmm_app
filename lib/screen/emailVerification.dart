@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gmm_app/controller/Auth_controller.dart';
 
+import '../utils/progressBar.dart';
 import 'MyHomePage.dart';
 
 class emailVerification extends StatefulWidget {
@@ -17,12 +18,14 @@ class emailVerification extends StatefulWidget {
 class _emailVerificationState extends State<emailVerification> {
   bool isEmailVerified = false;
   final Auth = FirebaseAuth.instance;
+  final helpUser = userController();
   Timer? timer;
 
   @override void initState() {
     isEmailVerified = Auth.currentUser!.emailVerified;
     if(!isEmailVerified){
       sendVerificationEmail();
+
      timer = Timer.periodic(
         Duration(seconds: 3), (_) => checkEmailVerified(),
       );
@@ -31,8 +34,13 @@ class _emailVerificationState extends State<emailVerification> {
   }
   Future checkEmailVerified() async {
     await FirebaseAuth.instance.currentUser!.reload();
+
+
+
     setState(() {
       isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
+
+      showProgress(context, "Login Successful");
     });
     if(isEmailVerified) timer?.cancel();
   }
@@ -46,13 +54,13 @@ Future sendVerificationEmail()async {
       final user = FirebaseAuth.instance.currentUser!;
       await user.sendEmailVerification();
     } catch(e){
-      Fluttertoast.showToast(msg: e.toString());
+      showException(context, e.toString());
     }
 }
 
   @override
-  Widget build(BuildContext context) => isEmailVerified
-      ? MyHomePage()
+  Widget build(BuildContext context) =>
+      isEmailVerified == true ? MyHomePage()
       : SafeArea(
           child: Scaffold(
             appBar: AppBar(
