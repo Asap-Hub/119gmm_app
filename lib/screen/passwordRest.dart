@@ -56,7 +56,7 @@ class _passwordResetState extends State<passwordReset> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10),
-                  child:  Text("""Kindly Check Spam box too if you can't find the email in your mail Inbox""", style: TextStyle(fontSize: 16),),
+                  child:  Text("""Kindly Check Spam box, if you can't find the email in your mail Inbox""", style: TextStyle(fontSize: 16),),
 
                 ),
                 SizedBox(

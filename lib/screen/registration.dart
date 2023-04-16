@@ -9,6 +9,7 @@ import 'package:gmm_app/controller/Auth_controller.dart';
 import 'package:gmm_app/data/otherData.dart';
 import 'package:gmm_app/data/region.dart';
 import 'package:gmm_app/model/userModel.dart';
+import 'package:gmm_app/utils/progressBar.dart';
 import 'package:intl/intl.dart';
 
 import 'landingPage.dart';
@@ -1731,17 +1732,18 @@ class _registrationState extends State<registration> {
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) => {
                 postDetailsToFireStore(),
+        showProgress(context, "Please Wait!..."),
               })
           .catchError((e) {
-        Fluttertoast.showToast(msg: e!.message);
+        showException(context, e!.message);
       });
     }
     }on FirebaseAuthException catch (e) {
       if (e.code == 'email-already') {
-        Fluttertoast.showToast(msg: "The Account Already Exist");
+        showException(context, "The Account Already Exist");
       }
     } on SocketException catch (e) {
-      Fluttertoast.showToast(msg: e.message);
+     showException(context, e.message);
     }
   }
 

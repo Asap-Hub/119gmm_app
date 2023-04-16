@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gmm_app/data/otherData.dart';
 import 'package:gmm_app/data/region.dart';
 import 'package:gmm_app/model/userModel.dart';
+import 'package:gmm_app/utils/progressBar.dart';
 
 class updateBranch extends StatefulWidget {
   const updateBranch({Key? key}) : super(key: key);
@@ -33,7 +34,6 @@ class _updateBranchState extends State<updateBranch> {
   //declaring user and appending usermodel
   User? user = FirebaseAuth.instance.currentUser;
   UserModel logInUser = UserModel();
-  FirebaseAuth _auth = FirebaseAuth.instance;
 
   //void initState
   void initState() {
@@ -305,9 +305,9 @@ class _updateBranchState extends State<updateBranch> {
                       if (personalFormKey.currentState!.validate()) {
                         updateBran();
                         Navigator.pop(context);
-                        Fluttertoast.showToast(msg: "Updated Successfully");
+                        showProgress(context, "Updated Successfully");
                       } else {
-                        Fluttertoast.showToast(msg: "An Error Occurred");
+                        showException(context, "An Error Occurred");
                       }
                     },
                     child: Text("UPDATE"))
@@ -332,10 +332,11 @@ class _updateBranchState extends State<updateBranch> {
         "residentialAddress": residentialAddress.text.trim(),
         "group": group.trim(),
       }).catchError((e) {
-        Fluttertoast.showToast(
-            gravity: ToastGravity.CENTER,
-            toastLength: Toast.LENGTH_LONG,
-            msg: e!.message);
+        // Fluttertoast.showToast(
+        //     gravity: ToastGravity.CENTER,
+        //     toastLength: Toast.LENGTH_LONG,
+        //     msg: );
+        showException(context, e!.message);
       });
     }
     // )
@@ -345,7 +346,7 @@ class _updateBranchState extends State<updateBranch> {
 
     //Fluttertoast.showToast(msg: "Please Wait, you account is been creating");
     on SocketException catch (e) {
-      Fluttertoast.showToast(msg: e.message);
+      showException(context, e.message);
     }
   }
 }

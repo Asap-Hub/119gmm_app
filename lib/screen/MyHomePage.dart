@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gmm_app/controller/Auth_controller.dart';
+import 'package:gmm_app/main.dart';
 import 'package:gmm_app/model/userModel.dart';
 import 'package:gmm_app/screen/updateBranch.dart';
 import 'package:gmm_app/screen/updateStatus.dart';
@@ -11,6 +12,7 @@ import 'package:gmm_app/screen/zakat.dart';
 import 'package:gmm_app/screen/infag.dart';
 import 'package:gmm_app/screen/landingPage.dart';
 import 'package:gmm_app/screen/report.dart';
+import 'package:gmm_app/utils/progressBar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -84,21 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             style:
                                 TextStyle(fontSize: 18, color: Colors.green)),
                       ),
-                      PopupMenuItem(
-                        onTap: () {
-                          logOut(context);
-                        },
-                        child: Text(
-                          "SIGN OUT",
-                          style: TextStyle(fontSize: 18, color: Colors.green),
-                        ),
-                      ),
-                      PopupMenuItem(
-                        child: Text("Version: 1.0.1",
-                            style:
-                                TextStyle(fontSize: 18, color: Colors.green)),
-                      ),
-                    ])
+                ])
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -488,11 +476,45 @@ class _MyHomePageState extends State<MyHomePage> {
                     const EdgeInsets.only(top: 10.0, left: 20.0, right: 20),
                 child: ElevatedButton(
                   onPressed: () {
-                    logOut(context);
+
+                    showAlert(
+                      context: context,
+                      message: "Are you sure you want to logout?",
+                      title: "Logout"
+                    );
+
                   },
                   child: Text(
                     "SIGN OUT",
                     style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20),
+                child: Card(
+                  color: Colors.grey,
+                  child: Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Center(
+                      child: Text("version: "+appInFor.appName +" "+ appInFor.version,
+                          style:
+                          TextStyle(fontSize: 18, color: Colors.black)),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20),
+                child: Card(
+                  color: Colors.grey,
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Center(
+                      child: Text("built by Asap-Hub, email: abdullahmustapha59@gmail.com",
+                          style:
+                          TextStyle(fontSize: 16, color: Colors.black)),
+                    ),
                   ),
                 ),
               ),
@@ -514,8 +536,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> logOut(BuildContext context) async {
     await helpUser.Auth.signOut();
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => landingPage()));
+
   }
 
   Future openBrowserURL({required String url, bool inApp = false}) async {
