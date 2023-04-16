@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
+import 'dart:async';
 import '../screen/landingPage.dart';
 
 showProgress(BuildContext context, String message) {
   showDialog(
       context: context,
       builder: (BuildContext Content) {
+         Future.delayed(Duration(seconds: 2), () {
+          // Dismiss the dialog
+           //Navigator.of(context).pop();
+        });
         return Dialog(
           backgroundColor: Color(0xFFFFFFFF),
           child: Container(
@@ -39,6 +44,10 @@ ErrorPrompted(BuildContext context, String message) {
   showDialog(
       context: context,
       builder: (BuildContext Content) {
+        var timer = Future.delayed(Duration(seconds: 2), () {
+          // Dismiss the dialog
+          //Navigator.of(context).pop();
+        });
         return Dialog(
           backgroundColor: Color(0xFFFFFFFF),
           child: Container(
@@ -66,6 +75,10 @@ showException(BuildContext context, String message) {
   showDialog(
       context: context,
       builder: (BuildContext Content) {
+        var timer = Future.delayed(Duration(seconds: 2), () {
+          // Dismiss the dialog
+          //Navigator.of(context).pop();
+        });
         return AlertDialog(
           backgroundColor: Color(0xFFFFFFFF),
           title: Padding(
@@ -112,6 +125,10 @@ void showAlert({
       barrierDismissible: false,
       context: context,
       builder: (BuildContext content) {
+        var timer = Future.delayed(Duration(seconds: 2), () {
+          // Dismiss the dialog
+          //Navigator.of(context).pop();
+        });
         return Center(
           child: AlertDialog(
             title: Padding(
@@ -147,7 +164,7 @@ void showAlert({
                   ElevatedButton(
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.red)),
                       onPressed: () =>Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => landingPage())),
+                      context, MaterialPageRoute(builder: (context) => landingPage())),
                       child: Text(
                         "Yes",
                         style: TextStyle(color: Colors.white, fontSize: 16.0),

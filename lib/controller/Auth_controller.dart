@@ -33,11 +33,12 @@ class userController {
   //Login Function
   signIn(BuildContext context, String email, String password) async {
     try {
-      Auth.currentUser!.emailVerified == true ? showProgress(context, "Logging In..."):
-      showProgress(context, "Please Wait!...");
+      Auth.currentUser!.emailVerified != true ? showProgress(context, "Please Wait!..."):
+     showProgress(context, "Logging...");
 
     await Auth.signInWithEmailAndPassword(email: email, password: password)
           .then((uid) => {
+    // showProgress(context, "Logging..."),
             Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
@@ -46,13 +47,12 @@ class userController {
               })
           .catchError((e) {
         showException(context, e!.message);
-        // Fluttertoast.showToast(msg: e!.message, fontSize: 16);
       });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        showException(context, "User Not Found");
+        showException(context,'user-not-found');
       } else if (e.code == 'wrong-password') {
-        Fluttertoast.showToast(msg: "Enter Correct Password");
+        showException(context, 'Enter Correct Password');
       }
     } on SocketException catch (e) {
       showException(context, e.toString());
@@ -69,8 +69,8 @@ class userController {
   //reset password func
   Future<void> resetPassword(
       BuildContext context, TextEditingController email) async {
-    showProgress(context, "Please Wait!...");
     try {
+
       await Auth.sendPasswordResetEmail(email: email.text.trim())
           .timeout(Duration(seconds: 6));
       showException(context, "Password Reset Email Sent");

@@ -134,7 +134,6 @@ class _landingPageState extends State<landingPage> {
                                 if(formKey.currentState!.validate())
                                 {
                                helpUser.signIn(context, email.text.trim(), password.text.trim());
-
                               }
                              },
                               child: Text("LOGIN",

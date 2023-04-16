@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../controller/Auth_controller.dart';
+import '../utils/progressBar.dart';
 
 class passwordReset extends StatefulWidget {
   const passwordReset({Key? key}) : super(key: key);
@@ -96,6 +97,7 @@ class _passwordResetState extends State<passwordReset> {
                 ElevatedButton.icon(
                   onPressed: () {
                     if (resetKey.currentState!.validate()) {
+                      showProgress(context, "Please Wait!...");
                       helpUser.resetPassword(context,Rest);
                     }
                   },

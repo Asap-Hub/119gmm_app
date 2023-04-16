@@ -4,10 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gmm_app/controller/Auth_controller.dart';
 import 'package:gmm_app/data/otherData.dart';
 import 'package:gmm_app/data/region.dart';
 import 'package:gmm_app/model/userModel.dart';
 import 'package:gmm_app/utils/progressBar.dart';
+
+import '../controller/constant.dart';
 
 class updateBranch extends StatefulWidget {
   const updateBranch({Key? key}) : super(key: key);
@@ -35,6 +38,8 @@ class _updateBranchState extends State<updateBranch> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel logInUser = UserModel();
 
+  final helpUser = userController();
+
   //void initState
   void initState() {
     // TODO: implement initState
@@ -47,9 +52,7 @@ class _updateBranchState extends State<updateBranch> {
     group = fellowship["groups"]![0];
 
     //getting user data to display
-    FirebaseFirestore.instance
-        .collection("Users")
-        .doc(user!.uid)
+     helpUser.FirebaseFireStore.doc(helpUser.user!.uid)
         .get()
         .then((value) {
       setState(() {
@@ -61,9 +64,7 @@ class _updateBranchState extends State<updateBranch> {
   @override
   Widget build(BuildContext context) {
     setState(() {
-      FirebaseFirestore.instance
-          .collection("Users")
-          .doc(user!.uid)
+      helpUser.FirebaseFireStore.doc(helpUser.user!.uid)
           .get()
           .then((value) {
         setState(() {
@@ -92,7 +93,7 @@ class _updateBranchState extends State<updateBranch> {
                     children: [
                       Text(
                         "Regions: ${logInUser.region}",
-                        style: TextStyle(fontSize: 16),
+                        style: textFontSize,
                       ),
                       SizedBox(height: 5),
                       DecoratedBox(
@@ -109,7 +110,7 @@ class _updateBranchState extends State<updateBranch> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 10),
                           child: DropdownButton<String>(
-                            hint: Text("select region"),
+                            hint: Text("select region", style: textFontSize),
                             borderRadius: BorderRadius.circular(20),
                             isExpanded: true,
                             elevation: 20,
@@ -139,7 +140,7 @@ class _updateBranchState extends State<updateBranch> {
                     child: Column(
                       children: [
                         Text("District: ${logInUser.district}",
-                            style: TextStyle(fontSize: 16)),
+                            style: textFontSize),
                         SizedBox(height: 5),
                         DecoratedBox(
                           decoration: BoxDecoration(
@@ -181,7 +182,7 @@ class _updateBranchState extends State<updateBranch> {
                     child: Column(
                       children: [
                         Text("Branch: ${logInUser.branches}",
-                            style: TextStyle(fontSize: 16)),
+                            style: textFontSize),
                         SizedBox(height: 5),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
@@ -194,7 +195,7 @@ class _updateBranchState extends State<updateBranch> {
                               textInputAction: TextInputAction.next,
                               controller: branches,
                               decoration: InputDecoration(
-                                label: Text("Branch"),
+                                label: Text("Branch", style:textFontSize),
                                 prefixIcon: Icon(Icons.tour_outlined),
                                 prefixIconColor: Colors.black,
                                 border: OutlineInputBorder(
@@ -210,7 +211,7 @@ class _updateBranchState extends State<updateBranch> {
                   child: Column(
                     children: [
                       Text("Home Town: ${logInUser.homeTown}",
-                          style: TextStyle(fontSize: 16)),
+                          style: textFontSize),
                       TextFormField(
                           validator: (value) {
                             if (homeTown.text.isEmpty) {
@@ -220,7 +221,7 @@ class _updateBranchState extends State<updateBranch> {
                           textInputAction: TextInputAction.next,
                           controller: homeTown,
                           decoration: InputDecoration(
-                            label: Text("Home Town"),
+                            label: Text("Home Town", style: textFontSize,),
                             prefixIcon: Icon(Icons.home_outlined),
                             prefixIconColor: Colors.black,
                             border: OutlineInputBorder(
@@ -235,7 +236,7 @@ class _updateBranchState extends State<updateBranch> {
                   child: Column(
                     children: [
                       Text("Digital Address: ${logInUser.residentialAddress}",
-                          style: TextStyle(fontSize: 16)),
+                          style: textFontSize),
                       TextFormField(
                           validator: (value) {
                             if (residentialAddress.text.isEmpty) {
@@ -245,7 +246,7 @@ class _updateBranchState extends State<updateBranch> {
                           textInputAction: TextInputAction.done,
                           controller: residentialAddress,
                           decoration: InputDecoration(
-                            label: Text("Digital Address"),
+                            label: Text("Digital Address", style: textFontSize,),
                             prefixIcon: Icon(Icons.gps_fixed_outlined),
                             prefixIconColor: Colors.black,
                             border: OutlineInputBorder(
@@ -260,7 +261,7 @@ class _updateBranchState extends State<updateBranch> {
                     child: Column(
                       children: [
                         Text("Fellowship: ${logInUser.group}",
-                            style: TextStyle(fontSize: 16)),
+                            style: textFontSize),
                         SizedBox(height: 5),
                         DecoratedBox(
                           decoration: BoxDecoration(
@@ -310,7 +311,7 @@ class _updateBranchState extends State<updateBranch> {
                         showException(context, "An Error Occurred");
                       }
                     },
-                    child: Text("UPDATE"))
+                    child: Text("UPDATE", style: textFontSize,))
               ],
             ),
           ),
@@ -321,10 +322,7 @@ class _updateBranchState extends State<updateBranch> {
 
   void updateBran() async {
     try {
-      // postDetailsToFireStore().catchError((e){
-      // Fluttertoast.showToast(msg: e!.message);
-      FirebaseFirestore firebaseStore = FirebaseFirestore.instance;
-      await firebaseStore.collection("Users").doc(logInUser.uid).update({
+      await helpUser.FirebaseFireStore.doc(logInUser.uid).update({
         "region": region.trim(),
         "district": district.trim(),
         "branches": branches.text.trim(),
