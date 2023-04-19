@@ -7,15 +7,15 @@ showProgress(BuildContext context, String message) {
   showDialog(
       context: context,
       builder: (BuildContext Content) {
-         Future.delayed(Duration(seconds: 2), () {
+        Future.delayed(Duration(seconds: 2), () {
           // Dismiss the dialog
-           //Navigator.of(context).pop();
+          //Navigator.of(context).pop();
         });
         return Dialog(
           backgroundColor: Color(0xFFFFFFFF),
           child: Container(
             margin: EdgeInsets.all(18.0),
-            width: double.infinity,
+            width: 200,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(6.0),
@@ -40,33 +40,52 @@ showProgress(BuildContext context, String message) {
       });
 }
 
-ErrorPrompted(BuildContext context, String message) {
+successModal(BuildContext context, String message) {
   showDialog(
       context: context,
       builder: (BuildContext Content) {
-        var timer = Future.delayed(Duration(seconds: 2), () {
-          // Dismiss the dialog
-          //Navigator.of(context).pop();
-        });
-        return Dialog(
-          backgroundColor: Color(0xFFFFFFFF),
-          child: Container(
-            margin: EdgeInsets.all(18.0),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(6.0),
-            ),
-            child: Row(
+        // var timer = Future.delayed(Duration(seconds: 2), () {
+        //   // Dismiss the dialog
+        //   //Navigator.of(context).pop();
+        // });
+        return AlertDialog(
+          content: SingleChildScrollView(
+            child: Column(
               children: [
-                SizedBox(width: 6.0),
-                Text(
-                  message,
-                  style: TextStyle(color: Colors.black, fontSize: 16.0),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.check_circle_outline,
+                      color: Colors.green,
+                      size: 18,
+                    ),
+                    SizedBox(width: 6.0),
+                    Text(
+                      message,
+                      style: TextStyle(color: Colors.black, fontSize: 20.0),
+                    ),
+                  ],
                 ),
+                SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).dispose();
+                  },
+                  child: Text(
+                    "Okay",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  style: ButtonStyle(
+                      backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.red)),
+                )
               ],
             ),
           ),
+          backgroundColor: Color(0xFFFFFFFF),
+
         );
       });
 }
@@ -80,39 +99,48 @@ showException(BuildContext context, String message) {
           //Navigator.of(context).pop();
         });
         return AlertDialog(
-          backgroundColor: Color(0xFFFFFFFF),
-          title: Padding(
-            padding: const EdgeInsets.only(left: 100),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.warning_amber,
-                  color: Colors.red,
-                ),
-                SizedBox(width: 10,),
-                Text("Error Message"),
-              ],
+            backgroundColor: Color(0xFFFFFFFF),
+            title: Padding(
+              padding: const EdgeInsets.only(left: 100),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.warning_amber,
+                    color: Colors.red,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text("Error Message"),
+                ],
+              ),
             ),
-          ),
-          actions:[
-            Column(
-              children: [
-
-                SizedBox(width: 6.0),
-                Text(
-                  message,
-                  style: TextStyle(color: Colors.black, fontSize: 18.0),
-                ),
-                SizedBox(height: 20,),
-                ElevatedButton(
-                  onPressed: (){
-                  Navigator.pop(context);
-                }, child: Text("Okay", style: TextStyle(fontSize: 18),),
-                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.red)),)
-              ],
-            ),
-          ]
-        );
+            actions: [
+              Column(
+                children: [
+                  SizedBox(width: 6.0),
+                  Text(
+                    message,
+                    style: TextStyle(color: Colors.black, fontSize: 18.0),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      "Okay",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.red)),
+                  )
+                ],
+              ),
+            ]);
       });
 }
 
@@ -153,18 +181,24 @@ void showAlert({
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.red)),
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.red)),
                       onPressed: () {
                         Navigator.pop(context);
-                      } ,
+                      },
                       child: Text(
                         "No",
                         style: TextStyle(color: Colors.white, fontSize: 16.0),
                       )),
                   ElevatedButton(
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.red)),
-                      onPressed: () =>Navigator.pushReplacement(
-                      context, MaterialPageRoute(builder: (context) => landingPage())),
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.red)),
+                      onPressed: () => Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => landingPage())),
                       child: Text(
                         "Yes",
                         style: TextStyle(color: Colors.white, fontSize: 16.0),

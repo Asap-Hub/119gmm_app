@@ -34,7 +34,7 @@ class userController {
   signIn(BuildContext context, String email, String password) async {
     try {
       Auth.currentUser!.emailVerified != true ? showProgress(context, "Please Wait!..."):
-     showProgress(context, "Logging...");
+     showProgress(context, "Logging In");
 
     await Auth.signInWithEmailAndPassword(email: email, password: password)
           .then((uid) => {

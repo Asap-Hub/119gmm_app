@@ -22,8 +22,9 @@ class _zakatState extends State<zakat> {
   final helpUser = userController();
   @override
   Widget build(BuildContext context) {
-    final data = helpUser.realtimeDb.ref().child('Zakat').child(helpUser.user!.uid).child("myZakat");
-    return SafeArea(
+    Query data = helpUser.realtimeDb.ref().child('Zakat').child(helpUser.user!.uid).child("myZakat");
+
+     return SafeArea(
         child: Scaffold(
         floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.white,
@@ -46,6 +47,17 @@ class _zakatState extends State<zakat> {
               Animation<double> animation, int index) {
             Map reportData = snapshot.value as Map;
             reportData["key"] = snapshot.key;
+
+            // if(data.key!.isEmpty && snapshot.value == null){
+            //   return Center(
+            //     child: Text("No Data", style: textFontSize,),
+            //   );
+            // }
+            if(!snapshot.exists ){
+              return Center(
+                child: Text("No Data", style: textFontSize,),
+              );
+            }
             //print(reportData['email']);
             return Padding(
               padding: const EdgeInsets.all(8.0),
@@ -158,7 +170,7 @@ class _zakatState extends State<zakat> {
                       padding: const EdgeInsets.only(left: 100),
                       child: ListTile(
                         title: Text(
-                          'Created At: ${helpUser.user?.metadata.creationTime}',
+                          'Created At: ${helpUser.user?.metadata.creationTime?.toLocal()}',
                           style: TextStyle(fontSize: 22, color: Colors.white),
                         ),
                       ),

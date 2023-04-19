@@ -20,7 +20,8 @@ class _infagState extends State<infag> {
   //User? user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
-    final data = helpUser.realtimeDb.ref().child('Infaq').child(helpUser.user!.uid).child("myInfaq");
+    Query data = helpUser.realtimeDb.ref().child('Infaq').child(helpUser.user!.uid).child("myInfaq");
+
     return SafeArea(
         child: Scaffold(
         floatingActionButton: FloatingActionButton(
@@ -34,19 +35,28 @@ class _infagState extends State<infag> {
       body: Container(
         height: double.infinity,
          child:FirebaseAnimatedList(
-          defaultChild: Center(
+          defaultChild:Center(
             child: CircularProgressIndicator(color: Colors.green,),),
           query: data,
           itemBuilder: (BuildContext context, DataSnapshot snapshot,
               Animation<double> animation, int index) {
+
             Map reportData = snapshot.value as Map;
             reportData["key"] = snapshot.key;
-            //print(reportData['email']);
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child:listItem(reportData: reportData),
-            );
+
+            if(!snapshot.exists ){
+             return Center(
+               child: Text("No Data", style: textFontSize,),
+             );
+            }
+            else {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child:listItem(reportData: reportData),
+              );
+            }
           },
+
         ),
       ),
         ));
@@ -148,7 +158,7 @@ class _infagState extends State<infag> {
                         padding: const EdgeInsets.only(left: 100),
                         child: ListTile(
                           title: Text(
-                            'Created At: ${helpUser.user?.metadata.creationTime}',
+                            'Created At: ${helpUser.user?.metadata.creationTime?.toLocal()}',
                             style: TextStyle(fontSize: 22, color: Colors.white),
                           ),
                         )

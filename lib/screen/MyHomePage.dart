@@ -161,25 +161,25 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: [
                         ListTile(
                           title: Text("Full Name: ${helpUser.logInUser.firstName} "
-                              "${helpUser.logInUser.secondName}"),
+                              "${helpUser.logInUser.secondName}",style: textFontSize),
                         ),
                         ListTile(
-                          title: Text("Email: ${helpUser.logInUser.email} "),
+                          title: Text("Email: ${helpUser.logInUser.email} ",style: textFontSize),
                         ),
                         ListTile(
-                          title: Text("Contact: ${helpUser.logInUser.number} "),
+                          title: Text("Contact: ${helpUser.logInUser.number} ",style: textFontSize),
                         ),
                         ListTile(
                           title:
-                              Text("Date Of Birth: ${helpUser.logInUser.dateOfBirth} "),
+                              Text("Date Of Birth: ${helpUser.logInUser.dateOfBirth} ",style: textFontSize),
                         ),
                         ListTile(
                           title: Text(
-                              "Registration Date: ${helpUser.user!.metadata.creationTime} "),
+                              "Registration Date: ${helpUser.user!.metadata.creationTime?.toLocal()} ",style: textFontSize),
                         ),
                         ListTile(
                           title: Text(
-                              "Last Visit: ${helpUser.user!.metadata.lastSignInTime}"),
+                              "Last Visit: ${helpUser.user!.metadata.lastSignInTime?.toLocal()}",style: textFontSize),
                         ),
                       ],
                     ),
@@ -194,23 +194,23 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Wrap(
                       children: [
                         ListTile(
-                          title: Text("Fellowship: ${helpUser.logInUser.group} "),
+                          title: Text("Fellowship: ${helpUser.logInUser.group} ",style: textFontSize),
                         ),
                         ListTile(
-                          title: Text("Region: ${helpUser.logInUser.region} "),
+                          title: Text("Region: ${helpUser.logInUser.region} ",style: textFontSize),
                         ),
                         ListTile(
-                          title: Text("District: ${helpUser.logInUser.district} "),
+                          title: Text("District: ${helpUser.logInUser.district} ",style: textFontSize),
                         ),
                         ListTile(
-                          title: Text("Branch: ${helpUser.logInUser.branches} "),
+                          title: Text("Branch: ${helpUser.logInUser.branches} ",style: textFontSize),
                         ),
                         ListTile(
-                          title: Text("Home Town: ${helpUser.logInUser.homeTown} "),
+                          title: Text("Home Town: ${helpUser.logInUser.homeTown} ",style: textFontSize),
                         ),
                         ListTile(
                           title: Text(
-                              "Residential. Address: ${helpUser.logInUser.residentialAddress} "),
+                              "Residential. Address: ${helpUser.logInUser.residentialAddress} ",style: textFontSize),
                         ),
                         Center(
                             child: Padding(
@@ -222,7 +222,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     MaterialPageRoute(
                                         builder: (context) => updateBranch()));
                               },
-                              child: Text("update")),
+                              child: Text("update",style: textFontSize)),
                         ))
                       ],
                     ),
@@ -240,106 +240,82 @@ class _MyHomePageState extends State<MyHomePage> {
                             helpUser.logInUser.nameOfPrimarySchool != ""
                                 ? ListTile(
                                     title: Text(
-                                        "Primary School: ${helpUser.logInUser.nameOfPrimarySchool} "),
+                                        "Primary School: ${helpUser.logInUser.nameOfPrimarySchool} ",style: textFontSize),
                                   )
                                 : helpUser.logInUser.nameOfJuniorHighSchool != ""
                                     ? ListTile(
                                         title: Text(
-                                            "Junior High School: ${helpUser.logInUser.nameOfJuniorHighSchool} "),
+                                            "Junior High School: ${helpUser.logInUser.nameOfJuniorHighSchool} ",style: textFontSize),
                                       )
                                     : helpUser.logInUser.nameOfSeniorHighSchool != ""
                                         ? ListTile(
                                             title: Text(
-                                                "Senior High School: ${helpUser.logInUser.nameOfSeniorHighSchool} "),
+                                                "Senior High School: ${helpUser.logInUser.nameOfSeniorHighSchool} ",style: textFontSize),
                                           )
                                         : helpUser.logInUser.nameOfTertiary != ""
                                             ? Column(
                                               children: [
                                                 ListTile(
                                                     title: Text(
-                                                        "Tertiary: ${helpUser.logInUser.nameOfTertiary}",
-                                                        style: TextStyle(
-                                                          fontSize: 16,
-                                                        )),
+                                                        "Tertiary: ${helpUser.logInUser.nameOfTertiary}",style: textFontSize),
                                                   ),
                                                 SizedBox(height: 5,),
                                                 ListTile(
                                                     title: Text(
-                                                        "Started Year: ${helpUser.logInUser.startingYear}",
-                                                        style: TextStyle(
-                                                          fontSize: 16,
-                                                        )),
+                                                        "Started Year: ${helpUser.logInUser.startingYear}",style: textFontSize),
                                                   ),
                                                 SizedBox(height: 5,),
                                                 ListTile(
                                                     title: Text(
-                                                        "Year To Complete: ${helpUser.logInUser.completingYear}",
-                                                        style: TextStyle(
-                                                          fontSize: 16,
-                                                        )),
+                                                        "Year To Complete: ${helpUser.logInUser.completingYear}",style: textFontSize),
                                                   ),
                                                 SizedBox(height: 5,),
                                                 ListTile(
                                                     title: Text(
-                                                        "Location: ${helpUser.logInUser.locationOfCampus}",
-                                                        style: TextStyle(
-                                                          fontSize: 16,
-                                                        )),
+                                                        "Location: ${helpUser.logInUser.locationOfCampus}" ,style: textFontSize),
                                                   ),
                                                 SizedBox(height: 5,),
                                                 ListTile(
                                                     title: Text(
-                                                        "Address: ${helpUser.logInUser.addressOfCampus}",
-                                                        style: TextStyle(
-                                                          fontSize: 16,
-                                                        )),
+                                                        "Address: ${helpUser.logInUser.addressOfCampus}",style: textFontSize),
                                                   ),
                                                 SizedBox(height: 5,),
                                                 ListTile(
                                                     title: Text(
-                                                        "Program: ${helpUser.logInUser.programme}",
-                                                        style: TextStyle(
-                                                          fontSize: 16,
-                                                        )),
+                                                        "Program: ${helpUser.logInUser.programme}",style: textFontSize),
                                                   ),
                                                   SizedBox(
                                                     height: 5,
                                                   ),
                                                 ListTile(
                                                   title: Text(
-                                                      "Department: ${helpUser.logInUser.department}",
-                                                      style: TextStyle(
-                                                        fontSize: 16,
-                                                      )),
+                                                      "Department: ${helpUser.logInUser.department}",style: textFontSize),
                                                 ),
                                                 SizedBox(
                                                   height: 5,
                                                 ),
                                                 ListTile(
                                                   title: Text(
-                                                      "Employee Status: ${helpUser.logInUser.liveAfterSchool}",
-                                                      style: TextStyle(
-                                                        fontSize: 16,
-                                                      )),
+                                                      "Employee Status: ${helpUser.logInUser.liveAfterSchool}",style: textFontSize),
                                                 ),
                                                 ],
                                             )
                                             : helpUser.logInUser.profession != ""
                                                 ? ListTile(
                                                     title: Text(
-                                                        "Profession: ${helpUser.logInUser.profession} "),
+                                                        "Profession: ${helpUser.logInUser.profession} ",style: textFontSize),
                                                   )
                                                 : ListTile(
                                                     title:
-                                                        Text("Null: Not Set "),
+                                                        Text("Null: Not Set ",style: textFontSize),
                                                   ),
                             ListTile(
                               title: Text(
-                                  "No. Of Dependent: ${helpUser.logInUser.numberOfDependent} "),
+                                  "No. Of Dependent: ${helpUser.logInUser.numberOfDependent} ",style: textFontSize),
                             ),
                             ListTile(
                               title: Text(
-                                  "Marital Status: ${helpUser.logInUser.maritalStatus} "),
+                                  "Marital Status: ${helpUser.logInUser.maritalStatus} ",style: textFontSize),
                             ),
                             Center(
                                 child: Padding(
@@ -352,7 +328,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                             builder: (context) =>
                                                 updateStatus()));
                                   },
-                                  child: Text("update")),
+                                  child: Text("update",style: textFontSize)),
                             ))
                           ],
                         ),
@@ -368,24 +344,24 @@ class _MyHomePageState extends State<MyHomePage> {
                             helpUser.logInUser.nameOfPrimarySchool != ""
                                 ? ListTile(
                                     title: Text(
-                                        "Primary School: ${helpUser.logInUser.nameOfPrimarySchool} "),
+                                        "Primary School: ${helpUser.logInUser.nameOfPrimarySchool} ",style: textFontSize),
                                   )
                                 : helpUser.logInUser.nameOfJuniorHighSchool != ""
                                     ? ListTile(
                                         title: Text(
-                                            "Junior High School: ${helpUser.logInUser.nameOfJuniorHighSchool} "),
+                                            "Junior High School: ${helpUser.logInUser.nameOfJuniorHighSchool} ",style: textFontSize),
                                       )
                                     : helpUser.logInUser.nameOfSeniorHighSchool != ""
                                         ? ListTile(
                                             title: Text(
-                                                "Senior High School: ${helpUser.logInUser.nameOfSeniorHighSchool} "),
+                                                "Senior High School: ${helpUser.logInUser.nameOfSeniorHighSchool} ",style: textFontSize),
                                           )
                                         : helpUser.logInUser.nameOfTertiary != ""
                                             ? ListTile(
                                                 title: Text(
                                                     "Tertiary: ${helpUser.logInUser.nameOfTertiary}",
                                                     style: TextStyle(
-                                                      fontSize: 16,
+                                                      fontSize: 18,
                                                     )),
                                                 subtitle: Column(
                                                   crossAxisAlignment:
@@ -394,14 +370,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                                     Text(
                                                       "Starting Date: ${helpUser.logInUser.startingYear}",
                                                       style: TextStyle(
-                                                          fontSize: 14,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold),
                                                     ),
                                                     Text(
                                                       "Completing Year: ${helpUser.logInUser.completingYear}",
                                                       style: TextStyle(
-                                                          fontSize: 14,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold),
                                                     ),
@@ -411,49 +387,49 @@ class _MyHomePageState extends State<MyHomePage> {
                                             : helpUser.logInUser.profession != ""
                                                 ? ListTile(
                                                     title: Text(
-                                                        "Profession: ${helpUser.logInUser.profession} "),
+                                                        "Profession: ${helpUser.logInUser.profession} ",style: textFontSize),
                                                   )
                                                 : ListTile(
                                                     title:
-                                                        Text("Null: Not Set "),
+                                                        Text("Null: Not Set ",style: textFontSize),
                                                   ),
                             ListTile(
                               title: Text(
-                                  "No. Of Dependent: ${helpUser.logInUser.numberOfDependent} "),
+                                  "No. Of Dependent: ${helpUser.logInUser.numberOfDependent} ",style: textFontSize),
                             ),
                             ListTile(
                               title: Text(
-                                  "Marital Status: ${helpUser.logInUser.maritalStatus} "),
+                                  "Marital Status: ${helpUser.logInUser.maritalStatus} ",style: textFontSize),
                             ),
                             ListTile(
                               title: helpUser.logInUser.numberOfWive != ""
                                   ? Text(
-                                      "No. Of Wive: ${helpUser.logInUser.numberOfWive} ")
-                                  : Text("No. Of Wive: Not Set"),
+                                      "No. Of Wive: ${helpUser.logInUser.numberOfWive} ",style: textFontSize)
+                                  : Text("No. Of Wive: Not Set",style: textFontSize),
                             ),
                             ListTile(
                               title: helpUser.logInUser.numberOfMaleChildren != ""
                                   ? Text(
-                                      "No. Of Males: ${helpUser.logInUser.numberOfMaleChildren} ")
-                                  : Text("No. Of Males: Not Set"),
+                                      "No. Of Males: ${helpUser.logInUser.numberOfMaleChildren} ",style: textFontSize)
+                                  : Text("No. Of Males: Not Set",style: textFontSize),
                             ),
                             ListTile(
                               title: helpUser.logInUser.numberOfFemaleChildren != ""
                                   ? Text(
-                                      "No. Of Females: ${helpUser.logInUser.numberOfFemaleChildren} ")
-                                  : Text("No. Of Females: Not Set"),
+                                      "No. Of Females: ${helpUser.logInUser.numberOfFemaleChildren} ",style: textFontSize)
+                                  : Text("No. Of Females: Not Set",style: textFontSize),
                             ),
                             ListTile(
                               title: helpUser.logInUser.nameOfMuslimChildren != ""
                                   ? Text(
-                                      "Name Of Muslims: ${helpUser.logInUser.nameOfMuslimChildren} ")
-                                  : Text("Name Of Muslims: Not Set"),
+                                      "Name Of Muslims: ${helpUser.logInUser.nameOfMuslimChildren} ",style: textFontSize)
+                                  : Text("Name Of Muslims: Not Set",style: textFontSize),
                             ),
                             ListTile(
                               title: helpUser.logInUser.nameOfNonMuslimChildren != ""
                                   ? Text(
-                                      "Name Of Non-Muslims: ${helpUser.logInUser.nameOfNonMuslimChildren} ")
-                                  : Text("Name Of Non-Muslims: Not Set"),
+                                      "Name Of Non-Muslims: ${helpUser.logInUser.nameOfNonMuslimChildren} ", style: textFontSize)
+                                  : Text("Name Of Non-Muslims: Not Set", style: textFontSize),
                             ),
                             Center(
                                 child: Padding(
@@ -466,7 +442,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                             builder: (context) =>
                                                 updateStatus()));
                                   },
-                                  child: Text("update")),
+                                  child: Text("update", style: textFontSize,)),
                             ))
                           ],
                         ),
