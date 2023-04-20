@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gmm_app/controller/constant.dart';
 
 import 'dart:async';
 import '../screen/landingPage.dart';
@@ -40,52 +41,47 @@ showProgress(BuildContext context, String message) {
       });
 }
 
-successModal(BuildContext context, String message) {
+successModal(BuildContext context,String title, String message) {
   showDialog(
       context: context,
-      builder: (BuildContext Content) {
+      builder: (BuildContext context) {
         // var timer = Future.delayed(Duration(seconds: 2), () {
         //   // Dismiss the dialog
         //   //Navigator.of(context).pop();
         // });
         return AlertDialog(
-          content: SingleChildScrollView(
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.check_circle_outline,
-                      color: Colors.green,
-                      size: 18,
-                    ),
-                    SizedBox(width: 6.0),
-                    Text(
-                      message,
-                      style: TextStyle(color: Colors.black, fontSize: 20.0),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).dispose();
-                  },
-                  child: Text(
-                    "Okay",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  style: ButtonStyle(
-                      backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.red)),
-                )
-              ],
-            ),
+          title: Center(child: Text(title.toUpperCase(), style: textFontSize,)),
+          content: Row(
+            children: [
+              Icon(
+                Icons.check_circle_outline,
+                color: Colors.green,
+                size: 30,
+              ),
+              SizedBox(width: 6.0),
+              Text(
+                message,
+                style: TextStyle(color: Colors.black, fontSize: 20.0),
+              ),
+            ],
           ),
           backgroundColor: Color(0xFFFFFFFF),
-
+          actions:[
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  "Okay",
+                  style: TextStyle(fontSize: 18),
+                ),
+                style: ButtonStyle(
+                    backgroundColor:
+                    MaterialStateProperty.all<Color>(Colors.green)),
+              ),
+            )
+          ]
         );
       });
 }

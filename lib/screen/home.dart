@@ -156,7 +156,7 @@ class _homeState extends State<home> {
                         child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ListTile(
-                              title: Text("INFAQ"),
+                              title: Text("PAY INFAQ"),
                               leading: Image.asset(
                                 'assets/Charity.png',
                                 height: 50,
@@ -180,7 +180,7 @@ class _homeState extends State<home> {
                         child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ListTile(
-                              title: Text("ZAKAT"),
+                              title: Text("PAY ZAKAT"),
                               leading: Image.asset(
                                 'assets/zakat.png',
                                 height: 50,

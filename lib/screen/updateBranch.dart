@@ -306,7 +306,7 @@ class _updateBranchState extends State<updateBranch> {
                       if (personalFormKey.currentState!.validate()) {
                         updateBran();
                         Navigator.pop(context);
-                        successModal(context, "Updated Successfully");
+                        successModal(context,"Update Branch", "Updated Successfully");
                       } else {
                         showException(context, "An Error Occurred");
                       }

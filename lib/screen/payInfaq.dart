@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gmm_app/controller/Auth_controller.dart';
 import 'package:gmm_app/model/infaqModel.dart';
+import 'package:gmm_app/utils/progressBar.dart';
 
 class payInfaq extends StatefulWidget {
   const payInfaq({Key? key}) : super(key: key);
@@ -30,14 +31,13 @@ class _payInfaqState extends State<payInfaq> {
   //connecting to database
   final helpUser = userController();
 
-
   String status = "pending";
+
   //global key
   final allKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -60,9 +60,17 @@ class _payInfaqState extends State<payInfaq> {
                       elevation: 2.0,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Center(child: Text("""Kindly Adhere to the Instructions -:)""", style: TextStyle(fontSize: 17, color: Colors.white),)),
-                      ),),),
-                  SizedBox(height: 5,),
+                        child: Center(
+                            child: Text(
+                          """Kindly Adhere to the Instructions -:)""",
+                          style: TextStyle(fontSize: 17, color: Colors.white),
+                        )),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
                   Container(
                     height: 100,
                     width: double.infinity,
@@ -116,12 +124,18 @@ class _payInfaqState extends State<payInfaq> {
                   ),
                   Container(
                     width: double.infinity,
-                    child: Card(child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text("Kindly enter the exact number chosen for payment in the box bellow", style: TextStyle(fontSize: 15)),
-                    ),),
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                            "Kindly enter the exact number chosen for payment in the box bellow",
+                            style: TextStyle(fontSize: 15)),
+                      ),
+                    ),
                   ),
-                  SizedBox(height: cardHeight,),
+                  SizedBox(
+                    height: cardHeight,
+                  ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 2, vertical: 1),
                     child: TextFormField(
@@ -130,7 +144,10 @@ class _payInfaqState extends State<payInfaq> {
                       keyboardType: TextInputType.numberWithOptions(),
                       controller: infaqNumber,
                       decoration: InputDecoration(
-                        label: Text("Infag Number", style: TextStyle(fontSize: 16),),
+                        label: Text(
+                          "Infag Number",
+                          style: TextStyle(fontSize: 16),
+                        ),
                         prefixIcon: Icon(Icons.drive_file_rename_outline),
                         prefixIconColor: Colors.black,
                         border: OutlineInputBorder(
@@ -144,7 +161,9 @@ class _payInfaqState extends State<payInfaq> {
                       },
                     ),
                   ),
-                  SizedBox(height: cardHeight,),
+                  SizedBox(
+                    height: cardHeight,
+                  ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 2, vertical: 1),
                     child: TextFormField(
@@ -165,7 +184,9 @@ class _payInfaqState extends State<payInfaq> {
                       },
                     ),
                   ),
-                  SizedBox(height: Height,),
+                  SizedBox(
+                    height: Height,
+                  ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 2, vertical: 1),
                     child: TextFormField(
@@ -188,7 +209,9 @@ class _payInfaqState extends State<payInfaq> {
                       },
                     ),
                   ),
-                  SizedBox(height: Height,),
+                  SizedBox(
+                    height: Height,
+                  ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 2, vertical: 1),
                     child: TextFormField(
@@ -210,27 +233,37 @@ class _payInfaqState extends State<payInfaq> {
                       },
                     ),
                   ),
-                  SizedBox(height: Height,),
+                  SizedBox(
+                    height: Height,
+                  ),
                   Container(
                     width: double.infinity,
                     child: Column(
                       children: [
-                        Container(child: Card(
-                          elevation: 2.0,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("""Kindly tap on the clipboard icon to copy Unique zakatId and use it for payment.""", style: TextStyle(fontSize: 15),),
-                          ),),),
+                        Container(
+                          child: Card(
+                            elevation: 2.0,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                """Kindly tap on the clipboard icon to copy Unique zakatId and use it for payment.""",
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          ),
+                        ),
                         GestureDetector(
                           onTap: () {
-                            Clipboard.setData(ClipboardData(text: helpUser.user!.uid))
+                            Clipboard.setData(
+                                    ClipboardData(text: helpUser.user!.uid))
                                 .then((value) {
-                              Fluttertoast.showToast(msg: "Copied to Clipboard");
+                              Fluttertoast.showToast(
+                                  msg: "Copied to Clipboard");
                             });
                           },
                           child: Padding(
                             padding: const EdgeInsets.only(left: 10, bottom: 5),
-                            child:  Wrap(children: [
+                            child: Wrap(children: [
                               Text(
                                 '${helpUser.user!.uid}',
                                 style: TextStyle(
@@ -239,7 +272,6 @@ class _payInfaqState extends State<payInfaq> {
                               ),
                               Icon(Icons.copy_outlined)
                             ]),
-
                           ),
                         ),
                       ],
@@ -273,10 +305,14 @@ class _payInfaqState extends State<payInfaq> {
                   ),
                   Container(
                     width: double.infinity,
-                    child: Card(child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text("Minimize the app and make payment and Use your transaction ID to fill the next TextField", style: TextStyle(fontSize: 15)),
-                    ),),
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                            "Minimize the app and make payment and Use your transaction ID to fill the next TextField",
+                            style: TextStyle(fontSize: 15)),
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 2, vertical: 1),
@@ -298,14 +334,19 @@ class _payInfaqState extends State<payInfaq> {
                       },
                     ),
                   ),
-                  SizedBox(height: Height,),
-                  ElevatedButton(onPressed: (){
-                    if(allKey.currentState!.validate() && infaqID.value.text == helpUser.user!.uid){
-                      payInfaq();
-                      Navigator.pop(context);
-                      print("am here");
-                    }
-                  }, child: Text("SUBMIT"))
+                  SizedBox(
+                    height: Height,
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        if (allKey.currentState!.validate() &&
+                            infaqID.value.text == helpUser.user!.uid) {
+                          payInfaq();
+                          Navigator.pop(context);
+                          print("am here");
+                        }
+                      },
+                      child: Text("SUBMIT"))
                 ],
               ),
             ),
@@ -314,22 +355,24 @@ class _payInfaqState extends State<payInfaq> {
       ),
     ));
   }
+
   void payInfaq() async {
     try {
       if (infaqNumber.text.trim() == "0555857384" ||
-    infaqNumber.text.trim() == "0509705450") {
+          infaqNumber.text.trim() == "0509705450") {
         postReportToFireStore();
-        Fluttertoast.showToast(
-            msg:
-            "Payment Submitted Successful, Admin will review it in soon. Thank you -:)");
+        successModal(
+            context,
+                "Pay Infaq",
+                "Payment Submitted Successful, Admin will review it in soon. Thank you -:)");
+      } else if (infaqNumber.text.trim() != "0555857384" ||
+          infaqNumber.text.trim() != "0509705450") {
+        showException(
+            context,
+            "Kindly input correct Infaq Account Number.");
       }
-      else if(infaqNumber.text.trim() != "0555857384" ||
-    infaqNumber.text.trim() != "0509705450"){
-    Fluttertoast.showToast(
-    msg: "Kindly input correct Infaq Account Number.");
-    }
     } on SocketException catch (e) {
-      Fluttertoast.showToast(msg: e.message);
+      showException(context, e.message);
     }
   }
 
@@ -339,7 +382,11 @@ class _payInfaqState extends State<payInfaq> {
     //sending data to the server
     User? user = helpUser.Auth.currentUser;
     infaqModel model = infaqModel();
-    final db = helpUser.realtimeDb.ref().child("Infaq").child(user!.uid).child("myInfaq");
+    final db = helpUser.realtimeDb
+        .ref()
+        .child("Infaq")
+        .child(user!.uid)
+        .child("myInfaq");
     //writing values to the FirebaseStore
     model.uid = user.uid;
     model.infaqNumber = infaqNumber.text.trim();
@@ -347,7 +394,7 @@ class _payInfaqState extends State<payInfaq> {
     model.payerNumber = payerNumber.text.trim();
     model.amount = amount.text.trim();
     model.refId = refId.text.trim();
-    model.status =status;
+    model.status = status;
     model.infagID = infaqID.value.text.trim();
     model.time = DateTime.now().toString();
 

@@ -10,7 +10,6 @@ import 'package:gmm_app/screen/updateBranch.dart';
 import 'package:gmm_app/screen/updateStatus.dart';
 import 'package:gmm_app/screen/zakat.dart';
 import 'package:gmm_app/screen/infag.dart';
-import 'package:gmm_app/screen/landingPage.dart';
 import 'package:gmm_app/screen/report.dart';
 import 'package:gmm_app/utils/progressBar.dart';
 import 'package:image_picker/image_picker.dart';
@@ -94,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
             currentIndex: selectedItem,
             selectedItemColor: Colors.white,
             unselectedFontSize: 13,
-            selectedFontSize: 16,
+            selectedFontSize: 18,
             onTap: _onItemTapped,
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
