@@ -7,7 +7,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gmm_app/controller/Auth_controller.dart';
+import 'package:gmm_app/controller/constant.dart';
 import 'package:gmm_app/model/reportModel.dart';
+import 'package:gmm_app/utils/progressBar.dart';
 
 class addReport extends StatefulWidget {
   const addReport({Key? key}) : super(key: key);
@@ -134,8 +136,8 @@ class _addReportState extends State<addReport> {
                     validator: (value) {
                       if (contact.text.isEmpty) {
                         return ("Required");
-                      } else if (contact.text.length >= 11) {
-                        return ("invalid Number, Contact can not be more than 10");
+                      } else if (contact.text.length >= 11 || contact.text.length <10 ) {
+                        return ("invalid Number, Contact can not be more than 10 or less");
                       }
                     },
                   ),
@@ -172,12 +174,10 @@ class _addReportState extends State<addReport> {
                 ElevatedButton(
                     onPressed: () {
                       if (allKey.currentState!.validate()) {
-                        sendReport();
-                        Navigator.of(context).pop();
-                        // Navigator.of(context).popUntil((route) => false);
+                        sendReport(context);
                       }
                     },
-                    child: Text("SUBMIT"))
+                    child: Text("SUBMIT", style: textFontSize,))
               ],
             ),
           ),
@@ -186,21 +186,32 @@ class _addReportState extends State<addReport> {
     ));
   }
 
-  void sendReport() async {
+  void sendReport(BuildContext context) async {
     try {
       if (allKey.currentState!.validate()) {
         postReportToFireStore();
-        Fluttertoast.showToast(
-            msg:
-                "Report Submitted Successful, Admins will take note of it. Thank you.");
+        Navigator.of(context).pop();
+        successModal(
+            context,
+            "Report Added",
+            "Report Submitted Successful, Admins will take note of it."
+                " Thank you -:)");
       }
       else{
-         Fluttertoast.showToast(
-            msg:
+         showException(
+            context,
             "Sorry Something, went wrong");
       }
-    } on SocketException catch (e) {
-      Fluttertoast.showToast(msg: e.message);
+    }
+    on FirebaseAuthException catch(e){
+      showException(
+          context,
+          e.message.toString());
+    }
+    on SocketException catch (e) {
+      showException(
+          context,
+          e.message.toString());
     }
   }
 

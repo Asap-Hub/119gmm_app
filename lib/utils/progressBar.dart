@@ -8,7 +8,7 @@ showProgress(BuildContext context, String message) {
   showDialog(
       context: context,
       builder: (BuildContext Content) {
-        Future.delayed(Duration(seconds: 2), () {
+        Future.delayed(Duration(seconds: 1), () {
           // Dismiss the dialog
           //Navigator.of(context).pop();
         });
@@ -44,6 +44,7 @@ showProgress(BuildContext context, String message) {
 successModal(BuildContext context,String title, String message) {
   showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         // var timer = Future.delayed(Duration(seconds: 2), () {
         //   // Dismiss the dialog
@@ -51,19 +52,22 @@ successModal(BuildContext context,String title, String message) {
         // });
         return AlertDialog(
           title: Center(child: Text(title.toUpperCase(), style: textFontSize,)),
-          content: Row(
-            children: [
+          content: Flex(
+            direction:Axis.horizontal,
+            children:[
               Icon(
                 Icons.check_circle_outline,
                 color: Colors.green,
                 size: 30,
               ),
               SizedBox(width: 6.0),
-              Text(
-                message,
-                style: TextStyle(color: Colors.black, fontSize: 20.0),
+              Expanded(
+                child: Text(
+                  message,
+                  style: TextStyle(color: Colors.black, fontSize: 20.0),
+                ),
               ),
-            ],
+            ]
           ),
           backgroundColor: Color(0xFFFFFFFF),
           actions:[
@@ -90,15 +94,12 @@ showException(BuildContext context, String message) {
   showDialog(
       context: context,
       builder: (BuildContext Content) {
-        var timer = Future.delayed(Duration(seconds: 2), () {
-          // Dismiss the dialog
-          //Navigator.of(context).pop();
-        });
         return AlertDialog(
             backgroundColor: Color(0xFFFFFFFF),
             title: Padding(
-              padding: const EdgeInsets.only(left: 100),
+              padding: const EdgeInsets.only(left: 30, right: 30),
               child: Row(
+                mainAxisAlignment:MainAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.warning_amber,
@@ -107,7 +108,7 @@ showException(BuildContext context, String message) {
                   SizedBox(
                     width: 10,
                   ),
-                  Text("Error Message"),
+                  Text("Error Message", style: textFontSize,),
                 ],
               ),
             ),

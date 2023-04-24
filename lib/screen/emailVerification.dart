@@ -35,12 +35,8 @@ class _emailVerificationState extends State<emailVerification> {
   Future checkEmailVerified() async {
     await FirebaseAuth.instance.currentUser!.reload();
 
-
-
     setState(() {
       isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
-
-      showProgress(context, "Login Successful");
     });
     if(isEmailVerified) timer?.cancel();
   }

@@ -95,10 +95,9 @@ class _passwordResetState extends State<passwordReset> {
                 ),
                 Padding(padding: const EdgeInsets.only(top: 20)),
                 ElevatedButton.icon(
-                  onPressed: () {
+                  onPressed: () async {
                     if (resetKey.currentState!.validate()) {
-                      showProgress(context, "Please Wait!...");
-                      helpUser.resetPassword(context,Rest);
+                   await  helpUser.resetPassword(context,Rest);
                     }
                   },
                   label: Text(

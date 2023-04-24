@@ -1,10 +1,8 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gmm_app/controller/Auth_controller.dart';
 import 'package:gmm_app/data/otherData.dart';
 import 'package:gmm_app/data/region.dart';
@@ -127,11 +125,6 @@ class _registrationState extends State<registration> {
 
   @override
   Widget build(BuildContext context) {
-    //print(dateOfBirth);
-    // print(branches);
-    // print(group);
-    //print(datePicker);
-    //print(age);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -152,24 +145,21 @@ class _registrationState extends State<registration> {
             currentStep: currentStep,
             onStepContinue: () {
               final isLastStep = currentStep == getSteps().length - 1;
-              setState(() {
+              setState(()   async{
                 if (formKey[currentStep].currentState!.validate() ) {
-                  if (isLastStep) {
-                    // currentStep = currentStep + 1;
-                           signUp(email.text.trim().toString(),
-                              password.text.trim().toString());
-                          Fluttertoast.showToast(
-                              msg: "Please Wait...",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.CENTER);
-                          Fluttertoast.showToast(
-                              msg: "Account Created Successfully",
-                              toastLength: Toast.LENGTH_LONG,
-                              gravity: ToastGravity.CENTER);
+                  if (isLastStep)  {
+                    showProgress(context, "Please Wait!...");
+                              await signUp(
+                             context,
+                             email.text.trim().toString(),
+                              password.text.trim().toString(),
+                           );
                           Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(builder: (context) => landingPage()),
+                              MaterialPageRoute(builder: (context) {
+
+                               return landingPage();
+                              }),
                               (route) => route.isFirst);
-                    //  print("am here");
 
                   } else {
                     setState(() {
@@ -321,9 +311,12 @@ class _registrationState extends State<registration> {
                       ),
                     ),
                     validator: (value) {
-                      if (number.value.text.length < 10) {
+                      if (number.value.text.trim().length < 10) {
                         return ("Phone number can not be less than 10");
                       } else if (number.value.text.isEmpty) {
+                        return ("please Provide a valid number");
+                      }
+                      else if (number.value.text.trim().length >= 11) {
                         return ("please Provide a valid number");
                       }
                     },
@@ -393,6 +386,9 @@ class _registrationState extends State<registration> {
                       child: TextFormField(
                           validator: (value) {
                             if (dateOfBirth.text.isEmpty) {
+                              return ("Required");
+                            }
+                           else if (age < 15) {
                               return ("Required");
                             }
                           },
@@ -533,7 +529,7 @@ class _registrationState extends State<registration> {
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                   child: TextFormField(
                       validator: (value) {
-                        if (branches.text.isEmpty) {
+                        if (branches.text.trim().isEmpty) {
                           return ("Required");
                         }
                       },
@@ -1623,11 +1619,11 @@ class _registrationState extends State<registration> {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 2, vertical: 20),
                               child: TextFormField(
-                                  validator: (value) {
-                                    if (nameOfNonMuslimChildren.text.isEmpty) {
-                                      return ("Required");
-                                    }
-                                  },
+                                  // validator: (value) {
+                                  //   if (nameOfNonMuslimChildren.text.isEmpty) {
+                                  //     return ("Required");
+                                  //   }
+                                  // },
                                   controller: nameOfNonMuslimChildren,
                                   decoration: InputDecoration(
                                     label: Text("Name Of Non Muslim"),
@@ -1725,18 +1721,24 @@ class _registrationState extends State<registration> {
     }
   }
 
-  void signUp(String email, String password) async {
+    Future<void> signUp(BuildContext context, String email, String password, ) async {
     try {
       if (formKey[currentStep].currentState!.validate()) {
-      await helpUser.Auth
+        successModal(context, "Account Creation", "Account Created Successfully, "
+            "Kindly Login With Credentials -:)");
+        // currentStep = currentStep + 1;
+
+        await helpUser.Auth
           .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) => {
-                postDetailsToFireStore(),
-        showProgress(context, "Please Wait!..."),
+          .then((value) async => {
+         print(value.user?.email),
+         print(value.user?.uid),
+               await postDetailsToFireStore(value.user?.email, value.user?.uid)
               })
           .catchError((e) {
         showException(context, e!.message);
       });
+
     }
     }on FirebaseAuthException catch (e) {
       if (e.code == 'email-already') {
@@ -1747,11 +1749,13 @@ class _registrationState extends State<registration> {
     }
   }
 
-  postDetailsToFireStore() async {
+  Future<void> postDetailsToFireStore(String? email, String? uid) async {
     UserModel userModel = UserModel();
+    print(email);
+    print(uid);
     //writing values to the FirebaseStore
-    userModel.email = helpUser.user!.email;
-    userModel.uid = helpUser.user!.uid;
+    userModel.email = email;
+    userModel.uid = uid;
     userModel.number = number.text.trim();
     userModel.firstName = firstName.text.trim();
     userModel.secondName = otherName.text.trim();
@@ -1797,7 +1801,7 @@ class _registrationState extends State<registration> {
     userModel.privateAddress = privateAddress.text.trim();
     userModel.contact = contact.text.trim();
 
-    await helpUser.FirebaseFireStore.doc(helpUser.user!.uid)
+    await helpUser.FirebaseFireStore.doc(uid)
         .set(userModel.toMap());
     //Navigator.of(context).popUntil((route) => route.isFirst);
   }

@@ -35,7 +35,6 @@ class _updateBranchState extends State<updateBranch> {
   final personalFormKey = GlobalKey<FormState>();
 
   //declaring user and appending usermodel
-  User? user = FirebaseAuth.instance.currentUser;
   UserModel logInUser = UserModel();
 
   final helpUser = userController();
@@ -330,19 +329,9 @@ class _updateBranchState extends State<updateBranch> {
         "residentialAddress": residentialAddress.text.trim(),
         "group": group.trim(),
       }).catchError((e) {
-        // Fluttertoast.showToast(
-        //     gravity: ToastGravity.CENTER,
-        //     toastLength: Toast.LENGTH_LONG,
-        //     msg: );
         showException(context, e!.message);
       });
     }
-    // )
-    //      .catchError((e) {
-    //    Fluttertoast.showToast(msg: e!.message);
-    //  });
-
-    //Fluttertoast.showToast(msg: "Please Wait, you account is been creating");
     on SocketException catch (e) {
       showException(context, e.message);
     }

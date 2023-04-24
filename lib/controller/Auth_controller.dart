@@ -31,13 +31,17 @@ class userController {
   TextEditingController Rest = TextEditingController();
 
   //Login Function
-  signIn(BuildContext context, String email, String password) async {
+  Future<void> signIn(BuildContext context, String email, String password) async {
+    //Auth.currentUser!.emailVerified != true ? showProgress(context, "Please Wait!..."):
+    //showProgress(context, "Logging In");
     try {
-      Auth.currentUser!.emailVerified != true ? showProgress(context, "Please Wait!..."):
-     showProgress(context, "Logging In");
+
 
     await Auth.signInWithEmailAndPassword(email: email, password: password)
           .then((uid) => {
+            print("this is the uid: ${uid}"),
+            uid.user?.emailVerified != true ? showProgress(context, "Please Wait!..."):
+    showProgress(context, "Logging In"),
     // showProgress(context, "Logging..."),
             Navigator.pushAndRemoveUntil(
                     context,
@@ -71,9 +75,9 @@ class userController {
       BuildContext context, TextEditingController email) async {
     try {
 
+      successModal(context,"Reset Password", "Password Reset Email Sent");
       await Auth.sendPasswordResetEmail(email: email.text.trim())
-          .timeout(Duration(seconds: 6));
-      showException(context, "Password Reset Email Sent");
+          .timeout(Duration(seconds: 10));
       Navigator.of(context).popUntil((route) => route.isFirst);
     } on FirebaseAuthException catch (e) {
       showException(context, e.message!);

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gmm_app/controller/Auth_controller.dart';
+import 'package:gmm_app/controller/constant.dart';
 import 'package:gmm_app/model/infaqModel.dart';
 import 'package:gmm_app/utils/progressBar.dart';
 
@@ -79,15 +80,14 @@ class _payInfaqState extends State<payInfaq> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("MTN Mobile Number:",
-                              style: TextStyle(fontSize: 16)),
-                          Text(" 0555857384", style: TextStyle(fontSize: 16)),
+                          Text("MTN Mobile Number:", style: textFontSize),
+                          Text(" 0555857384", style: textFontSize),
                           Divider(
                             color: Colors.green,
                             thickness: 1.5,
                           ),
                           Text("MoMo Name: Ghana Muslim Mission",
-                              style: TextStyle(fontSize: 16)),
+                              style: textFontSize),
                         ],
                       ),
                     ),
@@ -103,18 +103,14 @@ class _payInfaqState extends State<payInfaq> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("Vodacash Number:",
-                              style: TextStyle(fontSize: 16)),
-                          Text(
-                            "0509705450",
-                            style: TextStyle(fontSize: 16),
-                          ),
+                          Text("Vodacash Number:", style: textFontSize),
+                          Text("0509705450", style: textFontSize),
                           Divider(
                             color: Colors.green,
                             thickness: 1.5,
                           ),
                           Text("Vodacash Name: Ghana Muslim Mission",
-                              style: TextStyle(fontSize: 16)),
+                              style: textFontSize),
                         ],
                       ),
                     ),
@@ -129,7 +125,7 @@ class _payInfaqState extends State<payInfaq> {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                             "Kindly enter the exact number chosen for payment in the box bellow",
-                            style: TextStyle(fontSize: 15)),
+                            style: textFontSize),
                       ),
                     ),
                   ),
@@ -144,10 +140,7 @@ class _payInfaqState extends State<payInfaq> {
                       keyboardType: TextInputType.numberWithOptions(),
                       controller: infaqNumber,
                       decoration: InputDecoration(
-                        label: Text(
-                          "Infag Number",
-                          style: TextStyle(fontSize: 16),
-                        ),
+                        label: Text("Infag Number", style: textFontSize),
                         prefixIcon: Icon(Icons.drive_file_rename_outline),
                         prefixIconColor: Colors.black,
                         border: OutlineInputBorder(
@@ -170,7 +163,7 @@ class _payInfaqState extends State<payInfaq> {
                       textInputAction: TextInputAction.next,
                       controller: payerName,
                       decoration: InputDecoration(
-                        label: Text("Payer's Name"),
+                        label: Text("Payer's Name", style: textFontSize),
                         prefixIcon: Icon(Icons.drive_file_rename_outline),
                         prefixIconColor: Colors.black,
                         border: OutlineInputBorder(
@@ -195,7 +188,7 @@ class _payInfaqState extends State<payInfaq> {
                       keyboardType: TextInputType.numberWithOptions(),
                       controller: payerNumber,
                       decoration: InputDecoration(
-                        label: Text("Payer's Number"),
+                        label: Text("Payer's Number", style: textFontSize),
                         prefixIcon: Icon(Icons.dialpad),
                         prefixIconColor: Colors.black,
                         border: OutlineInputBorder(
@@ -205,6 +198,8 @@ class _payInfaqState extends State<payInfaq> {
                       validator: (value) {
                         if (payerNumber.text.isEmpty) {
                           return ("Required");
+                        } else if (payerNumber.text.trim().length < 10) {
+                          return ("Payer's No. Can Not Be Less Than 10");
                         }
                       },
                     ),
@@ -219,7 +214,8 @@ class _payInfaqState extends State<payInfaq> {
                       keyboardType: TextInputType.numberWithOptions(),
                       controller: amount,
                       decoration: InputDecoration(
-                        label: Text("Enter Amount In Cedis"),
+                        label:
+                            Text("Enter Amount In Cedis", style: textFontSize),
                         prefixIcon: Icon(Icons.monetization_on_outlined),
                         prefixIconColor: Colors.black,
                         border: OutlineInputBorder(
@@ -246,9 +242,8 @@ class _payInfaqState extends State<payInfaq> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                """Kindly tap on the clipboard icon to copy Unique zakatId and use it for payment.""",
-                                style: TextStyle(fontSize: 15),
-                              ),
+                                  """Kindly tap on the clipboard icon to copy Unique zakatId and use it for payment.""",
+                                  style: textFontSize),
                             ),
                           ),
                         ),
@@ -258,7 +253,7 @@ class _payInfaqState extends State<payInfaq> {
                                     ClipboardData(text: helpUser.user!.uid))
                                 .then((value) {
                               Fluttertoast.showToast(
-                                  msg: "Copied to Clipboard");
+                                  msg: "Copied to Clipboard", fontSize: 16);
                             });
                           },
                           child: Padding(
@@ -286,7 +281,7 @@ class _payInfaqState extends State<payInfaq> {
                       textInputAction: TextInputAction.next,
                       controller: infaqID,
                       decoration: InputDecoration(
-                        label: Text("Zakat ID"),
+                        label: Text("Zakat ID", style: textFontSize),
                         prefixIcon: Icon(Icons.print),
                         prefixIconColor: Colors.black,
                         border: OutlineInputBorder(
@@ -296,6 +291,8 @@ class _payInfaqState extends State<payInfaq> {
                       validator: (value) {
                         if (infaqID.text.isEmpty) {
                           return ("Required");
+                        } else if (infaqID.text.trim() != helpUser.user!.uid) {
+                          return ("Invalid InfaqID");
                         }
                       },
                     ),
@@ -310,7 +307,7 @@ class _payInfaqState extends State<payInfaq> {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                             "Minimize the app and make payment and Use your transaction ID to fill the next TextField",
-                            style: TextStyle(fontSize: 15)),
+                            style: textFontSize),
                       ),
                     ),
                   ),
@@ -320,7 +317,7 @@ class _payInfaqState extends State<payInfaq> {
                       textInputAction: TextInputAction.next,
                       controller: refId,
                       decoration: InputDecoration(
-                        label: Text("Reference ID"),
+                        label: Text("Reference ID", style: textFontSize),
                         prefixIcon: Icon(Icons.payment_outlined),
                         prefixIconColor: Colors.black,
                         border: OutlineInputBorder(
@@ -340,13 +337,11 @@ class _payInfaqState extends State<payInfaq> {
                   ElevatedButton(
                       onPressed: () {
                         if (allKey.currentState!.validate() &&
-                            infaqID.value.text == helpUser.user!.uid) {
-                          payInfaq();
-                          Navigator.pop(context);
-                          print("am here");
+                            infaqID.value.text.trim() == helpUser.user!.uid) {
+                          payInfaq(context);
                         }
                       },
-                      child: Text("SUBMIT"))
+                      child: Text("SUBMIT", style: textFontSize))
                 ],
               ),
             ),
@@ -356,21 +351,20 @@ class _payInfaqState extends State<payInfaq> {
     ));
   }
 
-  void payInfaq() async {
+  payInfaq(BuildContext context) async {
     try {
       if (infaqNumber.text.trim() == "0555857384" ||
           infaqNumber.text.trim() == "0509705450") {
         postReportToFireStore();
-        successModal(
-            context,
-                "Pay Infaq",
-                "Payment Submitted Successful, Admin will review it in soon. Thank you -:)");
+        Navigator.pop(context);
+        successModal(context, "Pay Infaq",
+            "Payment Submitted Successful, Admin Will Review It Soon. Thank You -:)");
       } else if (infaqNumber.text.trim() != "0555857384" ||
           infaqNumber.text.trim() != "0509705450") {
-        showException(
-            context,
-            "Kindly input correct Infaq Account Number.");
+        showException(context, "Kindly Input Correct Infaq Account Number.");
       }
+    } on FirebaseAuthException catch (e) {
+      showException(context, e.message.toString());
     } on SocketException catch (e) {
       showException(context, e.message);
     }
@@ -394,7 +388,7 @@ class _payInfaqState extends State<payInfaq> {
     model.payerNumber = payerNumber.text.trim();
     model.amount = amount.text.trim();
     model.refId = refId.text.trim();
-    model.status = status;
+    model.status = paymentStatus;
     model.infagID = infaqID.value.text.trim();
     model.time = DateTime.now().toString();
 

@@ -1,15 +1,13 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gmm_app/data/otherData.dart';
 import 'package:gmm_app/model/userModel.dart';
 import 'package:gmm_app/utils/progressBar.dart';
 import 'package:intl/intl.dart';
 
 import '../controller/Auth_controller.dart';
+import '../controller/constant.dart';
 
 class updateStatus extends StatefulWidget {
   const updateStatus({Key? key}) : super(key: key);
@@ -142,7 +140,7 @@ class _updateStatusState extends State<updateStatus> {
                             //sub-column
                             Column(
                               children: [
-                        Text("Name Of Tertiary: ${helpUser.logInUser.nameOfTertiary} ", style: TextStyle(fontSize: 16),),
+                        Text("Name Of Tertiary: ${helpUser.logInUser.nameOfTertiary} ", style: textFontSize),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 2, vertical: 1),
@@ -154,7 +152,7 @@ class _updateStatusState extends State<updateStatus> {
                                       },
                                       controller: nameOfTertiary,
                                       decoration: InputDecoration(
-                                        label: Text("Name Of Tertiary"),
+                                        label: Text("Name Of Tertiary",style: textFontSize),
                                         prefixIcon: Icon(Icons.school),
                                         prefixIconColor: Colors.black,
                                         border: OutlineInputBorder(
@@ -169,7 +167,7 @@ class _updateStatusState extends State<updateStatus> {
                             ),
                             Column(
                               children: [
-                                Text("Name Of Tertiary: ${helpUser.logInUser.startingYear} ", style: TextStyle(fontSize: 16),),
+                                Text("Name Of Tertiary: ${helpUser.logInUser.startingYear} ", style: textFontSize),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 2, vertical: 1),
@@ -194,7 +192,7 @@ class _updateStatusState extends State<updateStatus> {
                                           },
                                           controller: startingYear,
                                           decoration: InputDecoration(
-                                            label: Text("Started Year"),
+                                            label: Text("Started Year",style: textFontSize),
                                             prefixIcon:
                                                 Icon(Icons.not_started_outlined),
                                             prefixIconColor: Colors.black,
@@ -213,7 +211,7 @@ class _updateStatusState extends State<updateStatus> {
                             ),
                             Column(
                               children: [
-                                Text("Name Of Tertiary: ${helpUser.logInUser.completingYear} ", style: TextStyle(fontSize: 16),),
+                                Text("Name Of Tertiary: ${helpUser.logInUser.completingYear} ", style: textFontSize),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 2, vertical: 1),
@@ -238,7 +236,7 @@ class _updateStatusState extends State<updateStatus> {
                                           },
                                           controller: completingYear,
                                           decoration: InputDecoration(
-                                            label: Text("Yeah To Complete"),
+                                            label: Text("Yeah To Complete", style: textFontSize),
                                             prefixIcon: Icon(Icons.schedule_sharp),
                                             prefixIconColor: Colors.black,
                                             border: OutlineInputBorder(
@@ -254,7 +252,7 @@ class _updateStatusState extends State<updateStatus> {
                             SizedBox(height: 10,),
                             Column(
                               children: [
-                                Text("Location: ${helpUser.logInUser.locationOfCampus} ", style: TextStyle(fontSize: 16),),
+                                Text("Location: ${helpUser.logInUser.locationOfCampus} ", style: textFontSize),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 2, vertical: 1),
@@ -266,7 +264,7 @@ class _updateStatusState extends State<updateStatus> {
                                       },
                                       controller: locationOfCampus,
                                       decoration: InputDecoration(
-                                        label: Text("Location Of Campus"),
+                                        label: Text("Location Of Campus", style: textFontSize),
                                         prefixIcon:
                                         Icon(Icons.add_location_alt_outlined),
                                         prefixIconColor: Colors.green,
@@ -282,7 +280,7 @@ class _updateStatusState extends State<updateStatus> {
                             ),
                             Column(
                               children: [
-                                Text("Address: ${helpUser.logInUser.addressOfCampus} ", style: TextStyle(fontSize: 16),),
+                                Text("Address: ${helpUser.logInUser.addressOfCampus} ", style: textFontSize),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 2, vertical: 1),
@@ -294,7 +292,7 @@ class _updateStatusState extends State<updateStatus> {
                                       },
                                       controller: addressOfCampus,
                                       decoration: InputDecoration(
-                                        label: Text("Address Of Campus"),
+                                        label: Text("Address Of Campus", style: textFontSize),
                                         prefixIcon: Icon(Icons.gps_fixed_rounded),
                                         prefixIconColor: Colors.black,
                                         border: OutlineInputBorder(
@@ -309,7 +307,7 @@ class _updateStatusState extends State<updateStatus> {
                             ),
                             Column(
                               children: [
-                                Text("Programme: ${helpUser.logInUser.programme} ", style: TextStyle(fontSize: 16),),
+                                Text("Programme: ${helpUser.logInUser.programme} ", style: textFontSize),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 2, vertical: 1),
@@ -321,7 +319,7 @@ class _updateStatusState extends State<updateStatus> {
                                       },
                                       controller: programme,
                                       decoration: InputDecoration(
-                                        label: Text("Name Of programme"),
+                                        label: Text("Name Of programme", style: textFontSize),
                                         prefixIcon:
                                         Icon(Icons.account_balance_rounded),
                                         prefixIconColor: Colors.black,
@@ -337,7 +335,7 @@ class _updateStatusState extends State<updateStatus> {
                             ),
                             Column(
                               children: [
-                                Text("Department: ${helpUser.logInUser.department} ", style: TextStyle(fontSize: 16),),
+                                Text("Department: ${helpUser.logInUser.department} ", style: textFontSize),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 2, vertical: 1),
@@ -349,7 +347,7 @@ class _updateStatusState extends State<updateStatus> {
                                       },
                                       controller: department,
                                       decoration: InputDecoration(
-                                        label: Text("Name Of Department"),
+                                        label: Text("Name Of Department", style: textFontSize),
                                         prefixIcon: Icon(Icons.workspaces_outline),
                                         prefixIconColor: Colors.black,
                                         border: OutlineInputBorder(
@@ -373,7 +371,7 @@ class _updateStatusState extends State<updateStatus> {
                                       Text(
                                         "Completed ?",
                                         style: TextStyle(
-                                            fontSize: 18,
+                                            fontSize: 16,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       SizedBox(width: 10),
@@ -394,7 +392,7 @@ class _updateStatusState extends State<updateStatus> {
                                         horizontal: 2, vertical: 20),
                                     child: Column(
                                       children: [
-                                        Text("Employee Status: ${helpUser.logInUser.liveAfterSchool} ", style: TextStyle(fontSize: 16),),
+                                        Text("Employee Status: ${helpUser.logInUser.liveAfterSchool} ", style: textFontSize),
                                         SizedBox(height: 5),
                                         DecoratedBox(
                                           decoration: BoxDecoration(
@@ -450,7 +448,7 @@ class _updateStatusState extends State<updateStatus> {
                                 horizontal: 2, vertical: 1),
                             child: Column(
                               children: [
-                                Text("Primary School: ${helpUser.logInUser.nameOfPrimarySchool} ", style: TextStyle(fontSize: 16),),
+                                Text("Primary School: ${helpUser.logInUser.nameOfPrimarySchool} ", style: textFontSize),
                                 TextFormField(
                                     validator: (value) {
                                       if (nameOfPrimarySchool.text.isEmpty) {
@@ -459,7 +457,7 @@ class _updateStatusState extends State<updateStatus> {
                                     },
                                     controller: nameOfPrimarySchool,
                                     decoration: InputDecoration(
-                                      label: Text("Name Of Primary School"),
+                                      label: Text("Name Of Primary School", style: textFontSize),
                                       prefixIcon: Icon(Icons.school),
                                       prefixIconColor: Colors.black,
                                       border: OutlineInputBorder(
@@ -475,7 +473,7 @@ class _updateStatusState extends State<updateStatus> {
                                     horizontal: 2, vertical: 1),
                                 child: Column(
                                   children: [
-                                    Text("Junior High School: ${helpUser.logInUser.nameOfJuniorHighSchool} ", style: TextStyle(fontSize: 16),),
+                                    Text("Junior High School: ${helpUser.logInUser.nameOfJuniorHighSchool} ", style: textFontSize),
                                     TextFormField(
                                         validator: (value) {
                                           if (nameOfJunior.text.isEmpty) {
@@ -484,7 +482,7 @@ class _updateStatusState extends State<updateStatus> {
                                         },
                                         controller: nameOfJunior,
                                         decoration: InputDecoration(
-                                          label: Text("Name Of Junior High School"),
+                                          label: Text("Name Of Junior High School", style: textFontSize),
                                           prefixIcon: Icon(Icons.school),
                                           prefixIconColor: Colors.black,
                                           border: OutlineInputBorder(
@@ -500,7 +498,7 @@ class _updateStatusState extends State<updateStatus> {
                                         horizontal: 2, vertical: 1),
                                     child: Column(
                                       children: [
-                                        Text("Senior High School: ${helpUser.logInUser.nameOfSeniorHighSchool} ", style: TextStyle(fontSize: 16),),
+                                        Text("Senior High School: ${helpUser.logInUser.nameOfSeniorHighSchool} ", style: textFontSize),
                                         TextFormField(
                                             validator: (value) {
                                               if (nameOfSeniorSchool.text.isEmpty) {
@@ -510,7 +508,7 @@ class _updateStatusState extends State<updateStatus> {
                                             controller: nameOfSeniorSchool,
                                             decoration: InputDecoration(
                                               label: Text(
-                                                  "Name Of Senior High School"),
+                                                  "Name Of Senior High School", style: textFontSize),
                                               prefixIcon:
                                                   Icon(Icons.school_outlined),
                                               prefixIconColor: Colors.black,
@@ -529,7 +527,7 @@ class _updateStatusState extends State<updateStatus> {
                                             horizontal: 2, vertical: 1),
                                         child: Column(
                                           children: [
-                                            Text("profession: ${helpUser.logInUser.profession} ", style: TextStyle(fontSize: 16),),
+                                            Text("profession: ${helpUser.logInUser.profession} ", style: textFontSize),
                                             TextFormField(
                                                 validator: (value) {
                                                   if (profession.text.isEmpty) {
@@ -538,7 +536,7 @@ class _updateStatusState extends State<updateStatus> {
                                                 },
                                                 controller: profession,
                                                 decoration: InputDecoration(
-                                                  label: Text("Profession"),
+                                                  label: Text("Profession", style: textFontSize),
                                                   prefixIcon: Icon(Icons.work),
                                                   prefixIconColor: Colors.black,
                                                   border: OutlineInputBorder(
@@ -555,7 +553,7 @@ class _updateStatusState extends State<updateStatus> {
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 20),
                   child: Column(
                     children: [
-                      Text("No. Of Dependent: ${helpUser.logInUser.numberOfDependent} ", style: TextStyle(fontSize: 16),),
+                      Text("No. Of Dependent: ${helpUser.logInUser.numberOfDependent} ", style: textFontSize),
                       TextFormField(
                           validator: (value) {
                             if (numberOfDependent.text.isEmpty) {
@@ -564,7 +562,7 @@ class _updateStatusState extends State<updateStatus> {
                           },
                           controller: numberOfDependent,
                           decoration: InputDecoration(
-                            label: Text("No. Of Dependent"),
+                            label: Text("No. Of Dependent", style: textFontSize),
                             prefixIcon: Icon(Icons.password_outlined),
                             prefixIconColor: Colors.black,
                             border: OutlineInputBorder(
@@ -579,8 +577,7 @@ class _updateStatusState extends State<updateStatus> {
                   child: Column(
                     children: [
                       Text(
-                        "Marital Status: ${helpUser.logInUser.maritalStatus} ",
-                        style: TextStyle(fontSize: 16),
+                        "Marital Status: ${helpUser.logInUser.maritalStatus} ", style: textFontSize
                       ),
                       SizedBox(height: 5),
                       DecoratedBox(
@@ -631,8 +628,7 @@ class _updateStatusState extends State<updateStatus> {
                                 child: Column(
                                   children: [
                                     Text(
-                                      "No. Of Wive: ${helpUser.logInUser.numberOfWive}",
-                                      style: TextStyle(fontSize: 16),
+                                      "No. Of Wive: ${helpUser.logInUser.numberOfWive}", style: textFontSize
                                     ),
                                     TextFormField(
                                         validator: (value) {
@@ -642,7 +638,7 @@ class _updateStatusState extends State<updateStatus> {
                                         },
                                         controller: numberOfWive,
                                         decoration: InputDecoration(
-                                          label: Text("No. Of Wives"),
+                                          label: Text("No. Of Wives", style: textFontSize),
                                           prefixIcon: Icon(
                                               Icons.pregnant_woman_outlined),
                                           prefixIconColor: Colors.black,
@@ -661,8 +657,7 @@ class _updateStatusState extends State<updateStatus> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text("No. Of Children",
-                                      style: TextStyle(fontSize: 16)),
+                                  Text("No. Of Children", style: textFontSize),
                                   SizedBox(height: 5),
                                   Flex(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -673,8 +668,7 @@ class _updateStatusState extends State<updateStatus> {
                                         child: Column(
                                           children: [
                                             Text(
-                                              "No. Of Males: ${helpUser.logInUser.numberOfMaleChildren}",
-                                              style: TextStyle(fontSize: 16),
+                                              "No. Of Males: ${helpUser.logInUser.numberOfMaleChildren}", style: textFontSize
                                             ),
                                             TextFormField(
                                                 validator: (value) {
@@ -686,7 +680,7 @@ class _updateStatusState extends State<updateStatus> {
                                                 controller:
                                                     numberOfMaleChildren,
                                                 decoration: InputDecoration(
-                                                  label: Text("No. Of Males"),
+                                                  label: Text("No. Of Males", style: textFontSize),
                                                   border: OutlineInputBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -702,14 +696,13 @@ class _updateStatusState extends State<updateStatus> {
                                         child: Column(
                                           children: [
                                             Text(
-                                              "No. Of Females: ${helpUser.logInUser.numberOfFemaleChildren}",
-                                              style: TextStyle(fontSize: 16),
+                                              "No. Of Females: ${helpUser.logInUser.numberOfFemaleChildren}", style: textFontSize
                                             ),
                                             TextFormField(
                                                 controller:
                                                     numberOfFemaleChildren,
                                                 decoration: InputDecoration(
-                                                  label: Text("No. Of Females"),
+                                                  label: Text("No. Of Females", style: textFontSize),
                                                   border: OutlineInputBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -732,8 +725,7 @@ class _updateStatusState extends State<updateStatus> {
                                   Wrap(
                                     children:[
                                       Text(
-                                        "Name Of Muslims: ${helpUser.logInUser.nameOfMuslimChildren}",
-                                        style: TextStyle(fontSize: 16),
+                                        "Name Of Muslims: ${helpUser.logInUser.nameOfMuslimChildren}", style: textFontSize
                                       ),
                                     ],
                                   ),
@@ -745,7 +737,7 @@ class _updateStatusState extends State<updateStatus> {
                                       },
                                       controller: nameOfMuslimChildren,
                                       decoration: InputDecoration(
-                                        label: Text("Name Of Muslims Children"),
+                                        label: Text("Name Of Muslims Children", style: textFontSize),
                                         prefixIcon: Icon(
                                             Icons.drive_file_rename_outline),
                                         prefixIconColor: Colors.black,
@@ -765,8 +757,7 @@ class _updateStatusState extends State<updateStatus> {
                                   Wrap(
                                     children:[
                                       Text(
-                                        "Name Of Non-Muslims: ${helpUser.logInUser.nameOfNonMuslimChildren}",
-                                        style: TextStyle(fontSize: 16),
+                                        "Name Of Non-Muslims: ${helpUser.logInUser.nameOfNonMuslimChildren}", style: textFontSize
                                       ),
                                     ],
                                   ),
@@ -778,7 +769,7 @@ class _updateStatusState extends State<updateStatus> {
                                       },
                                       controller: nameOfNonMuslimChildren,
                                       decoration: InputDecoration(
-                                        label: Text("Name Of Non Muslim"),
+                                        label: Text("Name Of Non Muslim", style: textFontSize),
                                         prefixIcon:
                                             Icon(Icons.drive_file_rename_outline),
                                         prefixIconColor: Colors.black,
@@ -808,7 +799,7 @@ class _updateStatusState extends State<updateStatus> {
                         showException(context, "An Error Occurred");
                       }
                     },
-                    child: Text("UPDATE"))
+                    child: Text("UPDATE",style: textFontSize))
               ],
             ),
           ),
@@ -892,10 +883,6 @@ class _updateStatusState extends State<updateStatus> {
           'value': value,
           'liveAfterSchool': employeeStatus,
         }).catchError((error) {
-          // Fluttertoast.showToast(
-          //     gravity: ToastGravity.CENTER,
-          //     toastLength: Toast.LENGTH_LONG,
-          //     msg: e!.message);
           showException(context,  error!.message);
         });
       }

@@ -1,11 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gmm_app/controller/Auth_controller.dart';
-import 'package:gmm_app/screen/payInfaq.dart';
 import 'package:gmm_app/screen/payZakat.dart';
 
 import '../controller/constant.dart';

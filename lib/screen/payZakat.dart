@@ -1,11 +1,13 @@
 import 'dart:core';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gmm_app/controller/Auth_controller.dart';
 import 'package:gmm_app/model/zakatModel.dart';
+import 'package:gmm_app/utils/progressBar.dart';
 
 import '../controller/constant.dart';
 
@@ -69,7 +71,7 @@ class _payZakatState extends State<payZakat> {
                         children: [
                           Text("MTN Mobile Number:",
                               style: TextStyle(fontSize: 16)),
-                          Text(" 0555857384", style: TextStyle(fontSize: 16)),
+                          Text(" 0555857384", style: TextStyle(fontSize: 18)),
                           Divider(
                             color: Colors.green,
                             thickness: 1.5,
@@ -95,7 +97,7 @@ class _payZakatState extends State<payZakat> {
                               style: TextStyle(fontSize: 16)),
                           Text(
                             "0509705450",
-                            style: TextStyle(fontSize: 16),
+                            style: TextStyle(fontSize: 18),
                           ),
                           Divider(
                             color: Colors.green,
@@ -114,7 +116,7 @@ class _payZakatState extends State<payZakat> {
                     width: double.infinity,
                     child: Card(child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text("Kindly enter the exact number chosen for payment in the box bellow", style: TextStyle(fontSize: 15)),
+                      child: Text("Kindly enter the exact number chosen for payment in the box bellow", style: textFontSize),
                     ),),
                   ),
                   SizedBox(height: 5.0,),
@@ -152,7 +154,7 @@ class _payZakatState extends State<payZakat> {
                       textInputAction: TextInputAction.next,
                       controller: payerName,
                       decoration: InputDecoration(
-                        label: Text("Payer's Name"),
+                        label: Text("Payer's Name", style: textFontSize),
                         prefixIcon: Icon(Icons.drive_file_rename_outline),
                         prefixIconColor: Colors.black,
                         border: OutlineInputBorder(
@@ -177,7 +179,7 @@ class _payZakatState extends State<payZakat> {
                       keyboardType: TextInputType.numberWithOptions(),
                       controller: payerNumber,
                       decoration: InputDecoration(
-                        label: Text("Payer's Number"),
+                        label: Text("Payer's Number", style: textFontSize),
                         prefixIcon: Icon(Icons.dialpad),
                         prefixIconColor: Colors.black,
                         border: OutlineInputBorder(
@@ -187,6 +189,9 @@ class _payZakatState extends State<payZakat> {
                       validator: (value) {
                         if (payerNumber.value.text.isEmpty) {
                           return ("Required");
+                        }
+                        else if (payerNumber.value.text.length < 10) {
+                          return ("enter 10 digits payer's number");
                         }
                       },
                     ),
@@ -201,7 +206,7 @@ class _payZakatState extends State<payZakat> {
                       keyboardType: TextInputType.numberWithOptions(),
                       controller: amount,
                       decoration: InputDecoration(
-                        label: Text("Enter Amount In Cedis"),
+                        label: Text("Enter Amount In Cedis", style: textFontSize),
                         prefixIcon: Icon(Icons.monetization_on_outlined),
                         prefixIconColor: Colors.black,
                         border: OutlineInputBorder(
@@ -226,7 +231,7 @@ class _payZakatState extends State<payZakat> {
                           elevation: 2.0,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text("""Kindly tap on the clipboard icon to copy Unique zakatId and use it for payment.""", style: TextStyle(fontSize: 15),),
+                            child: Text("""Kindly tap on the clipboard icon to copy Unique zakatId and use it for payment.""", style: textFontSize,),
                           ),),),
                         GestureDetector(
                           onTap: () {
@@ -261,7 +266,7 @@ class _payZakatState extends State<payZakat> {
                       textInputAction: TextInputAction.next,
                       controller: zakatID,
                       decoration: InputDecoration(
-                        label: Text("Zakat ID"),
+                        label: Text("Zakat ID", style: textFontSize),
                         prefixIcon: Icon(Icons.print),
                         prefixIconColor: Colors.black,
                         border: OutlineInputBorder(
@@ -271,6 +276,9 @@ class _payZakatState extends State<payZakat> {
                       validator: (value) {
                         if (zakatID.value.text.isEmpty) {
                           return ("Required");
+                        }
+                      else if (zakatID.value.text.trim() != helpUser.user!.uid) {
+                          return ("Invalid ZakatID");
                         }
                       },
                     ),
@@ -282,7 +290,7 @@ class _payZakatState extends State<payZakat> {
                     width: double.infinity,
                     child: Card(child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text("Minimize the app and make payment and Use your transaction ID to fill the next TextField", style: TextStyle(fontSize: 15)),
+                      child: Text("Minimize the app and make payment and Use your transaction ID to fill the next TextField", style: textFontSize),
                     ),),
                   ),
                   Padding(
@@ -291,7 +299,7 @@ class _payZakatState extends State<payZakat> {
                       textInputAction: TextInputAction.next,
                       controller: tranID,
                       decoration: InputDecoration(
-                        label: Text("Transaction ID"),
+                        label: Text("Transaction ID", style: textFontSize),
                         prefixIcon: Icon(Icons.payment_outlined),
                         prefixIconColor: Colors.black,
                         border: OutlineInputBorder(
@@ -311,12 +319,12 @@ class _payZakatState extends State<payZakat> {
                   ElevatedButton(
                       onPressed: () {
                         if (allKey.currentState!.validate() &&
-                            zakatID.value.text == helpUser.user!.uid ) {
-                          payZakat();
-                          Navigator.pop(context);
+                            zakatID.value.text.trim() == helpUser.user!.uid ) {
+                          payZakat(context);
+
                         }
                       },
-                      child: Text("SUBMIT"))
+                      child: Text("SUBMIT", style: textFontSize))
                 ],
               ),
             ),
@@ -326,21 +334,36 @@ class _payZakatState extends State<payZakat> {
     ));
   }
 
-  void payZakat() async {
+  void payZakat(BuildContext context) async {
     try {
       if (zakatNumber.value.text.trim() == "0555857384" ||
           zakatNumber.value.text.trim() == "0509705450") {
         postReportToFireStore();
-        Fluttertoast.showToast(
-            msg:
-                "Payment Submitted Successful, Admin will review it soon. Thank you.");
+        Navigator.pop(context);
+        successModal(
+          context,
+                "Pay Zakat",
+                "Payment Submitted Successful, Admin Will Review It Soon. "
+                    "Thank You -:)");
+
       } else if (zakatNumber.value.text.trim() != "0555857384" ||
           zakatNumber.value.text.trim() != "0509705450") {
-        Fluttertoast.showToast(
-            msg: "Kindly input correct Zakat Account Number.");
+        showException(
+            context,
+            "Kindly Input Correct Zakat Account Number.");
       }
-    } on SocketException catch (e) {
-      Fluttertoast.showToast(msg: e.message);
+    }
+    on FirebaseAuthException catch(e){
+      showException(
+          context,
+          e.message.toString());
+    }
+    on SocketException catch (e) {
+
+      showException(
+          context,
+          e.message
+      );
     }
   }
 
@@ -358,7 +381,7 @@ class _payZakatState extends State<payZakat> {
     model.amount = amount.text.trim();
     model.zakatID = zakatID.text.trim();
     model.tranID = tranID.text.trim();
-    model.status = status;
+    model.status = paymentStatus;
     model.time = DateTime.now().toString();
 
     db.push().set(model.toMap()).asStream();

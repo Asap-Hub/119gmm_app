@@ -1,6 +1,6 @@
 class UserModel {
   String? uid;
-  String? url;
+   String? url;
 
   //credentials
   String? email;
@@ -106,7 +106,7 @@ class UserModel {
     this.contact,
   });
 
-//receiving data to the server
+//receiving data from the server
   factory UserModel.fromMap(map) {
     return UserModel(
       uid: map['uid'],

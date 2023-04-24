@@ -1,6 +1,7 @@
 import 'dart:io';
 
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gmm_app/controller/Auth_controller.dart';
@@ -37,15 +38,27 @@ class _MyHomePageState extends State<MyHomePage> {
     helpUser.FirebaseFireStore.doc(helpUser.user!.uid)
         .get()
         .then((value) {
+      if (!mounted) return;
       setState(() {
         this.helpUser.logInUser = UserModel.fromMap(value.data());
+        print(UserModel.fromMap(value.data()));
       });
     });
     defaultUserLogo;
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    logOut(context);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    User? user = FirebaseAuth.instance.currentUser;
+    final FirebaseAuth Auth = FirebaseAuth.instance;
+    if (!mounted)
     setState(() {
       helpUser.FirebaseFireStore.doc(helpUser.user!.uid)
           .get()

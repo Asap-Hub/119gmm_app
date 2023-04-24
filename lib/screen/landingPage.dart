@@ -20,7 +20,13 @@ class _landingPageState extends State<landingPage> {
 
  final helpUser = userController();
   bool isLoading = false;
-
+ @override
+  void dispose() {
+    // TODO: implement dispose
+   email.dispose();
+   password.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,10 +136,12 @@ class _landingPageState extends State<landingPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ElevatedButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 if(formKey.currentState!.validate())
                                 {
-                               helpUser.signIn(context, email.text.trim(), password.text.trim());
+
+                               await helpUser.signIn(context, email.text.trim(), password.text.trim());
+
                               }
                              },
                               child: Text("LOGIN",
