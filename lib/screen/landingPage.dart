@@ -25,6 +25,7 @@ class _landingPageState extends State<landingPage> {
     // TODO: implement dispose
    email.dispose();
    password.dispose();
+   showProgress(context, "");
     super.dispose();
   }
 

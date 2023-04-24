@@ -8,7 +8,7 @@ showProgress(BuildContext context, String message) {
   showDialog(
       context: context,
       builder: (BuildContext Content) {
-        Future.delayed(Duration(seconds: 1), () {
+        Future.delayed(Duration(seconds: 3), () {
           // Dismiss the dialog
           //Navigator.of(context).pop();
         });

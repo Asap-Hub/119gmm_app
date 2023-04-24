@@ -46,18 +46,14 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     defaultUserLogo;
   }
-
   @override
   void dispose() {
     // TODO: implement dispose
     logOut(context);
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
-    User? user = FirebaseAuth.instance.currentUser;
-    final FirebaseAuth Auth = FirebaseAuth.instance;
     if (!mounted)
     setState(() {
       helpUser.FirebaseFireStore.doc(helpUser.user!.uid)
@@ -69,7 +65,6 @@ class _MyHomePageState extends State<MyHomePage> {
       });
       helpUser.logInUser.url;
     });
-
     return SafeArea(
       child: Scaffold(
         key: drawerKey,

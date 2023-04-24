@@ -71,7 +71,7 @@ Future sendVerificationEmail()async {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text("""Email verification sent to ${FirebaseAuth.instance.currentUser!.email}""", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                    Text("""Check Spam box too if you can't find the email in your mail Inbox""", style: TextStyle(fontSize: 16),),
+                    Text("""Check Spam box if you can't find the email in your mail Inbox""", style: TextStyle(fontSize: 16),),
                  ElevatedButton(onPressed: (){
                    sendVerificationEmail();
                    }, child: Text("Send Email Again", style: TextStyle(fontSize: 14),))

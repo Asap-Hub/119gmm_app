@@ -32,16 +32,13 @@ class userController {
 
   //Login Function
   Future<void> signIn(BuildContext context, String email, String password) async {
-    //Auth.currentUser!.emailVerified != true ? showProgress(context, "Please Wait!..."):
-    //showProgress(context, "Logging In");
+    Auth.currentUser?.emailVerified != true ? showProgress(context, "Please Wait!..."):
+    showProgress(context, "Logging In");
     try {
-
-
     await Auth.signInWithEmailAndPassword(email: email, password: password)
           .then((uid) => {
-            print("this is the uid: ${uid}"),
-            uid.user?.emailVerified != true ? showProgress(context, "Please Wait!..."):
-    showProgress(context, "Logging In"),
+      // uid.user?.emailVerified != true ? showProgress(context, "Please Wait!..."):
+      // showProgress(context, "Logging In"),
     // showProgress(context, "Logging..."),
             Navigator.pushAndRemoveUntil(
                     context,
